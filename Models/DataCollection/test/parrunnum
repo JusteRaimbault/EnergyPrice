@@ -1,0 +1,10 @@
+
+COMMAND=$1
+NRUNS=$2
+
+for i in `seq 0 $(($NRUNS - 1))`
+do
+    echo "run $i"
+    $COMMAND$i & disown
+done
+

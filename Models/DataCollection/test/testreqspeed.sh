@@ -3,7 +3,7 @@
 
 start=`date +'%s'`
 
-for i in `seq 192000 192020`
+for i in `seq 1 400`
 do
   curl -s --socks5-hostname 127.0.0.1:9050  www.gasbuddy.com/Station/$i > html/tmp
   n=`cat html/tmp | grep "price-display credit-price" | wc -l`
