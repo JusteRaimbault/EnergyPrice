@@ -1,0 +1,11 @@
+Title : The Cost of Transportation : Spatial Analysis of Fuel
+Prices in the US
+
+Keywords : Fuel Price ; Data Crawling ; Spatial Analysis ; Geographically Weighted Regression
+Multi-level Modeling
+
+
+
+The geography of fuel prices has several implications, from a significant impact on accessibility patterns to issues of territorial equity and transportation governance. In this paper, we study its spatio-temporal patterns at a high resolution. We construct a dataset collecting daily oil prices for two months, on a significant proportion of US gaz facilities, using a specifically-designed large scale data crawling technology. The implementation of a web-application for interactive spatio-temporal data exploration guide further statistical investigations, namely that oil price exhibit patterns that are strongly non-stationary in space and time. The behavior of spatial autocorrelation suggests the use of specific spatial econometric methods to study the role of explanatory variables that are either geographical or temporal. We study the influence of socio-economic variables, by using complementary methods: Geographically Weighted Regression to take into account spatial non-stationarity, and Multi-level modeling to condition both at the state and county level. The former yields an optimal spatial range roughly corresponding to stationarity scale, and significant influence of variables such as population density or median income, but is less accurate around administrative borders. On the other hand, multi-level modeling reveals a strong state fixed effect, and also a non-negligible county effect. Through the combination of such methods, we unveil the superposition of a governance process with a local socio-economical spatial process. Results are furthermore consistent across the different dates. We discuss one important application that is the elaboration of locally parametrized car-regulation policies.
+
+
