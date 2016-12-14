@@ -21,4 +21,3 @@ end=`date +'%s'`
 
 t=$(($end - $start))
 echo "Task $TASKID - time ellapsed : $t s"
-
