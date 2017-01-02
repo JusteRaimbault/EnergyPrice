@@ -1,0 +1,11 @@
+Task 9 - time ellapsed : 13533 s
+Task 8 - time ellapsed : 14355 s
+Task 7 - time ellapsed : 14804 s
+Task 4 - time ellapsed : 15602 s
+Task 2 - time ellapsed : 15998 s
+Task 0 - time ellapsed : 16958 s
+Task 1 - time ellapsed : 18042 s
+Task 6 - time ellapsed : 18852 s
+Task 3 - time ellapsed : 22571 s
+Task 5 - time ellapsed : 27554 s
+
