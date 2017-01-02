@@ -36,7 +36,7 @@ emptyfile = open(tmpdir+'empty','a')
 nostationfile = open(tmpdir+'nostation','a')
 
 # socks
-#proxies = {'http':'http://localhost:'+str(9050+taskid)}
+proxies = {'http':'http://localhost:'+str(9050+taskid)}
 
 data = []
 
@@ -44,8 +44,8 @@ for station_id in ids :
     print('id : '+str(station_id))
     try :
         # getting html from url
-        #result = requests.get('www.gasbuddy.com/Station/'+str(station_id),proxies=proxies)
-        result = requests.get('http://www.gasbuddy.com/Station/'+str(station_id))
+        result = requests.get('www.gasbuddy.com/Station/'+str(station_id),proxies=proxies)
+        #result = requests.get('http://www.gasbuddy.com/Station/'+str(station_id))
         try :
             tree = html.fromstring(result.content)
         except Exception :
