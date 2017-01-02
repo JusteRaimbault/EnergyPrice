@@ -27,10 +27,10 @@ MAXID=`cat conf/maxid`
 ## Run
 
 # run the torpool
-#java -jar lib/torpool.jar $NRUNS
+java -jar lib/torpool.jar $NRUNS
 # wait for bootstrap
-#echo "sleeping "$(($NRUNS * 20))
-#sleep $(($NRUNS * 20))
+echo "sleeping "$(($NRUNS * 20))
+sleep $(($NRUNS * 20))
 
 # generate ids
 python genIds.py $NRUNS $MAXID
