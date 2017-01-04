@@ -1,7 +1,7 @@
 
 # data archiving
-DATADIR='test/data/'
-TMPDIR='test/tmp/'
+DATADIR='data/'
+TMPDIR='tmp/'
 
 NRUNS=`cat conf/nruns`
 

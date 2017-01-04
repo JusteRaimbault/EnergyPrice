@@ -1,13 +1,14 @@
 
 # data collection worker script
 
-import requests,sys,time
+import requests,sys,time,traceback
 from lxml import html,etree
 import utils
 
 start = time.time()
 
-tmpdir = 'test/tmp/'
+#tmpdir = 'test/tmp/'
+tmpdir = 'tmp'
 
 taskid = int(sys.argv[1])
 
@@ -22,7 +23,7 @@ def get_prices(elem,searchstr,station_id):
             # get time and user
             currenttime = str(box[0].find_class("price-time")[0].text.split(' ')[0])
             currentuser = str(box[0].find_class("memberId")[0].text)
-            #print(str(station_id)+";"+fueltype+';'+str(currentprice)+';'+currenttime+';'+currentuser)
+            print(str(station_id)+";"+fueltype+';'+str(currentprice)+';'+currenttime+';'+currentuser)
             res = [str(station_id),fueltype,str(currentprice),currenttime,currentuser,str(int(time.time()))]
     return(res)
 
@@ -36,7 +37,7 @@ emptyfile = open(tmpdir+'empty','a')
 nostationfile = open(tmpdir+'nostation','a')
 
 # socks
-proxies = {'http':'http://localhost:'+str(9050+taskid)}
+proxies = {'http':'socks5://localhost:'+str(9050+taskid)}
 
 data = []
 
@@ -44,7 +45,7 @@ for station_id in ids :
     print('id : '+str(station_id))
     try :
         # getting html from url
-        result = requests.get('www.gasbuddy.com/Station/'+str(station_id),proxies=proxies)
+        result = requests.get('http://www.gasbuddy.com/Station/'+str(station_id),proxies=proxies)
         #result = requests.get('http://www.gasbuddy.com/Station/'+str(station_id))
         try :
             tree = html.fromstring(result.content)
@@ -62,6 +63,8 @@ for station_id in ids :
         else :
             nostationfile.write(str(station_id)+'\n')
     except Exception :
+        exc_type, exc_value, exc_traceback = sys.exc_info()
+        traceback.print_exception(exc_type, exc_value, exc_traceback)
         print("error getting station "+str(station_id))
         errorfile.write(str(station_id)+'\n')
 

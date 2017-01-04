@@ -1,4 +1,8 @@
 __pycache__
 tmp
 test
+data
+log
+*.pyc
+.tor_tmp
 
