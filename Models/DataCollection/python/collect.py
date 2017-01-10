@@ -8,7 +8,7 @@ import utils
 start = time.time()
 
 #tmpdir = 'test/tmp/'
-tmpdir = 'tmp'
+tmpdir = 'tmp/'
 
 taskid = int(sys.argv[1])
 
