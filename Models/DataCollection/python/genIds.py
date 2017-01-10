@@ -6,7 +6,7 @@ nruns = int(sys.argv[1])
 maxid = int(sys.argv[2])
 
 #tmpdir = 'test/tmp/'
-tmpdir='tmp'
+tmpdir='tmp/'
 
 ids = list(range(1,maxid+1))
 numpy.random.shuffle(ids)
