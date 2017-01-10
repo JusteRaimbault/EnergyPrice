@@ -64,7 +64,8 @@ for station_id in ids :
             nostationfile.write(str(station_id)+'\n')
     except Exception :
         exc_type, exc_value, exc_traceback = sys.exc_info()
-        traceback.print_exception(exc_type, exc_value, exc_traceback)
+        traceback.print_exception(exc_type, exc_value, exc_traceback,2,error_log)
+        #print(str(exc_traceback))
         print("error getting station "+str(station_id))
         errorfile.write(str(station_id)+'\n')
 
