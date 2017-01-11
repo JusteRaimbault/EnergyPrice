@@ -55,8 +55,8 @@ for station_id in ids :
         # test if address, condition for station to exist
         if len(tree.find_class("station-address")) > 0 :
             for p in tree.get_element_by_id("prices").find_class("white-box") :
-                cashprices = get_prices(p,"cash",station_id)
-                creditprices = get_prices(p,"credit",station_id)
+                cashprices = get_prices(p,"cash",station_id)+['cash']
+                creditprices = get_prices(p,"credit",station_id)+['credit']
                 if len(cashprices)+len(creditprices) == 0 : emptyfile.write(str(station_id)+'\n')
                 if len(cashprices) > 0 : data.append(cashprices)
                 if len(creditprices) > 0 : data.append(creditprices)
