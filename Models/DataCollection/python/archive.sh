@@ -12,7 +12,7 @@ TIMESTAMP=`cat $TMPDIR/timestamp`
 cp $TMPDIR"data" $DATADIR$TIMESTAMP"_data.csv"
 rm $TMPDIR"data"
 # header
-echo "id;fuel;price;time;user;ts" > $TMPDIR"data"
+echo "id;fuel;price;time;user;ts;type" > $TMPDIR"data"
 
 cp $TMPDIR"errors" $DATADIR$TIMESTAMP"_errors.csv"
 rm $TMPDIR"errors"
