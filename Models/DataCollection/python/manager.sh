@@ -16,6 +16,7 @@ cd /root/ComplexSystems/EnergyPrice/Models/DataCollection/python
 # number of // runs
 NRUNS=`cat conf/nruns`
 MAXID=`cat conf/maxid`
+PYTHON=`cat conf/python`
 
 ## Setup
 
@@ -35,8 +36,8 @@ echo "sleeping "$(($NRUNS * 10))
 sleep $(($NRUNS * 10))
 
 # generate ids
-python genIds.py $NRUNS $MAXID
+$PYTHON genIds.py $NRUNS $MAXID
 
 
 # run the parallel data collection
-./parrunnum "python collect.py " $NRUNS
+./parrunnum $PYTHON" collect.py " $NRUNS
