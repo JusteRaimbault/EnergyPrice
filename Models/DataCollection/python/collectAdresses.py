@@ -1,5 +1,5 @@
 
-import os,sys,traceback,requests,time
+import os,sys,traceback,requests,time,re
 from lxml import html,etree
 import utils
 
@@ -15,8 +15,10 @@ proxies = {'http':'socks5://localhost:'+port}
 # read ids to collect from existing data
 ids = set()
 for datafile in os.listdir(datadir):
-    for line in utils.read_csv(datadir+'/'+datafile,';'):
-        ids.add(line[0])
+    if re.search('data',datafile) :
+        print(datafile)
+        for line in utils.read_csv(datadir+'/'+datafile,';'):
+            ids.add(line[0])
 
 
 # read already collected adresses
