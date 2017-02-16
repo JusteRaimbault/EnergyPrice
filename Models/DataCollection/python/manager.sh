@@ -10,6 +10,7 @@ fi
 
 
 cd /root/ComplexSystems/EnergyPrice/Models/DataCollection/python 
+rm -f log
 
 # Parameters
 

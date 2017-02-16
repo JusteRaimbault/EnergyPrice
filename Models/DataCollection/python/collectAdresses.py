@@ -8,6 +8,12 @@ start = time.time()
 datadir = 'data'
 locdir = 'loc'
 
+if not os.path.exists(locdir):
+    os.makedirs(locdir)
+
+if not os.path.isfile(locdir+'/adresses.csv'):
+    utils.append_csv([['id','address','locality','region','code']],locdir+'/adresses.csv',';')
+
 # tor port as argument (to be run in // of collection)
 port = sys.argv[1]
 proxies = {'http':'socks5://localhost:'+port}
@@ -24,8 +30,9 @@ for datafile in os.listdir(datadir):
 # read already collected adresses
 existing = set()
 if os.path.isfile(locdir+'/adresses.csv'):
-    for line in utils.read_csv(locdir+'/adresses.csv'):
-        existing.append(line[0])
+    for line in utils.read_csv(locdir+'/adresses.csv',';'):
+        if len(line)>1 :
+            existing.add(line[0])
 
 # get uncollected
 uncollected = ids.difference(existing)
@@ -49,7 +56,9 @@ for station_id in uncollected :
             region = address.xpath("//span[@itemprop='addressRegion']/text()")[0]
             code = address.xpath("//span[@itemprop='postalCode']/text()")[0]
             # append to data
-            data.append([station_id,street_address,locality,region,code])
+            #data.append([station_id,street_address,locality,region,code])
+            # shitty vps -> memory problem -> append directly to file
+            utils.append_csv([[station_id,street_address,locality,region,code]],locdir+'/adresses.csv',';')
         else :
             errorfile.write(str(station_id)+'\n')
     except Exception :
@@ -62,12 +71,12 @@ for station_id in uncollected :
 # append data to adress file
 
 # create file with header if not exists
-if not os.path.exists(locdir):
-    os.makedirs(locdir)
+#if not os.path.exists(locdir):
+#    os.makedirs(locdir)
 
-if not os.path.isfile(locdir+'/adresses.csv'):
-    utils.append_csv([['id','address','locality','region','code']],locdir+'/adresses.csv',';')
+#if not os.path.isfile(locdir+'/adresses.csv'):
+#    utils.append_csv([['id','address','locality','region','code']],locdir+'/adresses.csv',';')
 
-utils.append_csv(data,locdir+'/adresses.csv',';')
+#utils.append_csv(data,locdir+'/adresses.csv',';')
 
 print('Ellapsed Time for task : '+str(taskid)+' :'+str(time.time() - start))
