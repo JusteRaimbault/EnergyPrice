@@ -6,3 +6,5 @@ log
 *.pyc
 .tor_tmp
 
+loc
+
