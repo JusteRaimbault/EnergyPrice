@@ -41,23 +41,43 @@ print('Effectively collecting '+str(len(uncollected))+' adresses')
 
 errorfile = open(locdir+'/errors.csv','a')
 
-data = []
+#data = []
 
 for station_id in uncollected :
     print('id : '+str(station_id))
     try :
         result = requests.get('http://www.gasbuddy.com/Station/'+str(station_id),proxies=proxies)
         tree = html.fromstring(result.content)
-        #
+#        #
         if len(tree.find_class("station-address")) > 0 :
-            address = tree.xpath("//div[@itemprop='address']")[0]
-            street_address = address.xpath("//div[@itemprop='streetAddress']/text()")[0]
-            locality = address.xpath("//span[@itemprop='addressLocality']/text()")[0]
-            region = address.xpath("//span[@itemprop='addressRegion']/text()")[0]
-            code = address.xpath("//span[@itemprop='postalCode']/text()")[0]
-            # append to data
-            #data.append([station_id,street_address,locality,region,code])
-            # shitty vps -> memory problem -> append directly to file
+            address = ''
+            try :
+                address = tree.xpath("//div[@itemprop='address']")[0]
+            except :
+                print('station '+str(station_id)+' has no address')
+            street_address = ''
+            try :
+                street_address = address.xpath("//div[@itemprop='streetAddress']/text()")[0]
+            except :
+                print('station '+str(station_id)+' has no street address')
+            locality = ''
+            try :
+                locality = address.xpath("//span[@itemprop='addressLocality']/text()")[0]
+            except :
+                print('station '+str(station_id)+' has no locality')
+            region = ''
+            try :
+                region = address.xpath("//span[@itemprop='addressRegion']/text()")[0]
+            except :
+                print('station '+str(station_id)+' has no region')
+            code = ''
+            try :
+                code = address.xpath("//span[@itemprop='postalCode']/text()")[0]
+            except :
+                print('station '+str(station_id)+' has no code')
+#            # append to data
+#            #data.append([station_id,street_address,locality,region,code])
+#            # shitty vps -> memory problem -> append directly to file
             utils.append_csv([[station_id,street_address,locality,region,code]],locdir+'/adresses.csv',';')
         else :
             errorfile.write(str(station_id)+'\n')
@@ -67,16 +87,16 @@ for station_id in uncollected :
         print(traceback.format_exc())
         print("error getting station "+str(station_id))
         errorfile.write(str(station_id)+'\n')
+#
+## append data to adress file
 
-# append data to adress file
+## create file with header if not exists
+##if not os.path.exists(locdir):
+##    os.makedirs(locdir)
 
-# create file with header if not exists
-#if not os.path.exists(locdir):
-#    os.makedirs(locdir)
+##if not os.path.isfile(locdir+'/adresses.csv'):
+##    utils.append_csv([['id','address','locality','region','code']],locdir+'/adresses.csv',';')
 
-#if not os.path.isfile(locdir+'/adresses.csv'):
-#    utils.append_csv([['id','address','locality','region','code']],locdir+'/adresses.csv',';')
+##utils.append_csv(data,locdir+'/adresses.csv',';')
 
-#utils.append_csv(data,locdir+'/adresses.csv',';')
-
-print('Ellapsed Time for task : '+str(taskid)+' :'+str(time.time() - start))
+print('Ellapsed Time : '+str(time.time() - start))
