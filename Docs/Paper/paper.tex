@@ -40,6 +40,46 @@
 %\usepackage{amsmath}
 
 
+%%%%%%%%%%
+
+
+%%%%%
+% variable to include comments or not in the compilation ; set to 1 to include
+\def \draft {1}
+%\def \draft {0}
+
+
+% writing utilities
+
+% comments and responses
+%  -> use this comment to ask questions on what other wrote/answer questions with optional arguments (up to 4 answers)
+\usepackage{xparse}
+\usepackage{ifthen}
+\DeclareDocumentCommand{\comment}{m o o o o}
+{\ifthenelse{\draft=1}{
+    \textcolor{red}{\textbf{C : }#1}
+    \IfValueT{#2}{\textcolor{blue}{\textbf{A1 : }#2}}
+    \IfValueT{#3}{\textcolor{ForestGreen}{\textbf{A2 : }#3}}
+    \IfValueT{#4}{\textcolor{red!50!blue}{\textbf{A3 : }#4}}
+    \IfValueT{#5}{\textcolor{Aquamarine}{\textbf{A4 : }#5}}
+ }{}
+}
+
+
+% todo
+\newcommand{\todo}[1]{
+\ifthenelse{\draft=1}{\textcolor{red!50!blue}{\textbf{TODO : \textit{#1}}}}{}
+}
+
+\makeatletter
+\makeatother
+
+\usepackage{color}
+
+
+
+
+
 %% The ecrc package defines commands needed for running heads and logos.
 %% For running heads, you can set the journal name, the volume, the starting page and the authors
 
@@ -54,7 +94,7 @@
 
 %% Give the author list to appear in the running head
 %% Example \runauth{C.V. Radhakrishnan et al.}
-\runauth{Author name}
+\runauth{Raimbault and Bergeaud}
 
 %% The choice of journal logo is determined by the \jid and \jnltitlelogo commands.
 %% A user-supplied logo with the name <\jid>logo.pdf will be inserted if present.
@@ -206,6 +246,21 @@ Fuel Price \sep Data Crawling \sep Spatial Analysis \sep Geographically Weighted
 \label{main}
 
 
+\comment{(Juste) j'ai pas trop eu le temps de regarder la biblio mais c'est bizarre j'ai l'impression qu'il n'y a quasiment personne qui a fait ce qu'on veut faire, je dois mal chercher ? je mets ci-dessous de trucs reliés de prêt ou de loin, il faudra sûrement faire du tri !}
+
+\cite{rietveld2001spatial} : impact of cross-border fuel differences and implications for gradual spatial taxing in the Netherlands
+
+\cite{rietveld2005fuel} : statistical models to explain fuel price differences across European countries
+
+\cite{macharis2010decision} : models the impact of spatial fuel price variation on patterns of inter-modality
+
+\cite{gregg2009temporal} : spatial distribution of emissions, at the scale of the state (quite far from the subject)
+
+\cite{combes2005transport} : determination of accurate transportation costs for France
+
+% https://www.osti.gov/scitech/biblio/401732
+% http://www.sciencedirect.com/science/article/pii/S0301421511002904
+
 
 
 
@@ -216,12 +271,13 @@ Fuel Price \sep Data Crawling \sep Spatial Analysis \sep Geographically Weighted
 
 \subsection{Large scale Data collections}
 
-
+\comment{(Juste) trouver un moyen de décrire la collecte des données sans dire qu'on l'a fait effectivement : architecture uniquement ?}
 
 
 
 \subsection{Dataset}
 
+\comment{(Juste) pointer vers le dataset produit par un Chinois (于思特) anonyme sur dataverse}
 
 
 
@@ -296,7 +352,7 @@ Fuel Price \sep Data Crawling \sep Spatial Analysis \sep Geographically Weighted
 
 
 \bibliographystyle{elsarticle-harv}
-\bibliography{}
+\bibliography{biblio}
 %
 
 
