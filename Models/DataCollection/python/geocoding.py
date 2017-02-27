@@ -17,10 +17,14 @@ proxies = []
 for i in range(nports) :
     proxies.append({'http':'socks5://localhost:'+str(startingport+i)})
 
-
-#nom = Nominatim()
-
 #data = utils.read_csv('test/adresses_sample.csv',';')
+
+
+existing = set()
+if os.path.isfile(locdir+'/coordinates.csv'):
+    for line in utils.read_csv(locdir+'/coordinates.csv',';'):
+        if len(line)>1 :
+            existing.add(line[0])
 
 
 
@@ -55,21 +59,22 @@ with open(adresses_file) as f:
     for linestr in f:
         line = linestr.replace('\n','').split(';')
         print('Getting station '+line[0]+' - address : '+line[1]+' '+line[2]+' '+line[3])
-        #raw = line[1].split(' ')
-        querystring = addr_search_query(line,markers)
-        #print(querystring)
-        query = requests.get('http://nominatim.openstreetmap.org/search',params = {'format':'json','q':querystring},proxies=proxies[j%nports])
-        res = query.json()
-        try :
-            if len(res) > 0 :
-                print(querystring+" - coords : "+str(res[0]['lat'])+' ; '+str(res[0]['lon']));print('')
-                utils.append_csv([[line[0],querystring,str(res[0]['lat']),str(res[0]['lon'])]],locdir+'/coordinates.csv',';')
-                count=count+1
-        except Exception :
-            print(traceback.format_exc())
+        if line[0] not in existing :
+            #raw = line[1].split(' ')
+            querystring = addr_search_query(line,markers)
+            #print(querystring)
+            query = requests.get('http://nominatim.openstreetmap.org/search',params = {'format':'json','q':querystring},proxies=proxies[j%nports])
+            res = query.json()
+            try :
+                if len(res) > 0 :
+                    print(querystring+" - coords : "+str(res[0]['lat'])+' ; '+str(res[0]['lon']));print('')
+                    utils.append_csv([[line[0],querystring,str(res[0]['lat']),str(res[0]['lon'])]],locdir+'/coordinates.csv',';')
+                    count=count+1
+            except Exception :
+                print(traceback.format_exc())
 
-        j=j+1
-        time.sleep(1.0/nports)
+            j=j+1
+            time.sleep(1.0/nports)
 
 
 
