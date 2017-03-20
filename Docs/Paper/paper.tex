@@ -245,18 +245,14 @@ Fuel Price \sep Data Crawling \sep Spatial Analysis \sep Geographically Weighted
 \section{Introduction}
 \label{main}
 
+The local cost of fuel is the outcome of heterogeneous processes at multiple scales, from raw oil prices to governance processes inducing taxes and economic interests of various agents including retail companies and consumer. If its variability in time is an evidence, the question of its variability in space has been poorly tackled in the literature, although it may have several empirical applications such as unveiling territorial inequalities, geographical singularities, or serving as a proxy of a socio-economical status, but also practical application such as a higher level of transparency for the consumer or a possible feedback of prices analyses on the process itself (regulation through increased information).
 
 \comment{(Juste) j'ai pas trop eu le temps de regarder la biblio mais c'est bizarre j'ai l'impression qu'il n'y a quasiment personne qui a fait ce qu'on veut faire, je dois mal chercher ? je mets ci-dessous de trucs reliés de prêt ou de loin, il faudra sûrement faire du tri !}
 
-\cite{rietveld2001spatial} : impact of cross-border fuel differences and implications for gradual spatial taxing in the Netherlands
+There exists to our knowledge no systematic mapping in space and time of retail fuel prices for a country. First of all the availability of data may have been one significant obstacle, but the nature of the problem studied may also have influence: at the crossing of several disciplines, with Economics having studied theoretical models of price elasticity, New Economic Geography including transportation prices in spatialized models, and Transport geography being not at such a detailed level. Various example of related works can be given. For example,~\cite{rietveld2001spatial} studies the impact of cross-border fuel differences and the implications for gradual spatial taxing in the Netherlands. At the level of countries, \cite{rietveld2005fuel} provides statistical models to explain fuel price differences across European countries. \cite{macharis2010decision} models the impact of spatial fuel price variation on patterns of inter-modality, implying that the spatial heterogeneity of fuel prices has a strong impact on user behavior. On an empirical view of the geography of transportation but for an other aspect that are gas emissions, \cite{gregg2009temporal} studies their spatial distribution, at the scale of the state. The geography of fuel prices also implications on effective costs, as shows \cite{combes2005transport} by determining accurate transportation costs across urban areas for France.
 
-\cite{rietveld2005fuel} : statistical models to explain fuel price differences across European countries
-
-\cite{macharis2010decision} : models the impact of spatial fuel price variation on patterns of inter-modality
-
-\cite{gregg2009temporal} : spatial distribution of emissions, at the scale of the state (quite far from the subject)
-
-\cite{combes2005transport} : determination of accurate transportation costs for France
+%%%%
+% More biblio à lire/trier :
 
 % https://www.osti.gov/scitech/biblio/401732
 % http://www.sciencedirect.com/science/article/pii/S0301421511002904
@@ -266,6 +262,8 @@ Fuel Price \sep Data Crawling \sep Spatial Analysis \sep Geographically Weighted
 
 
 
+The rest of the paper is organized as follows: we describe in the next section a generic procedure and tool for large scale automatized data collection, and gives summary statistics and structure of the dataset we use. We then proceed to several exploratory and statistical analyses in order to unveil the spatio-temporal structure of fuel price and investigate potential explicative variables. We finally discuss the implications for price processes, in particular comparing the two statistical methods.
+
 
 
 %%%%%%%%%%%%%%%%%%%%%%
@@ -273,53 +271,103 @@ Fuel Price \sep Data Crawling \sep Spatial Analysis \sep Geographically Weighted
 
 \subsection{Large scale Data collections}
 
+The availability of new type of data has induced consequent changes in various disciplines from social science (e.g. online social network analysis \comment{citation ?}) to geography (e.g. new insights into urban mobility or perspectives on ``smarter'' cities~\cite{batty2013big}) and economics (\comment{Anto un insight la dessus en eco ?}), without being always smooth at the interface of implied disciplines, as shows the example of the difficult understanding between physics and urban sciences (\cite{dupuy2015sciences})).
+
 \comment{(Juste) trouver un moyen de décrire la collecte des données sans dire qu'on l'a fait effectivement : architecture uniquement ?}
 
 
-
+%%%%%%%%%%%%%%%%%%%%%%
 \subsection{Dataset}
 
-\comment{(Juste) pointer vers le dataset produit par un Chinois (于思特) anonyme sur dataverse}
+\subsubsection{Fuel price data}
+
+\comment{(Juste) on ne mettra pas le dataset public dans un premier temps, voir ce que les reviewers en disent}
+
+Our dataset of fuel prices consists in retail fuel prices, from crowd-sourced information available on diverse internet sources, aggregated with the above-described crawling tool.
+
+\comment{information density map as supplementary material ?}
 
 
+\comment{French Open Data : https://www.prix-carburants.gouv.fr/rubrique/opendata/ $\rightarrow$ look to what extent our study could be transfered to France}
+
+
+\subsubsection{Socio-economic data}
 
 
 
 %%%%%%%%%%%%%%%%%%%%%%
 \section{Results}
+%%%%%%%%%%%%%%%%%%%%%%
 
+
+%%%%%%%%%%%%%%%%%%%%%%
 \subsection{Spatio-temporal Patterns of Prices}
 
 % show simple maps at different dates ; TS and events ?
 % Q : should we do a shiny app ?
 
+We propose a first exploratory introduction to the spatio-temporal structure of the dataset, that we consider a crucial stage to guide further analyses, but also to understand their implications in a geographical context.
 
+%%%%%%%%%%%%%%%%%%%%%%
+\begin{figure}
+\centering
+
+\caption{(a) Example of maps at different dates ; (b) Time series}
+\end{figure}
+%%%%%%%%%%%%%%%%%%%%%%
+
+
+%%%%%%%%%%%%%%%%%%%%%%
 \subsection{Spatial Autocorrelation}
 
+\comment{why using spatial autocorr to unveil spatial heterogeneity ; how its temporal variation can be interpeted. Figure. comments.}
 
 
 
+%%%%%%%%%%%%%%%%%%%%%%
+\begin{figure}
+\centering
+
+\caption{Behavior of spatial-autocorrelation in time for different decay parameter values.}
+\end{figure}
+%%%%%%%%%%%%%%%%%%%%%%
+
+
+The two next subsections investigate potential explicative variables of local fuel prices, using two different statistical techniques.
+
+%%%%%%%%%%%%%%%%%%%%%%
 \subsection{Geographically Weighted Regression}
 
+The issue of spatial non-stationarity of geographical processes has always been a source of biased aggregated analyses or misinterpretations when applying general conclusions to local cases. To take it into account into statistical models, numerous techniques have been developed, among which the simple but very elegant Geographically Weighted Regression, that estimates non-stationary regressions by weighting observations in space similarly to kernel estimation methods. It was introduced in a seminal paper by~\cite{brunsdon1996geographically} and has been consequently used and matured since.
+
+\comment{simple GWR $\rightarrow$ maps with some estimated coefs}
 
 
 
+
+%%%%%%%%%%%%%%%%%%%%%%
 \subsection{Multi-level Regression}
+
+\comment{multi-level regreg on State/zip ?}
+
+
+
 
 
 
 %%%%%%%%%%%%%%%%%%%%%%
 \section{Discussion}
+%%%%%%%%%%%%%%%%%%%%%%
 
 \subsection{On the complementarity on Spatial Analysis methods}
 
-
+\comment{bla bla on conclusions drawn with each method ; how they are complementary $\rightarrow$ also present it as a methodological contribution. some literature do both, e.g. Chen, D. R., \& Truong, K. (2012). Using multilevel modeling and geographically weighted regression to identify spatial variations in the relationship between place-level disadvantages and obesity in Taiwan. Applied Geography, 32(2), 737-745. integrates both in a single approach.}
 
 
 \subsection{Towards localized car-regulation policies}
 
 % local energy taxing ?
-
+\comment{knowing local price dynamics and their drivers should help designing specific regulations/taxing policies ?}
 
 
 %%%%%%%%%%%%%%%%%%%%%%
