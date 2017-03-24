@@ -201,12 +201,13 @@
 
 
 
-\author[a]{Juste Raimbault\corref{cor1}}
-\author[b]{Antonin Bergeaud}
+\author[a,b]{Juste Raimbault\corref{cor1}}
+\author[c,d]{Antonin Bergeaud}
 
 \address[a]{UMR CNRS 8504 G{\'e}ographie-cit{\'e}s, 13 rue du Four, Paris, France}
 \address[b]{UMR-T IFSTTAR 9403 LVMT, Cit{\'e} Descartes, Champs-sur-Marne, France}
 \address[c]{Banque de France, Paris, France}
+\address[d]{Paris School of Economics - EHESS, Paris, France}
 
 
 \begin{abstract}
@@ -267,13 +268,16 @@ The rest of the paper is organized as follows: we describe in the next section a
 
 
 %%%%%%%%%%%%%%%%%%%%%%
-\section{Materials}
+\section{Dataset}
+%%%%%%%%%%%%%%%%%%%%%%
 
-\subsection{Large scale Data collections}
+\subsection{Collecting large scale heterogeneous data}
 
-The availability of new type of data has induced consequent changes in various disciplines from social science (e.g. online social network analysis \comment{citation ?}) to geography (e.g. new insights into urban mobility or perspectives on ``smarter'' cities~\cite{batty2013big}) and economics (\comment{Anto un insight la dessus en eco ?}), without being always smooth at the interface of implied disciplines, as shows the example of the difficult understanding between physics and urban sciences (\cite{dupuy2015sciences})).
+The availability of new type of data has induced consequent changes in various disciplines from social science (e.g. online social network analysis~\cite{tan2013social}) to geography (e.g. new insights into urban mobility or perspectives on ``smarter'' cities~\cite{batty2013big}) and economics (\comment{Anto un insight la dessus en eco ?}), without being always smooth at the interface of implied disciplines, as shows the example of the difficult understanding between physics and urban sciences (\cite{dupuy2015sciences})). The construction of such datasets is however far from straightforward, as their analyses because of the incomplete and noisy nature of data. Specific technical tools have to be implemented, often with a problem-specific tuning making them difficultly generic. We develop such a tool that fills the following constraints typical of large scale data collection: (i) reasonable level of flexibility and genericity; (ii) performance optimized, through parallel collection jobs; (iii) anonymity of collection jobs to avoid any possible bias in the behavior of the data source. The architecture, at a high level, has the following structure:
 
-\comment{(Juste) trouver un moyen de décrire la collecte des données sans dire qu'on l'a fait effectivement : architecture uniquement ?}
+The application is open and its module are reusable: source code is available on the repository of the project\footnote{at \texttt{https://github.com/JusteRaimbault/EnergyPrice}}.
+
+
 
 
 %%%%%%%%%%%%%%%%%%%%%%
@@ -287,6 +291,11 @@ Our dataset of fuel prices consists in retail fuel prices, from crowd-sourced in
 
 \comment{information density map as supplementary material ?}
 
+\comment{zip level data : check if stations without zip}
+
+\comment{prices for different carburants and purchase mode $\rightarrow$ maybe take the most frequent for now ? on an example dataset (ts 1484114402), we have 89\% of credit (against cash on all records). For fuel type, it is more evenly distributed : 34\% for Regular, 22\% for Premium, 23\% for midgrade, 19\% for diesel. Maybe for the sake of simplicity work with Regular type and credit only. on the same example dataset, 96\% of stations have conjointly both, what gives a good coverage with this choice.}
+
+\comment{Aggregate on which time span ? best is to check time to converge to a certain coverage of all stations (say 95\%) $\rightarrow$ around one week seems ok (see stations count plot in repo)}
 
 \comment{French Open Data : https://www.prix-carburants.gouv.fr/rubrique/opendata/ $\rightarrow$ look to what extent our study could be transfered to France}
 
