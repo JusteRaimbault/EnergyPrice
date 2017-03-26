@@ -33,7 +33,7 @@ cities <- readOGR(paste0(Sys.getenv("CS_HOME"),'/EnergyPrice/Data/cities/citiesx
 #adresses[which(!(paste0(adresses$locality,adresses$region)%in%paste0(cities$NAME,cities$STATE))),] 
 # 94% in cities db
 cities$citystate=paste0(cities$NAME,cities$STATE)
-#cities$countygeoid=paste0(cities$STATE_FIPS,cities$COUNTYFIPS)
+cities$countygeoid=paste0(cities$STATE_FIPS,cities$COUNTYFIPS)
 cities = cities[which(!duplicated(cities$citystate)),]
 
 states <- readOGR(paste0(Sys.getenv("CS_HOME"),'/EnergyPrice/Data/states'),layer = 'us_metro',stringsAsFactors = FALSE)
@@ -76,6 +76,9 @@ names(cladresses)<-c("id","address","city","county","countyid","state","stateid"
 # export clean adresses
 write.table(cladresses,file=paste0(finaldir,'addresses.csv'),sep=';',col.names = T,row.names = F,quote = F)
 
+cities = cities[cities$citystate%in%adresses$citystate,]
+writeOGR(cities,dsn = paste0(finaldir,'gis'),layer = 'cities',driver = 'ESRI Shapefile')
+#cities <- readOGR(paste0(finaldir,'gis'),layer = 'cities',stringsAsFactors = FALSE)
 
 
 ####
@@ -100,7 +103,7 @@ for(f in datafiles){
   names(currentd)<-c("id","type","price","delay","user","ts","payment")
   currentd = currentd[currentd$id%in%cladresses$id&currentd$payment=='credit'&currentd$price<10,]
   currentd$time = currentd$ts - sapply(currentd$delay,delayToSec)
-  if(currenttime>currentfilestamp+604800){# store data if one week
+  if(currenttime>currentfilestamp+604800|f==datafiles[length(datafiles)]){# store data if one week
     show(paste0('writing ',currentfilestamp))
     write.table(currentdata[!duplicated(currentdata),c(1,2,3,8)],file=paste0(finaldir,'weekdata_',currentfilestamp,'.csv'),sep=";",col.names = T,row.names = F,quote = F)
     currentdata=data.frame();currentfilestamp=currenttime
@@ -110,9 +113,30 @@ for(f in datafiles){
 
 
 
+#############
+## Agregate by county and days
 
+weekfiles = system(paste0("ls ",finaldir, "|grep weekdata"),intern = T)
+currentdata = data.frame()
+for(weekfile in weekfiles){
+  currentdata = rbind(currentdata,as.tbl(read.csv(paste0(finaldir,weekfile),sep=";",header=T,stringsAsFactors = FALSE)))
+  gc()
+}
 
+currentdata$day = format(as.POSIXlt(min(currentdata$time) + (floor((currentdata$time - min(currentdata$time))/86400)*86400),origin = "1970-01-01", tz = "GMT"),format="%Y%m%d")
+currentdata=left_join(currentdata,cladresses[,c(1,5,6,7,8)])
 
+# county level
+countydata = currentdata%>%group_by(countyid,day,type)%>%summarise(meanprice=mean(price),sdprice=sd(price),nstations=length(unique(id)),nobs=n())
+write.table(countydata,file=paste0(finaldir,'county_daily_data.csv'),sep=';',col.names = T,row.names = F,quote=F)
+
+# state level
+statedata = currentdata%>%group_by(stateid,day,type)%>%summarise(meanprice=mean(price),sdprice=sd(price),nstations=length(unique(id)),nobs=n())
+write.table(statedata,file=paste0(finaldir,'state_daily_data.csv'),sep=';',col.names = T,row.names = F,quote=F)
+
+# zip
+zipdata = currentdata%>%group_by(zip,day,type)%>%summarise(meanprice=mean(price),sdprice=sd(price),nstations=length(unique(id)),nobs=n())
+write.table(zipdata,file=paste0(finaldir,'zip_daily_data.csv'),sep=';',col.names = T,row.names = F,quote=F)
 
 
 

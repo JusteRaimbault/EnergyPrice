@@ -252,6 +252,10 @@ The local cost of fuel is the outcome of heterogeneous processes at multiple sca
 
 There exists to our knowledge no systematic mapping in space and time of retail fuel prices for a country. First of all the availability of data may have been one significant obstacle, but the nature of the problem studied may also have influence: at the crossing of several disciplines, with Economics having studied theoretical models of price elasticity, New Economic Geography including transportation prices in spatialized models, and Transport geography being not at such a detailed level. Various example of related works can be given. For example,~\cite{rietveld2001spatial} studies the impact of cross-border fuel differences and the implications for gradual spatial taxing in the Netherlands. At the level of countries, \cite{rietveld2005fuel} provides statistical models to explain fuel price differences across European countries. \cite{macharis2010decision} models the impact of spatial fuel price variation on patterns of inter-modality, implying that the spatial heterogeneity of fuel prices has a strong impact on user behavior. On an empirical view of the geography of transportation but for an other aspect that are gas emissions, \cite{gregg2009temporal} studies their spatial distribution, at the scale of the state. The geography of fuel prices also implications on effective costs, as shows \cite{combes2005transport} by determining accurate transportation costs across urban areas for France.
 
+
+Papier de Gautier et Saoult \cite{gautier2015dynamics}
+
+
 %%%%
 % More biblio à lire/trier :
 
@@ -291,13 +295,14 @@ Our dataset of fuel prices consists in retail fuel prices, from crowd-sourced in
 
 \comment{information density map as supplementary material ?}
 
-\comment{zip level data : check if stations without zip}
 
-\comment{prices for different carburants and purchase mode $\rightarrow$ maybe take the most frequent for now ? on an example dataset (ts 1484114402), we have 89\% of credit (against cash on all records). For fuel type, it is more evenly distributed : 34\% for Regular, 22\% for Premium, 23\% for midgrade, 19\% for diesel. Maybe for the sake of simplicity work with Regular type and credit only. on the same example dataset, 96\% of stations have conjointly both, what gives a good coverage with this choice.}
+The dataset comprises around $41\cdot 10^6$ unique observations, spanning in time from 2017-01-10 to 2017-03-19, that correspond to 118573 unique retail stations for each the geographical location (city resolution) was obtained. \comment{statistics of observation per station ?} Prices correspond to an unique purchase mode (credit card, other modes such as cash being less than 10\% in test datasets, they were discarded in the final dataset) and four fuel types: Diesel (18\% of observations), Regular (34\%), Midgrade (24\%) and Premium (24\%). The best coverage of stations is for Regular fuel type (\comment{recompute proportion on full dataset}), and we choose to work with this one in our exploratory analysis, keeping in mind that further developments with the dataset may include comparative analysis on fuel types.
+
 
 \comment{Aggregate on which time span ? best is to check time to converge to a certain coverage of all stations (say 95\%) $\rightarrow$ around one week seems ok (see stations count plot in repo)}
 
 \comment{French Open Data : https://www.prix-carburants.gouv.fr/rubrique/opendata/ $\rightarrow$ look to what extent our study could be transfered to France}
+
 
 
 \subsubsection{Socio-economic data}
