@@ -16,6 +16,10 @@ extent <- readOGR(paste0(Sys.getenv("CS_HOME"),'/EnergyPrice/Data/processed/proc
 
 resdir <- paste0(Sys.getenv('CS_HOME'),'/EnergyPrice/Results/SpatialAnalysis/')
 
+##
+# filter some strange observations (<1.5, >4, not countinous in time : seem to be bug)
+countydata=countydata[countydata$meanprice<4&countydata$meanprice>1.5,]
+
 
 # number of obeservations per fuel
 nobstot = sum(countydata$nobs)
@@ -63,6 +67,20 @@ legendChoro(pos = "left",title.txt = "Price\n($/gal)",
 plot(states,border = "grey20", lwd=0.75, add=TRUE)
 
 
+
+###########
+###########
+# ts plotting
+
+# do some clustering to plot time series ?
+
+date = strptime(as.character(countydata$day),format='%Y%m%d')
+g=ggplot(data.frame(countydata[countydata$type=="Regular",],date),aes(x=date,y=meanprice,color=countyid,group=countyid))
+g+geom_line(show.legend = F)
+
+
+
+
 ############
 ############
 
@@ -105,7 +123,7 @@ for(decay in alldecays){
 g=ggplot(data.frame(rho=autocorrs,day=strptime(as.character(days),format='%Y%m%d'),decay=as.character(decays)),aes(x=day,y=rho,color=decay,group=decay))
 g+geom_point(size=0.5)+stat_smooth(se = T,span = 0.2)+ylab("Moran index") + 
   theme(axis.title = element_text(size = 15), axis.text.x = element_text(size = 10), axis.text.y = element_text(size = 10))
-ggsave(file=paste0(resdir,'moran_days.pdf'),width=15,height=10)
+ggsave(file=paste0(resdir,'moran_days.pdf'),width=10,height=5)
 
 
 ## by week, as function of decay
@@ -134,6 +152,10 @@ for(decay in alldecays){
   }
 }
 
+g=ggplot(data.frame(rho=autocorrs,week=strptime(as.character(alldays[days]),format='%Y%m%d'),decay=decays),aes(x=decay,y=rho,color=week,group=week))
+g+geom_point()+geom_line()+scale_x_log10()+ylab("Moran index") + 
+  theme(axis.title = element_text(size = 22), axis.text.x = element_text(size = 15), axis.text.y = element_text(size = 15))
+ggsave(file=paste0(resdir,'moran_decay_weeks.pdf'),width=10,height=5)
 
 
 

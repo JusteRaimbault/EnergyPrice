@@ -36,6 +36,14 @@ autocorr<-function(x,w,m){
 #plot(counties[c(24,2548),],col='blue',add=TRUE)
 # TODO : check in mile 4158 if consistent
 
+# 4584 km
+# miles (google maps by road) 3440 miles = 5500km
+# : great circle distance, ok ?
+
+
+
+
+
 
 
 
