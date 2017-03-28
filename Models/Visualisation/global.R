@@ -14,8 +14,8 @@ library(rgeos)
 
 # gis data
 countydata = as.tbl(read.csv(file='data/county_daily_data.csv',sep=";",header=T,stringsAsFactors = F,colClasses = c("character","integer","character","numeric","numeric","numeric","numeric")))
-counties <- readOGR(dsn='data/gis',layer = 'county_us_metro',stringsAsFactors = FALSE)
-states <- readOGR(dsn='data/gis',layer = 'us_metro',stringsAsFactors = FALSE)
+counties <- readOGR(dsn='data/gis',layer = 'county_us_metro_wgs84',stringsAsFactors = FALSE)
+states <- readOGR(dsn='data/gis',layer = 'us_metro_wgs84',stringsAsFactors = FALSE)
 
 ##
 
