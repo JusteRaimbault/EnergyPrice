@@ -1,6 +1,42 @@
 
 # functions
 
+
+mapCounties<-function(data,variable,filename,title,legendtitle){
+  extent <- readOGR(paste0(Sys.getenv("CS_HOME"),'/EnergyPrice/Data/processed/processed_20170320/gis'),layer = 'extent',stringsAsFactors = FALSE)
+  
+  #png(file=paste0(resdir,'average_regular_march_map.png'),width=10,height=6,units='cm',res=600)
+  pdf(file=paste0(resdir,filename,'.pdf'),width=10,height=5.5)#paper='a4r')
+  par(mar = c(0.4,0.4,2,0.4))
+  
+  
+  layoutLayer(title = title, sources = "",
+              author = "", col = "grey", coltitle = "black", theme = NULL,
+              bg = NULL, scale=NULL , frame = TRUE, north = F, south = FALSE,extent=extent)
+  
+  breaks=classIntervals(sdata[,variable],20)
+  
+  plot(states, border = NA, col = "white",add=T)
+  cols <- carto.pal(pal1 = "green.pal",n1 = 10, pal2 = "red.pal",n2 = 10)
+  choroLayer(spdf = counties,spdfid = "GEOID",
+             df = data,dfid = 'countyid',
+             var=variable,
+             col=cols,breaks=breaks$brks,
+             add=TRUE,lwd = 0.01,
+             legend.pos = "n"
+  )
+  legendChoro(pos = "left",title.txt = legendtitle,
+              title.cex = 0.8, values.cex = 0.6, breaks$brks, cols, cex = 0.7,
+              values.rnd = 2, nodata = TRUE, nodata.txt = "No data",
+              nodata.col = "white", frame = FALSE, symbol = "box"
+  )
+  plot(states,border = "grey20", lwd=0.75, add=TRUE)
+  
+  dev.off()
+  
+}
+
+
 centroid<-function(polygons){
   coords=matrix(0,0,2)
   for(j in 1:length(polygons@Polygons)){

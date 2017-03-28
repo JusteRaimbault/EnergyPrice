@@ -12,13 +12,26 @@ countydata = as.tbl(read.csv(paste0(Sys.getenv('CS_HOME'),'/EnergyPrice/Data/pro
 addresses = as.tbl(read.csv(paste0(Sys.getenv('CS_HOME'),'/EnergyPrice/Data/processed/processed_20170320/addresses.csv'),sep=";",header=T,stringsAsFactors = F))
 counties <- readOGR(paste0(Sys.getenv("CS_HOME"),'/EnergyPrice/Data/processed/processed_20170320/gis'),layer = 'county_us_metro',stringsAsFactors = FALSE)
 states <- readOGR(paste0(Sys.getenv("CS_HOME"),'/EnergyPrice/Data/states'),layer = 'us_metro',stringsAsFactors = FALSE)
-extent <- readOGR(paste0(Sys.getenv("CS_HOME"),'/EnergyPrice/Data/processed/processed_20170320/gis'),layer = 'extent',stringsAsFactors = FALSE)
 
 resdir <- paste0(Sys.getenv('CS_HOME'),'/EnergyPrice/Results/SpatialAnalysis/')
 
 ##
 # filter some strange observations (<1.5, >4, not countinous in time : seem to be bug)
-countydata=countydata[countydata$meanprice<4&countydata$meanprice>1.5,]
+#countydata=countydata[countydata$meanprice<4&countydata$meanprice>1.5,]
+
+# filter on number of observations
+bycountyobs = countydata%>%group_by(countyid)%>%summarise(nobs=sum(nobs))
+countiesth = bycountyobs$countyid[bycountyobs$nobs>=30]
+countydata=countydata[countydata$countyid%in%countiesth,]
+# cdf of prices : jump mean aberrant values
+#plot(sort(countydata$meanprice),log(1:nrow(countydata)),type='l')
+#plot(sort(countydata$meanprice[countydata$meanprice>3.6]),log(1:length(which(countydata$meanprice>3.6))),type='l')
+# low values are nonsense but high does not seem
+countydata=countydata[countydata$meanprice>1,]
+
+
+# TODO : power law in price distribution ? in any case fat tail !
+#  have a look at that !
 
 
 # number of obeservations per fuel
@@ -36,36 +49,19 @@ nstations = length(unique(addresses$id))
 countydata$month = floor(countydata$day/100)
 countydata%>%group_by(month)%>%summarise(count=n())
 
-opar <- par(mar = c(0.75,0.75,1.5,0.75))
+#opar <- par(mar = c(0.75,0.75,1.5,0.75))
 #plot(states, border = NA, col = "white", bg = "#A6CAE0")
 #plot(world.spdf, col  = "#E3DEBF", border=NA, add=TRUE)
 
-#sdata = countydata%>%group_by(countyid)%>%summarise(price=mean(meanprice))
-sdata = countydata[countydata$type=="Regular"&countydata$month>201702,]%>%group_by(countyid)%>%summarise(price=mean(meanprice))
+sdata = countydata[countydata$type=="Regular",]%>%group_by(countyid)%>%summarise(price=mean(meanprice))
+#sdata = countydata[countydata$type=="Regular"&countydata$month>201702,]%>%group_by(countyid)%>%summarise(price=mean(meanprice))
 
 
-layoutLayer(title = "Average price by county, March 2017", sources = "",
-            author = "", col = "grey", coltitle = "black", theme = NULL,
-            bg = NULL, scale=NULL , frame = TRUE, north = F, south = FALSE,extent=extent)
+filename='average_regular_map'
+title = "Average price by county"
+legendtitle="Price\n($/gal)"
 
-breaks=classIntervals(sdata$price,20)
-
-plot(states, border = NA, col = "white",add=T)
-cols <- carto.pal(pal1 = "green.pal",n1 = 10, pal2 = "red.pal",n2 = 10)
-choroLayer(spdf = counties,spdfid = "GEOID",
-           df = data.frame(sdata),dfid = 'countyid',#"zip",
-           var="price",
-           col=cols,breaks=breaks$brks,
-           add=TRUE,lwd = 0.01,
-           legend.pos = "n"
-)
-legendChoro(pos = "left",title.txt = "Price\n($/gal)",
-            title.cex = 0.8, values.cex = 0.6, breaks$brks, cols, cex = 0.7,
-            values.rnd = 2, nodata = TRUE, nodata.txt = "No data",
-            nodata.col = "white", frame = FALSE, symbol = "box"
-            )
-plot(states,border = "grey20", lwd=0.75, add=TRUE)
-
+mapCounties(data.frame(sdata),"price",filename,title,legendtitle)
 
 
 ###########
@@ -99,6 +95,7 @@ getDailyPrices<-function(day){
 daycounts = countydata[countydata$type=="Regular",]%>%group_by(day)%>%summarise(count=n())
 # -> le 6 mars est chie, à virer (corresponds to end of hole ?)
 
+n=length(counties)
 m = matrix(rep(1,n*n),nrow=n,ncol=n);diag(m)<-0
 
 # search for some kind of transition at the state scale ?
@@ -156,6 +153,22 @@ g=ggplot(data.frame(rho=autocorrs,week=strptime(as.character(alldays[days]),form
 g+geom_point()+geom_line()+scale_x_log10()+ylab("Moran index") + 
   theme(axis.title = element_text(size = 22), axis.text.x = element_text(size = 15), axis.text.y = element_text(size = 15))
 ggsave(file=paste0(resdir,'moran_decay_weeks.pdf'),width=10,height=5)
+
+
+
+# map autocorrelation on all period
+sdata = data.frame(countydata[countydata$type=="Regular",] %>% group_by(countyid) %>% summarise(price=mean(meanprice)))
+rownames(sdata)<-as.character(sdata$countyid)
+prices = sdata[counties$GEOID,2];prices[is.na(prices)]=0
+w=weightMatrix(100,counties)
+rho = autocorr(prices,w,m);names(rho)<-counties$GEOID
+sdata$rho=rho[sdata$countyid]
+
+filename='local_moran_map'
+title = "Local Moran index"
+legendtitle="Local Moran"
+
+mapCounties(sdata,"rho",filename,title,legendtitle)
 
 
 

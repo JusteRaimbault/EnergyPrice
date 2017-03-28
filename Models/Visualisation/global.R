@@ -17,6 +17,8 @@ countydata = as.tbl(read.csv(file='data/county_daily_data.csv',sep=";",header=T,
 counties <- readOGR(dsn='data/gis',layer = 'county_us_metro_wgs84',stringsAsFactors = FALSE)
 states <- readOGR(dsn='data/gis',layer = 'us_metro_wgs84',stringsAsFactors = FALSE)
 
+
+
 ##
 
 getData <- function(data,daysts,dayfts){
