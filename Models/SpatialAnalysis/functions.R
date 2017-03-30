@@ -1,24 +1,72 @@
 
+library(cartography)
+library(classInt)
+
 # functions
 
 
-mapCounties<-function(data,variable,filename,title,legendtitle){
+getLinearModels<-function(yvar,vars,nvars){
+  # brute force with enumerating all sets
+  varsets =list(c())
+  for(i in 1:nvars){
+    newsets = list();j=1
+    for(prevset in varsets){
+      for(var in vars){
+        newsets[[j]]=union(prevset,c(var));j=j+1
+      }
+    }
+    k=1;varsets=list()
+    for(j1 in 1:length(newsets)){
+      toadd=TRUE
+      if(length(varsets)>0){
+        for(j2 in 1:length(varsets)){
+          toadd=toadd&(!setequal(newsets[[j1]],varsets[[j2]]))
+        }
+      }
+      if(toadd){varsets[[k]]=newsets[[j1]];k=k+1}
+    }
+    #show(varsets)
+  }
+  res=c()
+  for(varset in varsets){
+    if(length(varset)==nvars){
+      currentmodel=paste0(yvar,"~",varset[1])
+      if(length(varset)>1){for(var in varset[2:length(varset)]){currentmodel=paste0(currentmodel,"+",var)}}
+      res=append(res,currentmodel)
+    }
+  }
+  return(res)
+}
+
+
+getPeriodPrices<-function(){
+  sdata = data.frame(countydata[countydata$type=="Regular",] %>% group_by(countyid) %>% summarise(price=mean(meanprice)))
+  rownames(sdata)<-as.character(sdata$countyid)
+  prices = sdata[counties$GEOID,2];prices[is.na(prices)]=0
+  return(prices)
+}
+
+
+mapCounties<-function(data,variable,filename,title,legendtitle,layer=counties,extent=extent,withLayout=T){
   extent <- readOGR(paste0(Sys.getenv("CS_HOME"),'/EnergyPrice/Data/processed/processed_20170320/gis'),layer = 'extent',stringsAsFactors = FALSE)
+  layer$GEOID=counties$GEOID
   
   #png(file=paste0(resdir,'average_regular_march_map.png'),width=10,height=6,units='cm',res=600)
   pdf(file=paste0(resdir,filename,'.pdf'),width=10,height=5.5)#paper='a4r')
-  par(mar = c(0.4,0.4,2,0.4))
   
+  if(withLayout){par(mar = c(0.4,0.4,2,0.4))}else{par(mar = c(0.4,0.4,0.4,0.4))}
   
-  layoutLayer(title = title, sources = "",
-              author = "", col = "grey", coltitle = "black", theme = NULL,
-              bg = NULL, scale=NULL , frame = TRUE, north = F, south = FALSE,extent=extent)
+
+  layoutLayer(title = ifelse(withLayout,title,""), sources = "",
+              author = "", col = ifelse(withLayout,"grey","white"), coltitle = "black", theme = NULL,
+              bg = NULL, scale=NULL , frame = withLayout, north = F, south = FALSE,extent=extent)
   
-  breaks=classIntervals(sdata[,variable],20)
+    
+  breaks=classIntervals(data[,variable],20)
   
   plot(states, border = NA, col = "white",add=T)
   cols <- carto.pal(pal1 = "green.pal",n1 = 10, pal2 = "red.pal",n2 = 10)
-  choroLayer(spdf = counties,spdfid = "GEOID",
+  choroLayer(spdf = layer,spdfid = "GEOID",
              df = data,dfid = 'countyid',
              var=variable,
              col=cols,breaks=breaks$brks,

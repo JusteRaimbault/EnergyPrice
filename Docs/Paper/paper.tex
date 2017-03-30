@@ -248,12 +248,7 @@ Fuel Price \sep Data Crawling \sep Spatial Analysis \sep Geographically Weighted
 
 The local cost of fuel is the outcome of heterogeneous processes at multiple scales, from raw oil prices to governance processes inducing taxes and economic interests of various agents including retail companies and consumer. If its variability in time is an evidence, the question of its variability in space has been poorly tackled in the literature, although it may have several empirical applications such as unveiling territorial inequalities, geographical singularities, or serving as a proxy of a socio-economical status, but also practical application such as a higher level of transparency for the consumer or a possible feedback of prices analyses on the process itself (regulation through increased information).
 
-\comment{(Juste) j'ai pas trop eu le temps de regarder la biblio mais c'est bizarre j'ai l'impression qu'il n'y a quasiment personne qui a fait ce qu'on veut faire, je dois mal chercher ? je mets ci-dessous de trucs reliés de prêt ou de loin, il faudra sûrement faire du tri !}
-
-There exists to our knowledge no systematic mapping in space and time of retail fuel prices for a country. First of all the availability of data may have been one significant obstacle, but the nature of the problem studied may also have influence: at the crossing of several disciplines, with Economics having studied theoretical models of price elasticity, New Economic Geography including transportation prices in spatialized models, and Transport geography being not at such a detailed level. Various example of related works can be given. For example,~\cite{rietveld2001spatial} studies the impact of cross-border fuel differences and the implications for gradual spatial taxing in the Netherlands. At the level of countries, \cite{rietveld2005fuel} provides statistical models to explain fuel price differences across European countries. \cite{macharis2010decision} models the impact of spatial fuel price variation on patterns of inter-modality, implying that the spatial heterogeneity of fuel prices has a strong impact on user behavior. On an empirical view of the geography of transportation but for an other aspect that are gas emissions, \cite{gregg2009temporal} studies their spatial distribution, at the scale of the state. The geography of fuel prices also implications on effective costs, as shows \cite{combes2005transport} by determining accurate transportation costs across urban areas for France.
-
-
-Papier de Gautier et Saoult \cite{gautier2015dynamics}
+There exists to our knowledge no systematic mapping in space and time of retail fuel prices for a country. First of all the availability of data may have been one significant obstacle, but the nature of the problem studied may also have influence: at the crossing of several disciplines, with Economics having studied theoretical models of price elasticity, New Economic Geography including transportation prices in spatialized models, and Transport geography being not at such a detailed level. Various example of related works can be given. For example,~\cite{rietveld2001spatial} studies the impact of cross-border fuel differences and the implications for gradual spatial taxing in the Netherlands. At the level of countries, \cite{rietveld2005fuel} provides statistical models to explain fuel price differences across European countries. \cite{macharis2010decision} models the impact of spatial fuel price variation on patterns of inter-modality, implying that the spatial heterogeneity of fuel prices has a strong impact on user behavior. On an empirical view of the geography of transportation but for an other aspect that are gas emissions, \cite{gregg2009temporal} studies their spatial distribution, at the scale of the state. The geography of fuel prices also implications on effective costs, as shows \cite{combes2005transport} by determining accurate transportation costs across urban areas for France. Also for France, and using daily open micro data, \cite{gautier2015dynamics} investigate dynamics of transmission from crude oil prices to fuel retail prices. They do however not introduce a spatially explicit model of prices diffusion nor study spatio-temporal dynamics. We propose in this paper to proceed to exploratory spatial analysis on US fuel prices, to unveil possible spatial patterns and how they can link to socio-economic properties.
 
 
 %%%%
@@ -278,7 +273,11 @@ The rest of the paper is organized as follows: we describe in the next section a
 \subsection{Collecting large scale heterogeneous data}
 
 The availability of new type of data has induced consequent changes in various disciplines from social science (e.g. online social network analysis~\cite{tan2013social}) to geography (e.g. new insights into urban mobility or perspectives on ``smarter'' cities~\cite{batty2013big}) and economics (\comment{Anto un insight la dessus en eco ?}), without being always smooth at the interface of implied disciplines, as shows the example of the difficult understanding between physics and urban sciences (\cite{dupuy2015sciences})). The construction of such datasets is however far from straightforward, as their analyses because of the incomplete and noisy nature of data. Specific technical tools have to be implemented, often with a problem-specific tuning making them difficultly generic. We develop such a tool that fills the following constraints typical of large scale data collection: (i) reasonable level of flexibility and genericity; (ii) performance optimized, through parallel collection jobs; (iii) anonymity of collection jobs to avoid any possible bias in the behavior of the data source. The architecture, at a high level, has the following structure:
-
+\begin{itemize}
+\item An independent pool of tasks runs continuously socket proxies to pipe requests through \texttt{tor}.
+\item A manager monitors current collection tasks, split collection between subtasks and launches new ones when necessary.
+\item Subtasks can be any callable application taken as argument destination urls, they proceed to the crawling, parsing and storage of collected data.
+\end{itemize}
 The application is open and its module are reusable: source code is available on the repository of the project\footnote{at \texttt{https://github.com/JusteRaimbault/EnergyPrice}}.
 
 
@@ -287,16 +286,13 @@ The application is open and its module are reusable: source code is available on
 %%%%%%%%%%%%%%%%%%%%%%
 \subsection{Dataset}
 
+%\comment{(Juste) on ne mettra pas le dataset public dans un premier temps, voir ce que les reviewers en disent}
+%\comment{information density map as supplementary material ?} -> not necessary
+
+
 \subsubsection{Fuel price data}
 
-\comment{(Juste) on ne mettra pas le dataset public dans un premier temps, voir ce que les reviewers en disent}
-
-Our dataset of fuel prices consists in retail fuel prices, from crowd-sourced information available on diverse internet sources, aggregated with the above-described crawling tool.
-
-\comment{information density map as supplementary material ?}
-
-
-The dataset comprises around $41\cdot 10^6$ unique observations, spanning in time from 2017-01-10 to 2017-03-19, that correspond to 118573 unique retail stations for each the geographical location (city resolution) was obtained. \comment{statistics of observation per station ?} Prices correspond to an unique purchase mode (credit card, other modes such as cash being less than 10\% in test datasets, they were discarded in the final dataset) and four fuel types: Diesel (18\% of observations), Regular (34\%), Midgrade (24\%) and Premium (24\%). The best coverage of stations is for Regular fuel type (\comment{recompute proportion on full dataset}), and we choose to work with this one in our exploratory analysis, keeping in mind that further developments with the dataset may include comparative analysis on fuel types.
+Our dataset of fuel prices consists in retail fuel prices, from crowd-sourced information available on diverse web sources, aggregated with the above-described crawling tool. The dataset comprises around $41\cdot 10^6$ unique observations, spanning in time from 2017-01-10 to 2017-03-19, that correspond to 118573 unique retail stations for each the geographical location (city resolution) was obtained. \comment{statistics of observation per station ?} Prices correspond to an unique purchase mode (credit card, other modes such as cash being less than 10\% in test datasets, they were discarded in the final dataset) and four fuel types: Diesel (18\% of observations), Regular (34\%), Midgrade (24\%) and Premium (24\%). The best coverage of stations is for Regular fuel type (\comment{recompute proportion on full dataset}), and we choose to work with this one in our exploratory analysis, keeping in mind that further developments with the dataset may include comparative analysis on fuel types.
 
 
 \comment{Aggregate on which time span ? best is to check time to converge to a certain coverage of all stations (say 95\%) $\rightarrow$ around one week seems ok (see stations count plot in repo)}
@@ -307,6 +303,8 @@ The dataset comprises around $41\cdot 10^6$ unique observations, spanning in tim
 
 \subsubsection{Socio-economic data}
 
+The socio-economic data used here are basic population and income variables, available from the US Census Bureau. We use the latest available, aggregated at the county level.
+
 
 
 %%%%%%%%%%%%%%%%%%%%%%
@@ -315,18 +313,20 @@ The dataset comprises around $41\cdot 10^6$ unique observations, spanning in tim
 
 
 %%%%%%%%%%%%%%%%%%%%%%
-\subsection{Spatio-temporal Patterns of Prices}
+\subsection{Spatio-temporal Patterns of Prices}\label{subsec:patterns}
+
 
 % show simple maps at different dates ; TS and events ?
 % Q : should we do a shiny app ?
 
-We propose a first exploratory introduction to the spatio-temporal structure of the dataset, that we consider a crucial stage to guide further analyses, but also to understand their implications in a geographical context.
+We propose a first exploratory introduction to the spatio-temporal structure of the dataset, that we consider a crucial stage to guide further analyses, but also to understand their implications in a geographical context. A lightweight web application for interactive exploration in space and time was implemented for that purpose, and is available at \texttt{}.
+
 
 %%%%%%%%%%%%%%%%%%%%%%
 \begin{figure}
 \centering
-
-\caption{(a) Example of maps at different dates ; (b) Time series}
+\includegraphics[width=\textwidth]{figures/average_regular_map}
+\caption{Map of mean price for counties, regular fuel, averaged over the whole period.}
 \end{figure}
 %%%%%%%%%%%%%%%%%%%%%%
 
@@ -334,15 +334,18 @@ We propose a first exploratory introduction to the spatio-temporal structure of 
 %%%%%%%%%%%%%%%%%%%%%%
 \subsection{Spatial Autocorrelation}
 
-\comment{why using spatial autocorr to unveil spatial heterogeneity ; how its temporal variation can be interpeted. Figure. comments.}
+
+We study now spatial autocorrelation of prices, which can be understood as an indicator of spatial heterogeneity. We use the Moran index~\cite{tsai2005quantifying}, with spatial weights of the form $\exp{\left(-d_{ij} / d_0 \right)}$ with $d_{ij}$ being the distance between spatial entities $i$ and $j$, and $d_0$ a decay parameter giving the spatial range of interactions taken into account in the computation. We show in Fig.~\ref{fig:moran} its variations in time and as a function of decay parameter. 
 
 
 
 %%%%%%%%%%%%%%%%%%%%%%
 \begin{figure}
 \centering
-
-\caption{Behavior of spatial-autocorrelation in time for different decay parameter values.}
+\includegraphics[width=0.48\textwidth]{figures/moran_days}
+\includegraphics[width=0.48\textwidth]{figures/moran_decay_weeks}
+\caption{\textbf{Behavior of Moran spatial-autocorrelation index.} (Left) Evolution in time for different decay parameter values. (Right) Moran index as a function of decay parameter, computed on weekly time windows.}
+\label{fig:moran}
 \end{figure}
 %%%%%%%%%%%%%%%%%%%%%%
 
@@ -354,15 +357,24 @@ The two next subsections investigate potential explicative variables of local fu
 
 The issue of spatial non-stationarity of geographical processes has always been a source of biased aggregated analyses or misinterpretations when applying general conclusions to local cases. To take it into account into statistical models, numerous techniques have been developed, among which the simple but very elegant Geographically Weighted Regression, that estimates non-stationary regressions by weighting observations in space similarly to kernel estimation methods. It was introduced in a seminal paper by~\cite{brunsdon1996geographically} and has been consequently used and matured since.
 
-\comment{simple GWR $\rightarrow$ maps with some estimated coefs}
+
+The coefficients and residuals for the best model (in the sense of AIC) are shown in Fig.~\ref{fig:gwr}.
 
 
+%%%%%%%%%%%%%%%%%%%%%%
+\begin{figure}
+\centering
+%
+\caption{\textbf{Results of GWR analyses.}}
+\label{fig:gwr}
+\end{figure}
+%%%%%%%%%%%%%%%%%%%%%%
 
 
 %%%%%%%%%%%%%%%%%%%%%%
 \subsection{Multi-level Regression}
 
-\comment{multi-level regreg on State/zip ?}
+An other approach to take into account geographical heterogeneities without explicitly including spatial relations between objects is to proceed to regressions with random effects depending on geographical aggregations at different levels. The method of multi-level regression implements this idea, and has been shown to be particularly adapted for geographical research~\cite{jones1991specifying}. We take here into account two administrative levels, the state and the county. Explorations of section~\ref{subsec:patterns} suggest a strong state-effect that GWR cannot capture around boundaries, what confirms the relevance and complementarity of using Multi-level Regression.
 
 
 
@@ -390,7 +402,9 @@ The issue of spatial non-stationarity of geographical processes has always been 
 
 
 
-\section*{Acknowledgements}
+
+
+%\section*{Acknowledgements}
 
 %Acknowledgements and Reference heading should be left justified, bold, with the first letter capitalized but have no numbers. Text below continues as normal.
 

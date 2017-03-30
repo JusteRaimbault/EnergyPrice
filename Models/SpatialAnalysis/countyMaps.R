@@ -3,10 +3,10 @@ setwd(paste0(Sys.getenv('CS_HOME'),'/EnergyPrice/Models/SpatialAnalysis'))
 
 library(dplyr)
 library(rgdal)
-library(cartography)
-library(classInt)
 library(rgeos)
 library(ggplot2)
+
+source('functions.R')
 
 countydata = as.tbl(read.csv(paste0(Sys.getenv('CS_HOME'),'/EnergyPrice/Data/processed/processed_20170320/county_daily_data.csv'),sep=";",header=T,stringsAsFactors = F,colClasses = c("character","integer","character","numeric","numeric","numeric","numeric")))
 addresses = as.tbl(read.csv(paste0(Sys.getenv('CS_HOME'),'/EnergyPrice/Data/processed/processed_20170320/addresses.csv'),sep=";",header=T,stringsAsFactors = F))
@@ -157,9 +157,7 @@ ggsave(file=paste0(resdir,'moran_decay_weeks.pdf'),width=10,height=5)
 
 
 # map autocorrelation on all period
-sdata = data.frame(countydata[countydata$type=="Regular",] %>% group_by(countyid) %>% summarise(price=mean(meanprice)))
-rownames(sdata)<-as.character(sdata$countyid)
-prices = sdata[counties$GEOID,2];prices[is.na(prices)]=0
+prices = getPeriodPrices()
 w=weightMatrix(100,counties)
 rho = autocorr(prices,w,m);names(rho)<-counties$GEOID
 sdata$rho=rho[sdata$countyid]
