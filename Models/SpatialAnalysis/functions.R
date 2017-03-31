@@ -47,7 +47,7 @@ getPeriodPrices<-function(){
 }
 
 
-mapCounties<-function(data,variable,filename,title,legendtitle,layer=counties,extent=extent,withLayout=T){
+mapCounties<-function(data,variable,filename,title,legendtitle,layer=counties,extent=extent,withLayout=T,legendRnd=2){
   extent <- readOGR(paste0(Sys.getenv("CS_HOME"),'/EnergyPrice/Data/processed/processed_20170320/gis'),layer = 'extent',stringsAsFactors = FALSE)
   layer$GEOID=counties$GEOID
   
@@ -75,7 +75,7 @@ mapCounties<-function(data,variable,filename,title,legendtitle,layer=counties,ex
   )
   legendChoro(pos = "left",title.txt = legendtitle,
               title.cex = 0.8, values.cex = 0.6, breaks$brks, cols, cex = 0.7,
-              values.rnd = 2, nodata = TRUE, nodata.txt = "No data",
+              values.rnd = legendRnd, nodata = TRUE, nodata.txt = "No data",
               nodata.col = "white", frame = FALSE, symbol = "box"
   )
   plot(states,border = "grey20", lwd=0.75, add=TRUE)

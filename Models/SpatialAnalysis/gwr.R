@@ -68,40 +68,86 @@ mapCounties(gwfullaic$SDF@data,"Local_R2",'gwr_fullaic_LocalR2','GWR full aic','
 vars=c("income","jobs","wage","population","percapjobs")
 yvar="price"
 
+kernels = c("bisquare","exponential","gaussian","boxcar")
 
-aics=c();models=c();r2=c()
+aics=c();models=c();r2=c();bws=c();ckernels=c();approaches=c()
 for(i in 1:5){
   modelstotest = getLinearModels(yvar,vars,i)
   for(modelstr in modelstotest){
     show(modelstr)
-    bw = bw.gwr(modelstr,data=counties,approach="AIC", kernel="bisquare",adaptive=T)
-    gw <- gwr.basic(modelstr,data=counties, bw=bw,kernel="bisquare",adaptive=T)
-    aics=append(aics,gw$GW.diagnostic$AICc);
-    r2=append(r2,gw$GW.diagnostic$gwR2.adj)
-    models=append(models,modelstr)
+    for(kernel in kernels){
+      bwcv = bw.gwr(modelstr,data=counties,approach="CV", kernel=kernel,adaptive=T)
+      gwcv <- gwr.basic(modelstr,data=counties, bw=bwcv,kernel=kernel,adaptive=T)
+      aics=append(aics,gwcv$GW.diagnostic$AICc);
+      r2=append(r2,gwcv$GW.diagnostic$gwR2.adj);bws=append(bws,bwcv)
+      bwaic = bw.gwr(modelstr,data=counties,approach="AIC", kernel=kernel,adaptive=T)
+      gwaic <- gwr.basic(modelstr,data=counties, bw=bwaic,kernel=kernel,adaptive=T)
+      aics=append(aics,gwaic$GW.diagnostic$AICc);
+      r2=append(r2,gwaic$GW.diagnostic$gwR2.adj);bws=append(bws,bwaic)
+      models=append(models,rep(modelstr,2));ckernels=append(ckernels,rep(kernel,2));approaches=append(approaches,c("cv","aic"))
+    }
   }
 }
   
 # find the best model
-names(aics)<-models
-names(r2)<-models
-bestaic = aics[aics==min(aics)] # 2904.743 
-bestr2 = r2[r2==max(r2)] # 0.285386 
+selec = data.frame(aic=aics,model=models,r2=r2,bw=bws,kernel=ckernels,approach=approaches)
+write.table(selec,file=paste0(resdir,'gwr/modelselec_all.csv'),sep=";",col.names = T,row.names = F,quote=F)
 
-# BEST model is : price~income+percapjobs , both for aic and r2
+
+# with AIC bandwidth
+bestaic = aics[aics==min(aics)] # 2904.743 , price~income+percapjobs 
+bestr2 = r2[r2==max(r2)] # 0.285386 , price~income+percapjobs 
+bws[aics==min(aics)]
+
+
+# with Cross-validated bandwidth
+bestaic = aics[aics==min(aics)] # 2921.722 , price~income+percapjobs 
+bestr2 = r2[r2==max(r2)] # 0.2703091 , price~income+population+percapjobs
+r2["price~income+percapjobs"] # 0.264815
+aics["price~income+population+percapjobs"] # 2926.552
+
+# BEST model for aic bandwidth is : price~income+percapjobs , both for aic and r2
 #write.table(data.frame(model=models,aic=aics,r2=r2),file=paste0(resdir,'gwr/modelselec.csv'),sep=";",col.names = T,row.names = F,quote=F)
+#write.table(data.frame(model=models,aic=aics,r2=r2),file=paste0(resdir,'gwr/modelselec_cv.csv'),sep=";",col.names = T,row.names = F,quote=F)
+
+
+# TODO mean(bestaic - aic)
+# TODO give distance range corresponding to bandwidth
+# TODO test shape of kernel ?
 
 modelstr="price~income+percapjobs"
-
 bwbest = bw.gwr(modelstr,data=counties,approach="AIC", kernel="bisquare",adaptive=T)
 gwbest <- gwr.basic(modelstr,data=counties, bw=bwbest,kernel="bisquare",adaptive=T)
-
 gwbest$SDF$countyid = counties$GEOID
 mapCounties(gwbest$SDF@data,"income",'gwr/gwr_best_betaincome','','beta_income',layer=gwbest$SDF,withLayout = F)
 mapCounties(gwbest$SDF@data,"percapjobs",'gwr/gwr_best_betapercapjobs','','beta_percapjobs',layer=gwbest$SDF,withLayout = F)
 mapCounties(gwbest$SDF@data,"residual",'gwr/gwr_best_residual','','residual',layer=gwbest$SDF,withLayout = F)
 mapCounties(gwbest$SDF@data,"Local_R2",'gwr/gwr_best_LocalR2','','Local_R2',layer=gwbest$SDF,withLayout = F)
 
+# best with cross-validation for r2
+modelstr="price~income+population+percapjobs"
+bwbest = bw.gwr(modelstr,data=counties,approach="CV", kernel="bisquare",adaptive=T)
+gwbest <- gwr.basic(modelstr,data=counties, bw=bwbest,kernel="bisquare",adaptive=T)
+gwbest$SDF$countyid = counties$GEOID
+mapCounties(gwbest$SDF@data,"income",'gwr/gwr_best_betaincome','','beta_income',layer=gwbest$SDF,withLayout = F)
+mapCounties(gwbest$SDF@data,"percapjobs",'gwr/gwr_best_betapercapjobs','','beta_percapjobs',layer=gwbest$SDF,withLayout = F)
+mapCounties(gwbest$SDF@data,"residual",'gwr/gwr_best_residual','','residual',layer=gwbest$SDF,withLayout = F)
+mapCounties(gwbest$SDF@data,"Local_R2",'gwr/gwr_best_LocalR2','','Local_R2',layer=gwbest$SDF,withLayout = F)
+
+
+#########
+## Best model with all kernels
+#2900.286 price~income+wage+percapjobs 0.2710871 22 gaussian      aic
+
+modelstr="price~income+wage+percapjobs"
+#bwbest = bw.gwr(modelstr,data=counties,approach="AIC", kernel="gaussian",adaptive=T)
+gwbest <- gwr.basic(modelstr,data=counties, bw=22,kernel="gaussian",adaptive=T)
+gwbest$SDF$countyid = counties$GEOID
+mapCounties(gwbest$SDF@data,"income",'gwr/gwr_allbest_betaincome','',expression(beta[income]),layer=gwbest$SDF,withLayout = F,legendRnd = 7)
+mapCounties(gwbest$SDF@data,"percapjobs",'gwr/gwr_allbest_betapercapjobs','',expression(beta[percapjobs]),layer=gwbest$SDF,withLayout = F,legendRnd = 2)
+mapCounties(gwbest$SDF@data,"wage",'gwr/gwr_allbest_wage','',expression(beta[wage]),layer=gwbest$SDF,withLayout = F,legendRnd = 7)
+mapCounties(gwbest$SDF@data,"residual",'gwr/gwr_allbest_residual','','Residual',layer=gwbest$SDF,withLayout = F)
+mapCounties(gwbest$SDF@data,"Local_R2",'gwr/gwr_allbest_LocalR2','','Local R2',layer=gwbest$SDF,withLayout = F)
 
 
 
