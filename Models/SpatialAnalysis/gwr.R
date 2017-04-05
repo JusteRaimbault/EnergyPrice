@@ -17,6 +17,9 @@ counties <- readOGR(paste0(Sys.getenv("CS_HOME"),'/EnergyPrice/Data/processed/pr
 # names(countysocioeco)[27:32]<- c("name","income","jobs","wage","population","percapjobs")
 # write.table(countysocioeco@data,file=paste0(Sys.getenv('CS_HOME'),'/EnergyPrice/Data/census/socioeco.csv'),row.names=F,col.names=T,quote=F,sep=";")
 
+resdir <- paste0(Sys.getenv('CS_HOME'),'/EnergyPrice/Results/SpatialAnalysis/gwr/')
+
+
 # variables : 
 #  - B13_yyyy : per capita income
 #  - A34_yyyy : average yearly number of jobs
@@ -91,7 +94,8 @@ for(i in 1:5){
   
 # find the best model
 selec = data.frame(aic=aics,model=models,r2=r2,bw=bws,kernel=ckernels,approach=approaches)
-write.table(selec,file=paste0(resdir,'gwr/modelselec_all.csv'),sep=";",col.names = T,row.names = F,quote=F)
+#write.table(selec,file=paste0(resdir,'modelselec_all.csv'),sep=";",col.names = T,row.names = F,quote=F)
+selec = read.csv(file=paste0(resdir,'modelselec_all.csv'),sep=";",header=T)
 
 
 # with AIC bandwidth
@@ -138,18 +142,29 @@ mapCounties(gwbest$SDF@data,"Local_R2",'gwr/gwr_best_LocalR2','','Local_R2',laye
 #########
 ## Best model with all kernels
 #2900.286 price~income+wage+percapjobs 0.2710871 22 gaussian      aic
+# selec$aic-min(selec$aic) : median = 122
+#
+# mean(selec[selec$model=="price~income+wage+percapjobs"&selec$approach=="aic",1]) = 2932.644
+#
+# cor(counties@data[,3:ncol(counties@data)])
+#
 
 modelstr="price~income+wage+percapjobs"
-#bwbest = bw.gwr(modelstr,data=counties,approach="AIC", kernel="gaussian",adaptive=T)
-gwbest <- gwr.basic(modelstr,data=counties, bw=22,kernel="gaussian",adaptive=T)
+bwbest = bw.gwr(modelstr,data=counties,approach="AIC", kernel="gaussian",adaptive=T)
+gwbest <- gwr.basic(modelstr,data=counties, bw=bwbest,kernel="gaussian",adaptive=T)
 gwbest$SDF$countyid = counties$GEOID
-mapCounties(gwbest$SDF@data,"income",'gwr/gwr_allbest_betaincome','',expression(beta[income]),layer=gwbest$SDF,withLayout = F,legendRnd = 7)
-mapCounties(gwbest$SDF@data,"percapjobs",'gwr/gwr_allbest_betapercapjobs','',expression(beta[percapjobs]),layer=gwbest$SDF,withLayout = F,legendRnd = 2)
-mapCounties(gwbest$SDF@data,"wage",'gwr/gwr_allbest_wage','',expression(beta[wage]),layer=gwbest$SDF,withLayout = F,legendRnd = 7)
-mapCounties(gwbest$SDF@data,"residual",'gwr/gwr_allbest_residual','','Residual',layer=gwbest$SDF,withLayout = F)
-mapCounties(gwbest$SDF@data,"Local_R2",'gwr/gwr_allbest_LocalR2','','Local R2',layer=gwbest$SDF,withLayout = F)
+mapCounties(gwbest$SDF@data,"income",'gwr_allbest_betaincome','',expression(beta[income]),layer=gwbest$SDF,withLayout = F,legendRnd = 7)
+mapCounties(gwbest$SDF@data,"percapjobs",'gwr_allbest_betapercapjobs','',expression(beta[percapjobs]),layer=gwbest$SDF,withLayout = F,legendRnd = 2)
+mapCounties(gwbest$SDF@data,"wage",'gwr_allbest_wage','',expression(beta[wage]),layer=gwbest$SDF,withLayout = F,legendRnd = 7)
+mapCounties(gwbest$SDF@data,"residual",'gwr_allbest_residual','','Residual',layer=gwbest$SDF,withLayout = F)
+mapCounties(gwbest$SDF@data,"Local_R2",'gwr_allbest_LocalR2','','Local R2',layer=gwbest$SDF,withLayout = F)
 
 
+## effective dim of variables
+cor(counties@data[,3:ncol(counties@data)])
+mat = counties@data[,3:ncol(counties@data)]
+for(j in 1:ncol(mat)){mat[,j]=(mat[,j]-min(mat[,j]))/(max(mat[,j])-min(mat[,j]))}
+summary(prcomp(mat))
 
 
   

@@ -61,7 +61,6 @@ mapCounties<-function(data,variable,filename,title,legendtitle,layer=counties,ex
               author = "", col = ifelse(withLayout,"grey","white"), coltitle = "black", theme = NULL,
               bg = NULL, scale=NULL , frame = withLayout, north = F, south = FALSE,extent=extent)
   
-    
   breaks=classIntervals(data[,variable],20)
   
   plot(states, border = NA, col = "white",add=T)

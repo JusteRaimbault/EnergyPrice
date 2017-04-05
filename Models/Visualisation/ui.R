@@ -6,6 +6,7 @@ shinyUI(navbarPage("Fuel Prices", id="nav",
             div(class="outer",
                tags$head(
                  includeCSS("styles.css"),
+                 includeScript("gomap.js"),
                     tags$script(HTML(
                       "<script>
                         (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
@@ -26,9 +27,10 @@ shinyUI(navbarPage("Fuel Prices", id="nav",
                   absolutePanel(id = "controls", class = "panel panel-default", fixed = TRUE,
                      draggable = TRUE, top = 60, left = "auto", right = 20, bottom = "auto",
                      width = 330, height = "auto",  
-                     selectInput("day", "day", days)#,
-                     #sliderInput(inputId = "time","Time",timeFormat = "%H:%M",min = min(hours),max=max(hours),value=min(hours),step=NULL),
-                     #selectInput("var", "Variable", vars)
+                     #selectInput("day", "Day", days),
+                     selectInput("week", "Week", weeks),
+                     selectInput("type", "Fuel type", types)
+                     #sliderInput(inputId = "time","Time",timeFormat = "%H:%M",min = min(hours),max=max(hours),value=min(hours),step=NULL)
                                          
                     )#,
                                 

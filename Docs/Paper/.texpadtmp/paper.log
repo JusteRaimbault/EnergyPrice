@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.17 (TeX Live 2016) (preloaded format=pdflatex 2016.12.16)  25 MAR 2017 10:39
+This is pdfTeX, Version 3.14159265-2.6-1.40.17 (TeX Live 2016) (preloaded format=pdflatex 2016.12.16)  4 APR 2017 08:15
 entering extended mode
  restricted \write18 enabled.
  file:line:error style messages enabled.
@@ -774,28 +774,63 @@ Overfull \vbox (25.45999pt too high) has occurred while \output is active []
  [1{/usr/local/texlive/2016/texmf-var/fonts/map/pdftex/updmap/pdftex.map}
 
  <./elsevier-logo-3p.pdf> <./svsd-3p.pdf> <./trptro.pdf>]
-Missing character: There is no Ã in font txr!
-Missing character: There is no © in font txr!
-Missing character: There is no Ã in font txr!
-Missing character: There is no Ã in font txr!
-Missing character: There is no » in font txr!
- [2]
-Underfull \vbox (badness 1571) has occurred while \output is active []
+LaTeX Font Info:    Font shape `OMS/txr/m/n' in size <10> not available
+(Font)              Font shape `OMS/txsy/m/n' tried instead on input line 285.
+ [2] <figures/average_regular_map.png, id=31, 722.7pt x 433.62pt>
+File: figures/average_regular_map.png Graphic file (type png)
+ <use figures/average_regular_map.png>
+Package pdftex.def Info: figures/average_regular_map.png used on input line 334.
+(pdftex.def)             Requested size: 468.0pt x 280.79764pt.
+ <figures/moran_days.png, id=33, 722.7pt x 361.35pt>
+File: figures/moran_days.png Graphic file (type png)
+ <use figures/moran_days.png>
+Package pdftex.def Info: figures/moran_days.png used on input line 352.
+(pdftex.def)             Requested size: 224.638pt x 112.32059pt.
+ <figures/moran_decay_weeks.png, id=34, 722.7pt x 361.35pt>
+File: figures/moran_decay_weeks.png Graphic file (type png)
+ <use figures/moran_decay_weeks.png>
+Package pdftex.def Info: figures/moran_decay_weeks.png used on input line 353.
+(pdftex.def)             Requested size: 224.638pt x 112.32059pt.
+ [3]
+Underfull \vbox (badness 1028) has occurred while \output is active []
 
- [3] (/Users/Juste/Documents/ComplexSystems/EnergyPrice/Docs/Paper/.texpadtmp/paper.bbl) [4] (/Users/Juste/Documents/ComplexSystems/EnergyPrice/Docs/Paper/.texpadtmp/paper.aux) ) 
+ [4 <./figures/average_regular_map.png> <./figures/moran_days.png> <./figures/moran_decay_weeks.png>] <figures/gwr_allbest_betaincome.png, id=47, 722.7pt x 397.485pt>
+File: figures/gwr_allbest_betaincome.png Graphic file (type png)
+ <use figures/gwr_allbest_betaincome.png>
+Package pdftex.def Info: figures/gwr_allbest_betaincome.png used on input line 375.
+(pdftex.def)             Requested size: 224.638pt x 123.55266pt.
+ <figures/gwr_allbest_betapercapjobs.png, id=48, 722.7pt x 397.485pt>
+File: figures/gwr_allbest_betapercapjobs.png Graphic file (type png)
+ <use figures/gwr_allbest_betapercapjobs.png>
+Package pdftex.def Info: figures/gwr_allbest_betapercapjobs.png used on input line 376.
+(pdftex.def)             Requested size: 224.638pt x 123.55266pt.
+ <figures/gwr_allbest_wage.png, id=49, 722.7pt x 397.485pt>
+File: figures/gwr_allbest_wage.png Graphic file (type png)
+ <use figures/gwr_allbest_wage.png>
+Package pdftex.def Info: figures/gwr_allbest_wage.png used on input line 378.
+(pdftex.def)             Requested size: 224.638pt x 123.55266pt.
+ <figures/gwr_allbest_LocalR2.png, id=50, 722.7pt x 397.485pt>
+File: figures/gwr_allbest_LocalR2.png Graphic file (type png)
+ <use figures/gwr_allbest_LocalR2.png>
+Package pdftex.def Info: figures/gwr_allbest_LocalR2.png used on input line 379.
+(pdftex.def)             Requested size: 224.638pt x 123.55266pt.
+
+Underfull \vbox (badness 10000) has occurred while \output is active []
+
+ [5 <./figures/gwr_allbest_betaincome.png> <./figures/gwr_allbest_betapercapjobs.png> <./figures/gwr_allbest_wage.png> <./figures/gwr_allbest_LocalR2.png>] (/Users/Juste/Documents/ComplexSystems/EnergyPrice/Docs/Paper/.texpadtmp/paper.bbl) [6] (/Users/Juste/Documents/ComplexSystems/EnergyPrice/Docs/Paper/.texpadtmp/paper.aux) ) 
 Here is how much of TeX's memory you used:
- 10742 strings out of 493014
- 194075 string characters out of 6133350
- 221015 words of memory out of 5000000
- 14136 multiletter control sequences out of 15000+600000
- 63235 words of font info for 157 fonts, out of 8000000 for 9000
+ 10805 strings out of 493014
+ 195642 string characters out of 6133350
+ 227151 words of memory out of 5000000
+ 14183 multiletter control sequences out of 15000+600000
+ 67438 words of font info for 166 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
  38i,14n,40p,10375b,312s stack positions out of 5000i,500n,10000p,200000b,80000s
-{/usr/local/texlive/2016/texmf-dist/fonts/enc/dvips/base/8r.enc}</usr/local/texlive/2016/texmf-dist/fonts/type1/public/amsfonts/cm/cmtt8.pfb></usr/local/texlive/2016/texmf-dist/fonts/type1/public/txfonts/rtxi.pfb></usr/local/texlive/2016/texmf-dist/fonts/type1/public/txfonts/rtxr.pfb></usr/local/texlive/2016/texmf-dist/fonts/type1/public/txfonts/txsy.pfb></usr/local/texlive/2016/texmf-dist/fonts/type1/urw/helvetic/uhvr8a.pfb></usr/local/texlive/2016/texmf-dist/fonts/type1/urw/times/utmb8a.pfb></usr/local/texlive/2016/texmf-dist/fonts/type1/urw/times/utmr8a.pfb></usr/local/texlive/2016/texmf-dist/fonts/type1/urw/times/utmri8a.pfb>
-Output written on /Users/Juste/Documents/ComplexSystems/EnergyPrice/Docs/Paper/.texpadtmp/paper.pdf (4 pages, 141572 bytes).
+{/usr/local/texlive/2016/texmf-dist/fonts/enc/dvips/base/8r.enc}</usr/local/texlive/2016/texmf-dist/fonts/type1/public/amsfonts/cm/cmtt10.pfb></usr/local/texlive/2016/texmf-dist/fonts/type1/public/amsfonts/cm/cmtt8.pfb></usr/local/texlive/2016/texmf-dist/fonts/type1/public/txfonts/rtxi.pfb></usr/local/texlive/2016/texmf-dist/fonts/type1/public/txfonts/rtxmi.pfb></usr/local/texlive/2016/texmf-dist/fonts/type1/public/txfonts/rtxr.pfb></usr/local/texlive/2016/texmf-dist/fonts/type1/public/txfonts/txex.pfb></usr/local/texlive/2016/texmf-dist/fonts/type1/public/txfonts/txsy.pfb></usr/local/texlive/2016/texmf-dist/fonts/type1/urw/helvetic/uhvr8a.pfb></usr/local/texlive/2016/texmf-dist/fonts/type1/urw/times/utmb8a.pfb></usr/local/texlive/2016/texmf-dist/fonts/type1/urw/times/utmr8a.pfb></usr/local/texlive/2016/texmf-dist/fonts/type1/urw/times/utmri8a.pfb>
+Output written on /Users/Juste/Documents/ComplexSystems/EnergyPrice/Docs/Paper/.texpadtmp/paper.pdf (6 pages, 5771961 bytes).
 PDF statistics:
- 64 PDF objects out of 1000 (max. 8388607)
- 43 compressed objects within 1 object stream
+ 97 PDF objects out of 1000 (max. 8388607)
+ 57 compressed objects within 1 object stream
  0 named destinations out of 1000 (max. 500000)
- 16 words of extra memory for PDF output out of 10000 (max. 10000000)
+ 51 words of extra memory for PDF output out of 10000 (max. 10000000)
 
