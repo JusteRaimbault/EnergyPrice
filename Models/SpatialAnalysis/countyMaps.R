@@ -13,6 +13,10 @@ addresses = as.tbl(read.csv(paste0(Sys.getenv('CS_HOME'),'/EnergyPrice/Data/proc
 counties <- readOGR(paste0(Sys.getenv("CS_HOME"),'/EnergyPrice/Data/processed/processed_20170320/gis'),layer = 'county_us_metro',stringsAsFactors = FALSE)
 states <- readOGR(paste0(Sys.getenv("CS_HOME"),'/EnergyPrice/Data/states'),layer = 'us_metro',stringsAsFactors = FALSE)
 
+taxes<-as.tbl(read.csv(paste0(Sys.getenv('CS_HOME'),'/EnergyPrice/Data/states/taxstate.csv'),sep=";",stringsAsFactors=F))
+
+states@data = left_join(states@data,taxes,by=c("STUSPS"="state"))
+
 resdir <- paste0(Sys.getenv('CS_HOME'),'/EnergyPrice/Results/SpatialAnalysis/')
 
 ##
@@ -52,6 +56,10 @@ countydata%>%group_by(month)%>%summarise(count=n())
 #opar <- par(mar = c(0.75,0.75,1.5,0.75))
 #plot(states, border = NA, col = "white", bg = "#A6CAE0")
 #plot(world.spdf, col  = "#E3DEBF", border=NA, add=TRUE)
+
+staxes = states$statetax;names(staxes)=states$STATEFP
+countystates = counties$STATEFP;names(countystates)<-counties$GEOID
+countydata$taxes=staxes[countystates[countydata$countyid]]
 
 sdata = countydata[countydata$type=="Regular",]%>%group_by(countyid)%>%summarise(price=mean(meanprice))
 #sdata = countydata[countydata$type=="Regular"&countydata$month>201702,]%>%group_by(countyid)%>%summarise(price=mean(meanprice))

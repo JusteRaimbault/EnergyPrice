@@ -41,12 +41,14 @@ proxies = {'http':'socks5://localhost:'+str(9050+taskid)}
 
 data = []
 
+url = open('url','r').readlines()[0].replace('\n','')
+
+
 for station_id in ids :
     print('id : '+str(station_id))
     try :
         # getting html from url
-        result = requests.get('http://www.gasbuddy.com/Station/'+str(station_id),proxies=proxies)
-        #result = requests.get('http://www.gasbuddy.com/Station/'+str(station_id))
+        result = requests.get(url+str(station_id),proxies=proxies)
         try :
             tree = html.fromstring(result.content)
         except Exception :

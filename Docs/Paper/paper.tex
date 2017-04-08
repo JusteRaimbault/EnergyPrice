@@ -75,7 +75,7 @@
 \makeatother
 
 \usepackage{color}
-
+\usepackage{hyperref}
 
 
 
@@ -202,16 +202,15 @@
 
 
 \author[a,b]{Juste Raimbault\corref{cor1}}
-\author[c,d]{Antonin Bergeaud}
+\author[d]{Antonin Bergeaud}
 
 \address[a]{UMR CNRS 8504 G{\'e}ographie-cit{\'e}s, 13 rue du Four, Paris, France}
 \address[b]{UMR-T IFSTTAR 9403 LVMT, Cit{\'e} Descartes, Champs-sur-Marne, France}
-\address[c]{Banque de France, Paris, France}
 \address[d]{Paris School of Economics - EHESS, Paris, France}
 
 
 \begin{abstract}
-The geography of fuel prices has several implications, from a significant impact on accessibility patterns to issues of territorial equity and transportation governance. In this paper, we study its spatio-temporal patterns at a high resolution. We construct a dataset collecting daily oil prices for two months, on a significant proportion of US gaz facilities, using a specifically-designed large scale data crawling technology. The implementation of a web-application for interactive spatio-temporal data exploration guide further statistical investigations, namely that oil price exhibit patterns that are strongly non-stationary in space and time. The behavior of spatial autocorrelation suggests the use of specific spatial econometric methods to study the role of explanatory variables that are either geographical or temporal. We study the influence of socio-economic variables, by using complementary methods: Geographically Weighted Regression to take into account spatial non-stationarity, and Multi-level modeling to condition both at the state and county level. The former yields an optimal spatial range roughly corresponding to stationarity scale, and significant influence of variables such as population density or median income, but is less accurate around administrative borders. On the other hand, multi-level modeling reveals a strong state fixed effect, and also a non-negligible county effect. Through the combination of such methods, we unveil the superposition of a governance process with a local socio-economical spatial process. Results are furthermore consistent across the different dates. We discuss one important application that is the elaboration of locally parametrized car-regulation policies.
+The geography of fuel prices has many various implications, from its significant impact on accessibility  to being an indicator of territorial equity and transportation policy. In this paper, we study the spatio-temporal patterns of fuel price in the US at a very high resolution using a newly constructed dataset collecting daily oil prices for two months, on a significant proportion of US gas facilities. These data have been collected using a specifically-designed large scale data crawling technology that we describe. The behavior of spatial autocorrelation suggests the use of specific spatial econometric methods to study the role of explanatory variables that are either geographical or temporal. We study the influence of socio-economic variables, by using complementary methods: Geographically Weighted Regression to take into account spatial non-stationarity, and Multi-level modeling to condition both at the state and county level. The former yields an optimal spatial range roughly corresponding to stationarity scale, and significant influence of variables such as median income or wage per job, with a non-simple spatial behavior that confirms the importance of geographical particularities. On the other hand, multi-level modeling reveals a strong state fixed effect, and also a non-negligible county effect. Through the combination of such methods, we unveil the superposition of a governance process with a local socio-economical spatial process. Results are furthermore consistent across the different dates. We discuss one important application that is the elaboration of locally parametrized car-regulation policies.
 \end{abstract}
 
 \begin{keyword}
@@ -222,7 +221,6 @@ Fuel Price \sep Data Crawling \sep Spatial Analysis \sep Geographically Weighted
 \cortext[cor1]{Corresponding author. Tel.: +0-000-000-0000 ; fax: +0-000-000-0000.}
 \end{frontmatter}
 
-%\correspondingauthor[*]{Corresponding author. Tel.: +0-000-000-0000 ; fax: +0-000-000-0000.}
 \email{juste.raimbault@polytechnique.edu}
 
 
@@ -238,7 +236,7 @@ Fuel Price \sep Data Crawling \sep Spatial Analysis \sep Geographically Weighted
 
 %% main text
 
-%\enlargethispage{-7mm}
+\enlargethispage{-7mm}
 
 
 
@@ -273,66 +271,59 @@ The rest of the paper is organized as follows: in the next section, we describe 
 %%%%%%%%%%%%%%%%%%%%%%
 \section{Dataset} \label{sec:data}
 %%%%%%%%%%%%%%%%%%%%%%
-HOW MANY GAS STATION IN THE US? COMPARED TO OUR DATASET
+Our dataset contain daily information on fuel price at the gas station level for the whole US mainland territory. These information have been constructed from self-reported fuel price and span almost the entire universe of gas station in the US. We start by describing data collection and then give some statistics about this new dataset.
+
 \subsection{Collecting large scale heterogeneous data}
 
-The availability of new type of data has induced consequent changes in various disciplines from social science (e.g. online social network analysis~\cite{tan2013social}) to geography (e.g. new insights into urban mobility or perspectives on ``smarter'' cities~\cite{batty2013big}) and economics where the availability of exhaustive individual or firm level data is seen as a revolution. Study involving these new data are not always easy to situate or legitimate at the interface of implied disciplines, as shows the example of the difficult understanding between physics and urban sciences mentioned in \cite{dupuy2015sciences}. 
-
-Collection and use of new data has therefore become a crucial task in social-science. 
-
-The construction of such datasets is however far from straightforward, as their analyses because of the incomplete and noisy nature of data. Specific technical tools have to be implemented, often with a problem-specific tuning making them difficultly generic. We develop such a tool that fills the following constraints typical of large scale data collection: (i) reasonable level of flexibility and genericity; (ii) performance optimized, through parallel collection jobs; (iii) anonymity of collection jobs to avoid any possible bias in the behavior of the data source. The architecture, at a high level, has the following structure:
+The availability of new type of data has induced consequent changes in various disciplines from social science (e.g. online social network analysis~(\cite{tan2013social})) to geography (e.g. new insights into urban mobility or perspectives on ``smarter'' cities~(\cite{batty2013big})) including economics where the availability of exhaustive individual or firm level data is seen as a revolution of the field. Most studies involving these new data are at the interface of implied disciplines, what is both an advantage but also difficulties. For example misunderstandings between physics and urban sciences described in \cite{dupuy2015sciences} are in particular caused by different attitudes towards unconventional data or divergent interpretations and ontologies of it. Collection and use of new data has therefore become a crucial stack in social-science. The construction of such datasets is however far from straightforward because of the incomplete and noisy nature of data. Specific technical tools have to be implemented but have often been designed to overcome one specific problem and are difficult to generalize. We develop such a tool that fills the following constraints that are typical of large scale data collection: (i) reasonable level of flexibility and generality; (ii) optimized performance through parallel collection jobs; (iii) anonymity of collection jobs to avoid any possible bias in the behavior of the data source. The architecture, at a high level, has the following structure:
 \begin{itemize}
 \item An independent pool of tasks runs continuously socket proxies to pipe requests through \texttt{tor}.
 \item A manager monitors current collection tasks, split collection between subtasks and launches new ones when necessary.
 \item Subtasks can be any callable application taken as argument destination urls, they proceed to the crawling, parsing and storage of collected data.
 \end{itemize}
-The application is open and its module are reusable: source code is available on the repository of the project\footnote{at \texttt{https://github.com/JusteRaimbault/EnergyPrice}}.
-
-
+The application is open and its modules are reusable: source code is available on the repository of the project.\footnote{at \texttt{https://github.com/JusteRaimbault/EnergyPrice}} We constructed our dataset by using the tool continuously in time during two months to collect crowdsourced data available from various online sources.
 
 
 %%%%%%%%%%%%%%%%%%%%%%
 \subsection{Dataset}
 
-%\comment{(Juste) on ne mettra pas le dataset public dans un premier temps, voir ce que les reviewers en disent}
-%\comment{information density map as supplementary material ?} -> not necessary
+Our dataset comprises around $41\cdot 10^6$ unique observations of retail fuel prices at the station level, spanning the period starting the $10^{th}$ of January 2017 and ending the $19^{th}$ of March 2017 and corresponds to 118,573 unique retail stations. For each of these stations, we associate a precise geographical location (city resolution). On average we have 377 price information by station. Prices correspond to a unique purchase mode (credit card, other modes such as cash being less than 10\% in test datasets, they were discarded in the final dataset) and four possible fuel types: Diesel (18\% of observations), Regular (34\%), Midgrade (24\%) and Premium (24\%). The best coverage of stations is for Regular fuel type with on average 4,629 price information by county. We therefore choose to focus the study to this type of fuel, keeping in mind that further developments with the dataset may include comparative analysis on fuel types.
+Our final dataset thus contains 14,192,352 observations from 117,155 gas station, followed during 68 days. We further aggregate these data by day, taking the average of the observed price per gallon, to obtain a panel of 5,204,398 gas station - day observations.\footnote{The panel is not balanced as prices are not reported every day in every station. The average gas station has information on price for 44 days (over 68).}  Table \ref{tab:stat_desc} gives some basic descriptive statistics of on price data showing that the distribution of oil price is highly concentrated with a small skewness (the ratio of the $99^{th}$ to the $1^{st}$ percentile is 1.6). 
+Finally, in the spatial analysis, we will also use socio-economic data at the county level, available from the US Census Bureau. We shall use the latest available, which most of the time implies relying to the 2010 Census).
 
-Our dataset of fuel prices consists in crowdsourced information of retail fuel prices from various web sources. These information are aggregated with the above-described crawling tool. The dataset comprises around $41\cdot 10^6$ unique observations, spanning in time from 2017-01-10 to 2017-03-19 and corresponds to 118,573 unique retail stations. For each of these stations, we associate a precise geographical location (city resolution). On average we have XX information by station. 
+\begin{table}
+\centering
+\caption{Descriptive statistics on Fuel Price (\$ per gallon)}
+\label{tab:stat_desc}
+\begin{tabular}{ccccccc}
+\textbf{Mean} & \textbf{Std. Dev.} & \textbf{p10} & \textbf{p25} & \textbf{p50} & \textbf{p75} & \textbf{p90} \\
+\hline
+\cr
+2.28 & 0.27 &  2.02  &  2.09  &  2.21  &  2.39  &  2.65  \\
+\hline
+\end{tabular}
+\end{table}
 
+% \comment{Aggregate on which time span ? best is to check time to converge to a certain coverage of all stations (say 95\%) $\rightarrow$ around one week seems ok (see stations count plot in repo)}
 
-
-Prices correspond to an unique purchase mode (credit card, other modes such as cash being less than 10\% in test datasets, they were discarded in the final dataset) and four fuel types: Diesel (18\% of observations), Regular (34\%), Midgrade (24\%) and Premium (24\%). The best coverage of stations is for Regular fuel type (\comment{recompute proportion on full dataset}), and we choose to work with this one in our exploratory analysis, keeping in mind that further developments with the dataset may include comparative analysis on fuel types.
-
-
-\comment{Aggregate on which time span ? best is to check time to converge to a certain coverage of all stations (say 95\%) $\rightarrow$ around one week seems ok (see stations count plot in repo)}
-
-\comment{French Open Data : https://www.prix-carburants.gouv.fr/rubrique/opendata/ $\rightarrow$ look to what extent our study could be transfered to France}
-
-The socio-economic data we use are basic population and job related variables (namely income, population, jobs, wage per job, jobs per capita), available from the US Census Bureau. We use the latest available, aggregated at the county level.
-
+% \comment{French Open Data : https://www.prix-carburants.gouv.fr/rubrique/opendata/ $\rightarrow$ look to what extent our study could be transfered to France}
 
 
 %%%%%%%%%%%%%%%%%%%%%%
 \section{Results} \label{sec:result}
 %%%%%%%%%%%%%%%%%%%%%%
 
-
 %%%%%%%%%%%%%%%%%%%%%%
 \subsection{Spatio-temporal Patterns of Prices}\label{subsec:patterns}
 
-
-Before moving to a more systematic study of the variation of fuel price, we propose a first exploratory introduction to give insight about its spatio-temporal structure. This exercise is a crucial stage to guide further analyses, but also to understand their implications in a geographical context. 
-
-
-
-A lightweight web application for interactive exploration in space and time was implemented for that purpose, and is available at \texttt{}.
-
+Before moving to a more systematic study of the variation of fuel price, we propose a first exploratory introduction to give insight about its spatio-temporal structure. This exercise is a crucial stage to guide further analyses, but also to understand their implications in a geographical context. To explore the data, we built a simple web application which allow to map the data in space and time. This application is available on \href{http://shiny.parisgeo.cnrs.fr/fuelprice/}{this page}. We also show one example of mapping the data at the county level in Figure \ref{fig:map_price} where we used average price over the whole period. We clearly see regional patterns with the Southcentral and Southeast regions having the lowest prices and the Pacific cost and Northeast the highest prices. Of course, plotting aggregated data over the whole period does not bring much information about the time variation of the data. As we will show more in detail below most of the variation of fuel price occurs across space. A variance decomposition of fuel price yields only 11\% of the total variance is explained by within gas station variations. Similarly, the Spearman's rank correlation coefficient between the gas station price of regular fuel in the first day of dataset and in the last day is 0.867, and the null hypothesis that these two information are independent is strongly rejected.
 
 %%%%%%%%%%%%%%%%%%%%%%
 \begin{figure}
 \centering
 \includegraphics[width=\textwidth]{figures/average_regular_map}
 \caption{Map of mean price for counties, regular fuel, averaged over the whole period.}
+\label{fig:map_price}
 \end{figure}
 %%%%%%%%%%%%%%%%%%%%%%
 
@@ -340,11 +331,8 @@ A lightweight web application for interactive exploration in space and time was 
 %%%%%%%%%%%%%%%%%%%%%%
 \subsection{Spatial Autocorrelation}
 
-
-We now turn to the study of spatial autocorrelation of prices, which can be seen as an indicator of spatial heterogeneity. We use the Moran index~(\cite{tsai2005quantifying}), with spatial weights of the form $\exp{\left(-d_{ij} / d_0 \right)}$ with $d_{ij}$ being the distance between spatial entities $i$ and $j$, and $d_0$ a decay parameter giving the spatial range of interactions taken into account in the computation. We show in Fig.~\ref{fig:moran} its variations in time and as a function of decay parameter. 
-The fluctuations in time of the daily Moran index for low and medium spatial range, confirms geographical particularities in the sense of locally changing correlation regimes. These are logically smoothed for long ranges, as price correlations drop down with distance. The behavior of spatial autocorrelation with decay distance is particularly interesting: we observe a first regime change around 10km (from constant to piecewise linear regime), and a second important one around 1000km, both consistent across weekly time windows. We postulate that these correspond to typical spatial scales of the involved processes: the low regime would be local specificities and the middle one the state level processes. This behavior confirms that prices are non-stationary in space, and that therefore appropriate statistical techniques must be used to study potential drivers. The two next subsections follow this idea and investigate potential explicative variables of local fuel prices, using two different techniques corresponding to two complementary paradigms: geographically weighted regression that puts the emphasis on neighborhood effects, and multi-level regression taking into account administrative boundaries.
-
-
+We now turn to the study of spatial autocorrelation of prices, which can be seen as an indicator of spatial heterogeneity. We use the Moran index~(\cite{tsai2005quantifying}), with spatial weights of the form $\exp{\left(-d_{ij} / d_0 \right)}$ with $d_{ij}$ being the distance between spatial entities $i$ and $j$, and $d_0$ a decay parameter giving the spatial range of interactions accounted for in the computation. We show in Fig.~\ref{fig:moran} its variations in time and as a function of decay parameter. 
+The fluctuations in time of the daily Moran index for low and medium spatial range, confirms geographical specificities in the sense of locally changing correlation regimes. These are logically smoothed for long ranges, as price correlations drop down with distance. The behavior of spatial autocorrelation with decay distance is particularly interesting: we observe a first regime change around 10km (from constant to piecewise linear regime), and a second important one around 1000km, both consistent across weekly time windows. We postulate that these correspond to typical spatial scales of the involved processes: the low regime would be local specificities and the middle one the state level processes. This behavior confirms that prices are non-stationary in space, and that therefore appropriate statistical techniques must be used to study potential drivers at different level. The two next subsections follow this idea and investigate potential explicative variables of local fuel prices, using two different techniques corresponding to two complementary paradigms: geographically weighted regression that puts the emphasis on neighborhood effects, and multi-level regression taking into account administrative boundaries.
 
 %%%%%%%%%%%%%%%%%%%%%%
 \begin{figure}
@@ -356,17 +344,17 @@ The fluctuations in time of the daily Moran index for low and medium spatial ran
 \end{figure}
 %%%%%%%%%%%%%%%%%%%%%%
 
-
-
-
 %%%%%%%%%%%%%%%%%%%%%%
 \subsection{Geographically Weighted Regression}
 
-The issue of spatial non-stationarity of geographical processes has always been a source of biased aggregated analyses or misinterpretations when applying general conclusions to local cases. To take it into account into statistical models, numerous techniques have been developed, among which the simple but very elegant Geographically Weighted Regression, that estimates non-stationary regressions by weighting observations in space similarly to kernel estimation methods. It was introduced in a seminal paper by~\cite{brunsdon1996geographically} and has been consequently used and matured since. The significant advantage of this technique is that an optimal spatial range in the sense of model performance can be inferred, and that the corresponding model gives effect of variables varying in space, revealing thus local effects that can occur at different spatial scales or across boundaries. We proceed to multi-modeling to find the best model and associated kernel and spatial range. The workflow is the following: (i) we generate all possible linear models from the five potential variables (income, population, wage per job, jobs per capita, jobs); (ii) for each model and each candidate kernel shape (exponential, gaussian, bisquare, step), we determine the optimal bandwidth in the sense of both cross-validation and corrected Akaike Information Criterion (AICc) which quantifies information included in the model, taking into account both model fit and number of parameters to avoid overfitting; (iii) models are fitted with this bandwidth. We choose the model with the best overall AICc, namely $price = \beta\cdot\left( income, wage, percapjobs\right)$ for a bandwidth of 22 neighbors and a gaussian kernel\footnote{note that the kernel }, with an AICc of $2900$. The median AICc difference with all other models tested is 122. The global r-squared is 0.27, what is relatively good also compared to the best r-squared of 0.29 (obtained for the model with all variables, which clearly overfits with an AICc of 3010; furthermore, effective dimension is less than 5 as 90\% of variance is explained by the three first principal components for the normalized variables). The coefficients and local r-squared for this model are shown in Fig.~\ref{fig:gwr}. The spatial distribution of residuals (not shown here) seems globally random, which confirms in a way the consistency of the approach: if a distinguishable geographical structure is found in residuals, it means that the geographical model or the variable taken into account fail to translate spatial structure.
+The issue of spatial non-stationarity of geographical processes has always been a source of biased aggregated analyses or misinterpretations when applying general conclusions to local cases. To take it into account into statistical models, numerous techniques have been developed, among which the simple but very elegant Geographically Weighted Regression, that estimates non-stationary regressions by weighting observations in space similarly to kernel estimation methods. It was introduced in a seminal paper by~\cite{brunsdon1996geographically} and has been consequently used and matured since. The significant advantage of this technique is that an optimal spatial range in the sense of model performance can be inferred, and that the corresponding model gives effect of variables varying in space, revealing thus local effects that can occur at different spatial scales or across boundaries. We proceed to multi-modeling to find the best model and associated kernel and spatial range. The workflow is the following: (i) we generate all possible linear models from the five potential variables (income, population, wage per job, jobs per capita, jobs); (ii) for each model and each candidate kernel shape (exponential, gaussian, bisquare, step), we determine the optimal bandwidth in the sense of both cross-validation and corrected Akaike Information Criterion (AICc) which quantifies information included in the model, taking into account both model fit and number of parameters to avoid overfitting; (iii) models are fitted with this bandwidth. We choose the model with the best overall AICc, namely $price = \beta\cdot\left( income, wage, percapjobs\right)$ for a bandwidth of 22 neighbors and a gaussian kernel\footnote{note that the kernel shape does not have much influence as soon as gradually decaying functions are used}, with an AICc of $2900$. The median AICc difference with all other models tested is 122. The global r-squared is 0.27, what is relatively good also compared to the best r-squared of 0.29 (obtained for the model with all variables, which clearly overfits with an AICc of 3010; furthermore, effective dimension is less than 5 as 90\% of variance is explained by the three first principal components for the normalized variables).
+
+The coefficients and local r-squared for the best model are shown in Fig.~\ref{fig:gwr}. The spatial distribution of residuals (not shown here) seems globally random, which confirms in a way the consistency of the approach: if a distinguishable geographical structure is found in residuals, it means that the geographical model or the variable taken into account fail to translate spatial structure. Let turn now to an interpretation of the spatial structures we obtain. First of all, the spatial distribution of model performance (local r-squared) reveals that regions where these simple socio-economic factors explain well prices cluster on the west coast, the south border, a north-east region from lakes to the east coast, and a stripe from Chicago to the south of Texas. The corresponding coefficients have different behaviors across the areas, suggesting different regimes\footnote{we comment their behavior in areas where the model has a minimal performance, that we fix arbitrarily as a local r-squared of 0.5}. For example, the influence of income in each region seems to be inverted when the distance to the coast increases (from north to south-east in the west, south to north in Texas, east to west in the east), what may be a fingerprint of different economic specializations. On the contrary, the regime shifts for wage show a clear cut between west (except around Seattle) and middle/east, that does not correspond to state-policies only as Texas splits in two. The same way, jobs per capita show an opposition between east and west, what could be due for example to cultural differences. These results are difficult to interpret directly, and must be understood as a confirmation that geographical particularities matters, as regions differ in regimes of role for each of the simple socio-economic-variables. Further precise knowledge could be obtained through targeted geographical studies including qualitative field studies and quantitative analyses, that are beyond the scope of this paper. An alternative that corresponds more to an econometric approach, is to refine explicative variables and their respective effects, without focusing on geographical structures: this will be done in the next subsection.
+
+Finally, we extract the spatial scale of processes studied, we compute the distribution of nearest neighbors distance with the optimal bandwidth. It yields roughly a log-normal distribution, of median 77km and interquartile 30km. We interpret this scale as the spatial stationarity scale of price processes.
 
 
 % - similarity with corssvalidation bandwidth ? 
-%  - distance range corresponding to bandwidth ?
 
 
 %%%%%%%%%%%%%%%%%%%%%%
@@ -377,7 +365,7 @@ The issue of spatial non-stationarity of geographical processes has always been 
 %\includegraphics[width=0.48\textwidth]{figures/gwr_allbest_residual}
 \includegraphics[width=0.48\textwidth]{figures/gwr_allbest_wage}
 \includegraphics[width=0.48\textwidth]{figures/gwr_allbest_LocalR2}
-\caption{\textbf{Results of GWR analyses.} For the best model in the sense of AICc, we map the spatial distribution of fitted coefficient, in order from left to right and top to bottom, $\beta_{income}$, $\beta_{percapjobs}$, $\beta_{wage}$}
+\caption{\textbf{Results of GWR analyses.} For the best model in the sense of AICc, we map the spatial distribution of fitted coefficient, in order from left to right and top to bottom, $\beta_{income}$, $\beta_{percapjobs}$, $\beta_{wage}$, and finally the local r-squared values.}
 \label{fig:gwr}
 \end{figure}
 %%%%%%%%%%%%%%%%%%%%%%
@@ -393,13 +381,17 @@ An other approach to take into account geographical heterogeneities without expl
 
 
 
+
+
 %%%%%%%%%%%%%%%%%%%%%%
 \section{Discussion} \label{sec:discuss}
 %%%%%%%%%%%%%%%%%%%%%%
 
-\subsection{On the complementarity on Spatial Analysis methods}
+\comment{hesite pas si tu as des idées pour la discussion/conclusion, j'avais mis des idées plutot geo et qui me venaient en tete vite fait}
 
-\comment{bla bla on conclusions drawn with each method ; how they are complementary $\rightarrow$ also present it as a methodological contribution. some literature do both, e.g. Chen, D. R., \& Truong, K. (2012). Using multilevel modeling and geographically weighted regression to identify spatial variations in the relationship between place-level disadvantages and obesity in Taiwan. Applied Geography, 32(2), 737-745. integrates both in a single approach.}
+\subsection{On the complementarity of Econometric and Spatial Analysis methods}
+
+One important aspect of our contribution is methodological e.g. \cite{chen2012using} integrates both in a single approach.
 
 
 \subsection{Towards localized car-regulation policies}

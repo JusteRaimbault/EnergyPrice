@@ -166,7 +166,15 @@ mat = counties@data[,3:ncol(counties@data)]
 for(j in 1:ncol(mat)){mat[,j]=(mat[,j]-min(mat[,j]))/(max(mat[,j])-min(mat[,j]))}
 summary(prcomp(mat))
 
+# average spatial range corresponding to optimal bandwidth
+d=spDists(counties,longlat = T)
+neighdists = apply(d,1,function(r){mean(sort(r)[2:(bwbest+1)])})
+median(neighdists) #  77.7379
+quantile(neighdists,0.75)-quantile(neighdists,0.25) # 30.20168
 
-  
+
+
+
+
 
 
