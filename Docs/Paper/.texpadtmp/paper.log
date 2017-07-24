@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.17 (TeX Live 2016) (preloaded format=pdflatex 2016.12.16)  8 APR 2017 15:19
+This is pdfTeX, Version 3.14159265-2.6-1.40.17 (TeX Live 2016) (preloaded format=pdflatex 2016.12.16)  30 JUN 2017 12:04
 entering extended mode
  restricted \write18 enabled.
  file:line:error style messages enabled.
@@ -446,11 +446,50 @@ Package: rerunfilecheck 2016/05/16 v1.8 Rerun checks for auxiliary files (HO)
 Package uniquecounter Info: New unique counter `rerunfilecheck' on input line 282.
 )
 \Hy@SectionHShift=\skip63
+) (/usr/local/texlive/2016/texmf-dist/tex/latex/threeparttable/threeparttable.sty
+Package: threeparttable 2003/06/13  v 3.0
+\@tempboxb=\box48
+) (/usr/local/texlive/2016/texmf-dist/tex/latex/tools/tabularx.sty
+Package: tabularx 2016/02/03 v2.11 `tabularx' package (DPC)
+ (/usr/local/texlive/2016/texmf-dist/tex/latex/tools/array.sty
+Package: array 2014/10/28 v2.4c Tabular extension package (FMi)
+\col@sep=\dimen157
+\extrarowheight=\dimen158
+\NC@list=\toks18
+\extratabsurround=\skip64
+\backup@length=\skip65
+)
+\TX@col@width=\dimen159
+\TX@old@table=\dimen160
+\TX@old@col=\dimen161
+\TX@target=\dimen162
+\TX@delta=\dimen163
+\TX@cols=\count136
+\TX@ftn=\toks19
+) (/usr/local/texlive/2016/texmf-dist/tex/latex/booktabs/booktabs.sty
+Package: booktabs 2016/04/27 v1.618033 publication quality tables
+\heavyrulewidth=\dimen164
+\lightrulewidth=\dimen165
+\cmidrulewidth=\dimen166
+\belowrulesep=\dimen167
+\belowbottomsep=\dimen168
+\aboverulesep=\dimen169
+\abovetopsep=\dimen170
+\cmidrulesep=\dimen171
+\cmidrulekern=\dimen172
+\defaultaddspace=\dimen173
+\@cmidla=\count137
+\@cmidlb=\count138
+\@aboverulesep=\dimen174
+\@belowrulesep=\dimen175
+\@thisruleclass=\count139
+\@lastruleclass=\count140
+\@thisrulewidth=\dimen176
 ) (/usr/local/texlive/2016/texmf-dist/tex/latex/amsfonts/amssymb.sty
 Package: amssymb 2013/01/14 v3.01 AMS font symbols
  (/usr/local/texlive/2016/texmf-dist/tex/latex/amsfonts/amsfonts.sty
 Package: amsfonts 2013/01/14 v3.01 Basic AMSFonts support
-\@emptytoks=\toks18
+\@emptytoks=\toks20
 LaTeX Font Info:    Redeclaring symbol font `AMSa' on input line 59.
 LaTeX Font Info:    Overwriting symbol font `AMSa' in version `normal'
 (Font)                  U/txsya/m/n --> U/msa/m/n on input line 59.
@@ -667,11 +706,11 @@ LaTeX Font Info:    Redeclaring math symbol \hslash on input line 262.
 LaTeX Font Info:    Redeclaring math symbol \backepsilon on input line 265.
 ) (./rotating.sty
 Package: rotating 2009/03/28 v2.16a rotated objects in LaTeX
-\c@r@tfl@t=\count136
-\rotFPtop=\skip64
-\rotFPbot=\skip65
-\rot@float@box=\box48
-\rot@mess@toks=\toks19
+\c@r@tfl@t=\count141
+\rotFPtop=\skip66
+\rotFPbot=\skip67
+\rot@float@box=\box49
+\rot@mess@toks=\toks21
 ) (/Users/Juste/Documents/ComplexSystems/EnergyPrice/Docs/Paper/.texpadtmp/paper.aux)
 \openout1 = `paper.aux'.
 
@@ -710,17 +749,17 @@ LaTeX Font Info:    Try loading font information for OT1+txr on input line 165.
 File: ot1txr.fd 2000/12/15 v3.1
 ) (/usr/local/texlive/2016/texmf-dist/tex/context/base/mkii/supp-pdf.mkii
 [Loading MPS to PDF converter (version 2006.09.02).]
-\scratchcounter=\count137
-\scratchdimen=\dimen157
-\scratchbox=\box49
-\nofMPsegments=\count138
-\nofMParguments=\count139
-\everyMPshowfont=\toks20
-\MPscratchCnt=\count140
-\MPscratchDim=\dimen158
-\MPnumerator=\count141
-\makeMPintoPDFobject=\count142
-\everyMPtoPDFconversion=\toks21
+\scratchcounter=\count142
+\scratchdimen=\dimen177
+\scratchbox=\box50
+\nofMPsegments=\count143
+\nofMParguments=\count144
+\everyMPshowfont=\toks22
+\MPscratchCnt=\count145
+\MPscratchDim=\dimen178
+\MPnumerator=\count146
+\makeMPintoPDFobject=\count147
+\everyMPtoPDFconversion=\toks23
 ) (/usr/local/texlive/2016/texmf-dist/tex/latex/oberdiek/epstopdf-base.sty
 Package: epstopdf-base 2016/05/15 v2.6 Base part for package epstopdf
  (/usr/local/texlive/2016/texmf-dist/tex/latex/oberdiek/grfext.sty
@@ -768,14 +807,14 @@ File: epstopdf-sys.cfg 2010/07/13 v1.3 Configuration of (r)epstopdf for TeX Live
 * \@reversemarginfalse
 * (1in=72.27pt=25.4mm, 1cm=28.453pt)
 
-\AtBeginShipoutBox=\box50
+\AtBeginShipoutBox=\box51
 Package hyperref Info: Link coloring OFF on input line 165.
 (/usr/local/texlive/2016/texmf-dist/tex/latex/hyperref/nameref.sty
 Package: nameref 2012/10/27 v2.43 Cross-referencing by name of section
  (/usr/local/texlive/2016/texmf-dist/tex/generic/oberdiek/gettitlestring.sty
 Package: gettitlestring 2016/05/16 v1.5 Cleanup title references (HO)
 )
-\c@section@level=\count143
+\c@section@level=\count148
 )
 LaTeX Info: Redefining \ref on input line 165.
 LaTeX Info: Redefining \pageref on input line 165.
@@ -808,26 +847,26 @@ LaTeX Font Info:    Try loading font information for U+txsyc on input line 222.
 File: utxsyc.fd 2000/12/15 v3.1
 )
 LaTeX Font Info:    Calculating math sizes for size <9.09996> on input line 222.
- <elsevier-logo-3p.pdf, id=56, 54.08205pt x 59.7432pt>
+ <elsevier-logo-3p.pdf, id=44, 54.08205pt x 59.7432pt>
 File: elsevier-logo-3p.pdf Graphic file (type pdf)
  <use elsevier-logo-3p.pdf>
-Package pdftex.def Info: elsevier-logo-3p.pdf used on input line 251.
+Package pdftex.def Info: elsevier-logo-3p.pdf used on input line 248.
 (pdftex.def)             Requested size: 54.0819pt x 59.74303pt.
-LaTeX Font Info:    Try loading font information for OT1+txss on input line 251.
+LaTeX Font Info:    Try loading font information for OT1+txss on input line 248.
  (/usr/local/texlive/2016/texmf-dist/tex/latex/txfonts/ot1txss.fd
 File: ot1txss.fd 2000/12/15 v3.1
 )
 LaTeX Font Info:    Font shape `OT1/txss/m/n' will be
-(Font)              scaled to size 8.54997pt on input line 251.
- <svsd-3p.pdf, id=57, 160.6pt x 12.64966pt>
+(Font)              scaled to size 8.54997pt on input line 248.
+ <svsd-3p.pdf, id=45, 160.6pt x 12.64966pt>
 File: svsd-3p.pdf Graphic file (type pdf)
  <use svsd-3p.pdf>
-Package pdftex.def Info: svsd-3p.pdf used on input line 251.
+Package pdftex.def Info: svsd-3p.pdf used on input line 248.
 (pdftex.def)             Requested size: 160.5996pt x 12.64961pt.
- <trptro.pdf, id=58, 111.00673pt x 59.76729pt>
+ <trptro.pdf, id=46, 111.00673pt x 59.76729pt>
 File: trptro.pdf Graphic file (type pdf)
  <use trptro.pdf>
-Package pdftex.def Info: trptro.pdf used on input line 251.
+Package pdftex.def Info: trptro.pdf used on input line 248.
 (pdftex.def)             Requested size: 111.00645pt x 59.76714pt.
 
 Overfull \hbox (4.50645pt too wide) has occurred while \output is active
@@ -836,15 +875,15 @@ Overfull \hbox (4.50645pt too wide) has occurred while \output is active
 
 File: elsevier-logo-3p.pdf Graphic file (type pdf)
 <use elsevier-logo-3p.pdf>
-Package pdftex.def Info: elsevier-logo-3p.pdf used on input line 251.
+Package pdftex.def Info: elsevier-logo-3p.pdf used on input line 248.
 (pdftex.def)             Requested size: 54.0819pt x 59.74303pt.
 File: svsd-3p.pdf Graphic file (type pdf)
  <use svsd-3p.pdf>
-Package pdftex.def Info: svsd-3p.pdf used on input line 251.
+Package pdftex.def Info: svsd-3p.pdf used on input line 248.
 (pdftex.def)             Requested size: 160.5996pt x 12.64961pt.
 File: trptro.pdf Graphic file (type pdf)
  <use trptro.pdf>
-Package pdftex.def Info: trptro.pdf used on input line 251.
+Package pdftex.def Info: trptro.pdf used on input line 248.
 (pdftex.def)             Requested size: 111.00645pt x 59.76714pt.
 
 Overfull \hbox (4.50645pt too wide) has occurred while \output is active
@@ -860,90 +899,83 @@ Overfull \hbox (2.44003pt too wide) has occurred while \output is active
 Overfull \vbox (52.96999pt too high) has occurred while \output is active []
 
 LaTeX Font Info:    Font shape `OMS/txr/m/n' in size <8> not available
-(Font)              Font shape `OMS/txsy/m/n' tried instead on input line 251.
+(Font)              Font shape `OMS/txsy/m/n' tried instead on input line 248.
 
 Overfull \vbox (25.45999pt too high) has occurred while \output is active []
 
  [1{/usr/local/texlive/2016/texmf-var/fonts/map/pdftex/updmap/pdftex.map}
 
- <./elsevier-logo-3p.pdf> <./svsd-3p.pdf> <./trptro.pdf>]
-LaTeX Font Info:    Font shape `OMS/txr/m/n' in size <10> not available
-(Font)              Font shape `OMS/txsy/m/n' tried instead on input line 280.
- [2]
-Underfull \hbox (badness 10000) detected at line 296
+ <./elsevier-logo-3p.pdf> <./svsd-3p.pdf> <./trptro.pdf>] [2]
+Underfull \hbox (badness 10000) detected at line 275
 []
  []
 
-<figures/average_regular_map.png, id=125, 722.7pt x 433.62pt>
+<figures/average_regular_map.png, id=116, 722.7pt x 433.62pt>
 File: figures/average_regular_map.png Graphic file (type png)
  <use figures/average_regular_map.png>
-Package pdftex.def Info: figures/average_regular_map.png used on input line 324.
+Package pdftex.def Info: figures/average_regular_map.png used on input line 303.
 (pdftex.def)             Requested size: 468.0pt x 280.79764pt.
- [3] <figures/moran_days.png, id=139, 722.7pt x 361.35pt>
+ [3] <figures/moran_days.png, id=131, 722.7pt x 361.35pt>
 File: figures/moran_days.png Graphic file (type png)
  <use figures/moran_days.png>
-Package pdftex.def Info: figures/moran_days.png used on input line 340.
+Package pdftex.def Info: figures/moran_days.png used on input line 313.
 (pdftex.def)             Requested size: 224.638pt x 112.32059pt.
- <figures/moran_decay_weeks.png, id=140, 722.7pt x 361.35pt>
+ <figures/moran_decay_weeks.png, id=132, 722.7pt x 361.35pt>
 File: figures/moran_decay_weeks.png Graphic file (type png)
  <use figures/moran_decay_weeks.png>
-Package pdftex.def Info: figures/moran_decay_weeks.png used on input line 341.
+Package pdftex.def Info: figures/moran_decay_weeks.png used on input line 314.
 (pdftex.def)             Requested size: 224.638pt x 112.32059pt.
- [4 <./figures/average_regular_map.png>] <figures/gwr_allbest_betaincome.png, id=156, 722.7pt x 397.485pt>
+ [4 <./figures/average_regular_map.png>] <figures/gwr_allbest_betaincome.png, id=147, 722.7pt x 397.485pt>
 File: figures/gwr_allbest_betaincome.png Graphic file (type png)
  <use figures/gwr_allbest_betaincome.png>
-Package pdftex.def Info: figures/gwr_allbest_betaincome.png used on input line 363.
+Package pdftex.def Info: figures/gwr_allbest_betaincome.png used on input line 329.
 (pdftex.def)             Requested size: 224.638pt x 123.55266pt.
- <figures/gwr_allbest_betapercapjobs.png, id=157, 722.7pt x 397.485pt>
+ <figures/gwr_allbest_betapercapjobs.png, id=148, 722.7pt x 397.485pt>
 File: figures/gwr_allbest_betapercapjobs.png Graphic file (type png)
  <use figures/gwr_allbest_betapercapjobs.png>
-Package pdftex.def Info: figures/gwr_allbest_betapercapjobs.png used on input line 364.
+Package pdftex.def Info: figures/gwr_allbest_betapercapjobs.png used on input line 330.
 (pdftex.def)             Requested size: 224.638pt x 123.55266pt.
- <figures/gwr_allbest_wage.png, id=158, 722.7pt x 397.485pt>
+ <figures/gwr_allbest_wage.png, id=149, 722.7pt x 397.485pt>
 File: figures/gwr_allbest_wage.png Graphic file (type png)
  <use figures/gwr_allbest_wage.png>
-Package pdftex.def Info: figures/gwr_allbest_wage.png used on input line 366.
+Package pdftex.def Info: figures/gwr_allbest_wage.png used on input line 332.
 (pdftex.def)             Requested size: 224.638pt x 123.55266pt.
- <figures/gwr_allbest_LocalR2.png, id=159, 722.7pt x 397.485pt>
+ <figures/gwr_allbest_LocalR2.png, id=150, 722.7pt x 397.485pt>
 File: figures/gwr_allbest_LocalR2.png Graphic file (type png)
  <use figures/gwr_allbest_LocalR2.png>
-Package pdftex.def Info: figures/gwr_allbest_LocalR2.png used on input line 367.
+Package pdftex.def Info: figures/gwr_allbest_LocalR2.png used on input line 333.
 (pdftex.def)             Requested size: 224.638pt x 123.55266pt.
 
 Underfull \vbox (badness 10000) has occurred while \output is active []
 
- [5 <./figures/moran_days.png> <./figures/moran_decay_weeks.png>]
-Missing character: There is no Ã in font txr!
-Missing character: There is no © in font txr!
-Missing character: There is no Ã in font txr!
-Missing character: There is no © in font txr!
- (/Users/Juste/Documents/ComplexSystems/EnergyPrice/Docs/Paper/.texpadtmp/paper.bbl [6 <./figures/gwr_allbest_betaincome.png> <./figures/gwr_allbest_betapercapjobs.png> <./figures/gwr_allbest_wage.png> <./figures/gwr_allbest_LocalR2.png>]) [7]
-Package atveryend Info: Empty hook `BeforeClearDocument' on input line 442.
-Package atveryend Info: Empty hook `AfterLastShipout' on input line 442.
+ [5 <./figures/moran_days.png> <./figures/moran_decay_weeks.png>] [6 <./figures/gwr_allbest_betaincome.png> <./figures/gwr_allbest_betapercapjobs.png> <./figures/gwr_allbest_wage.png> <./figures/gwr_allbest_LocalR2.png>]
+Underfull \hbox (badness 10000) detected at line 392
+[]
+ []
+
+[7] (/Users/Juste/Documents/ComplexSystems/EnergyPrice/Docs/Paper/.texpadtmp/paper.bbl) [8]
+Package atveryend Info: Empty hook `BeforeClearDocument' on input line 456.
+Package atveryend Info: Empty hook `AfterLastShipout' on input line 456.
  (/Users/Juste/Documents/ComplexSystems/EnergyPrice/Docs/Paper/.texpadtmp/paper.aux)
-Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 442.
-Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 442.
+Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 456.
+Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 456.
 Package rerunfilecheck Info: File `paper.out' has not changed.
 (rerunfilecheck)             Checksum: <no file>.
-
-
-LaTeX Warning: Label(s) may have changed. Rerun to get cross-references right.
-
-Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 442.
+Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 456.
  ) 
 Here is how much of TeX's memory you used:
- 14374 strings out of 493014
- 250201 string characters out of 6133350
- 304398 words of memory out of 5000000
- 17682 multiletter control sequences out of 15000+600000
- 67438 words of font info for 166 fonts, out of 8000000 for 9000
+ 14598 strings out of 493014
+ 253383 string characters out of 6133350
+ 307274 words of memory out of 5000000
+ 17882 multiletter control sequences out of 15000+600000
+ 70431 words of font info for 171 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
- 34i,15n,40p,10375b,452s stack positions out of 5000i,500n,10000p,200000b,80000s
-{/usr/local/texlive/2016/texmf-dist/fonts/enc/dvips/base/8r.enc}</usr/local/texlive/2016/texmf-dist/fonts/type1/public/amsfonts/cm/cmtt10.pfb></usr/local/texlive/2016/texmf-dist/fonts/type1/public/amsfonts/cm/cmtt8.pfb></usr/local/texlive/2016/texmf-dist/fonts/type1/public/txfonts/rtxi.pfb></usr/local/texlive/2016/texmf-dist/fonts/type1/public/txfonts/rtxmi.pfb></usr/local/texlive/2016/texmf-dist/fonts/type1/public/txfonts/rtxr.pfb></usr/local/texlive/2016/texmf-dist/fonts/type1/public/txfonts/txex.pfb></usr/local/texlive/2016/texmf-dist/fonts/type1/public/txfonts/txsy.pfb></usr/local/texlive/2016/texmf-dist/fonts/type1/urw/helvetic/uhvr8a.pfb></usr/local/texlive/2016/texmf-dist/fonts/type1/urw/times/utmb8a.pfb></usr/local/texlive/2016/texmf-dist/fonts/type1/urw/times/utmr8a.pfb></usr/local/texlive/2016/texmf-dist/fonts/type1/urw/times/utmri8a.pfb>
-Output written on /Users/Juste/Documents/ComplexSystems/EnergyPrice/Docs/Paper/.texpadtmp/paper.pdf (7 pages, 5779909 bytes).
+ 34i,14n,40p,10375b,402s stack positions out of 5000i,500n,10000p,200000b,80000s
+{/usr/local/texlive/2016/texmf-dist/fonts/enc/dvips/base/8r.enc}</usr/local/texlive/2016/texmf-dist/fonts/type1/public/amsfonts/cm/cmtt10.pfb></usr/local/texlive/2016/texmf-dist/fonts/type1/public/amsfonts/cm/cmtt8.pfb></usr/local/texlive/2016/texmf-dist/fonts/type1/public/txfonts/rtxi.pfb></usr/local/texlive/2016/texmf-dist/fonts/type1/public/txfonts/rtxmi.pfb></usr/local/texlive/2016/texmf-dist/fonts/type1/public/txfonts/rtxr.pfb></usr/local/texlive/2016/texmf-dist/fonts/type1/public/txfonts/rtxsc.pfb></usr/local/texlive/2016/texmf-dist/fonts/type1/public/txfonts/txex.pfb></usr/local/texlive/2016/texmf-dist/fonts/type1/public/txfonts/txsy.pfb></usr/local/texlive/2016/texmf-dist/fonts/type1/public/txfonts/txsyc.pfb></usr/local/texlive/2016/texmf-dist/fonts/type1/urw/helvetic/uhvr8a.pfb></usr/local/texlive/2016/texmf-dist/fonts/type1/urw/times/utmb8a.pfb></usr/local/texlive/2016/texmf-dist/fonts/type1/urw/times/utmr8a.pfb></usr/local/texlive/2016/texmf-dist/fonts/type1/urw/times/utmri8a.pfb>
+Output written on /Users/Juste/Documents/ComplexSystems/EnergyPrice/Docs/Paper/.texpadtmp/paper.pdf (8 pages, 5792211 bytes).
 PDF statistics:
- 241 PDF objects out of 1000 (max. 8388607)
- 199 compressed objects within 2 object streams
- 47 named destinations out of 1000 (max. 500000)
- 155 words of extra memory for PDF output out of 10000 (max. 10000000)
+ 260 PDF objects out of 1000 (max. 8388607)
+ 214 compressed objects within 3 object streams
+ 53 named destinations out of 1000 (max. 500000)
+ 131 words of extra memory for PDF output out of 10000 (max. 10000000)
 

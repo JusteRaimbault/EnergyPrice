@@ -61,15 +61,15 @@ staxes = states$statetax;names(staxes)=states$STATEFP
 countystates = counties$STATEFP;names(countystates)<-counties$GEOID
 countydata$taxes=staxes[countystates[countydata$countyid]]
 
-sdata = countydata[countydata$type=="Regular",]%>%group_by(countyid)%>%summarise(price=mean(meanprice))
+sdata = countydata[countydata$type=="Regular",]%>%group_by(countyid)%>%summarise(price=mean(meanprice)/(1+mean(taxes/100)))
 #sdata = countydata[countydata$type=="Regular"&countydata$month>201702,]%>%group_by(countyid)%>%summarise(price=mean(meanprice))
 
 
-filename='average_regular_map'
-title = "Average price by county"
+filename='average_regular_notaxes_map'
+title = "Average price by county, net of taxes"
 legendtitle="Price\n($/gal)"
 
-mapCounties(data.frame(sdata),"price",filename,title,legendtitle)
+mapCounties(data=data.frame(sdata),"price",filename,title,legendtitle)
 
 
 ###########

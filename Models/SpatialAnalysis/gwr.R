@@ -160,6 +160,13 @@ mapCounties(gwbest$SDF@data,"residual",'gwr_allbest_residual','','Residual',laye
 mapCounties(gwbest$SDF@data,"Local_R2",'gwr_allbest_LocalR2','','Local R2',layer=gwbest$SDF,withLayout = F)
 
 
+# write data to a single csv
+# write.table(data.frame(counties@data,gwbest$SDF[,c("Intercept","income","wage","percapjobs","residual","Local_R2")]),file=paste0(resdir,'counties_gwrbest.csv'),sep=";",row.names=F,col.names=T,quote=F)
+# statedata = joineddata[,c(1,5,6,10:14)];names(statedata)<-c("StateID","GEOID","name","income","jobs","wage","population","percapjobs")
+# statedata = as.tbl(statedata) %>% group_by(StateID) %>% summarise(income=mean(income),jobs=sum(jobs),wage=mean(wage),population=sum(population),percapjobs=mean(percapjobs))
+#  write.table(statedata,file=paste0(resdir,'stateaggregsocioeco.csv'),sep=";",row.names=F,col.names=T,quote=F)
+
+
 ## effective dim of variables
 cor(counties@data[,3:ncol(counties@data)])
 mat = counties@data[,3:ncol(counties@data)]
