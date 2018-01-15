@@ -7,10 +7,14 @@ setwd(paste0(Sys.getenv('CS_HOME'),'/EnergyPrice/Models/DataProcessing'))
 library(dplyr)
 library(rgdal)
 
-datadir = paste0(Sys.getenv('CS_DATA'),'/EnergyPrice/Data/raw/data_20170320/')
-cldatadir = paste0(Sys.getenv('CS_DATA'),'/EnergyPrice/Data/raw/cleandata_20170320/')
+#datadir = paste0(Sys.getenv('CS_DATA'),'/EnergyPrice/Data/raw/data_20170320/')
+#cldatadir = paste0(Sys.getenv('CS_DATA'),'/EnergyPrice/Data/raw/cleandata_20170320/')
+datadir =paste0(Sys.getenv('CS_HOME'),'/EnergyPrice/Data/raw/all/')
+cldatadir = paste0(Sys.getenv('CS_HOME'),'/EnergyPrice/Data/raw/cleandata_20171220/')
 locfile = paste0(Sys.getenv('CS_HOME'),'/EnergyPrice/Models/DataCollection/python/loc/adresses_20170320.csv')
-finaldir = paste0(Sys.getenv('CS_HOME'),'/EnergyPrice/Data/processed/processed_20170320/')
+#finaldir = paste0(Sys.getenv('CS_HOME'),'/EnergyPrice/Data/processed/processed_20170320/')
+finaldir = paste0(Sys.getenv('CS_HOME'),'/EnergyPrice/Data/processed/processed_20171220/')
+
 
 dir.create(cldatadir)
 dir.create(finaldir)
@@ -97,19 +101,26 @@ delayToSec<-function(s){
 }
 
 currentdata=data.frame();currentfilestamp=firstts
+allids=c()
 for(f in datafiles){
   show(f);currenttime = as.numeric(strsplit(f,'_')[[1]][1])
   currentd = as.tbl(read.csv(paste0(cldatadir,f),sep=";",stringsAsFactors = FALSE,header=FALSE))
   names(currentd)<-c("id","type","price","delay","user","ts","payment")
-  currentd = currentd[currentd$id%in%cladresses$id&currentd$payment=='credit'&currentd$price<10,]
-  currentd$time = currentd$ts - sapply(currentd$delay,delayToSec)
-  if(currenttime>currentfilestamp+604800|f==datafiles[length(datafiles)]){# store data if one week
-    show(paste0('writing ',currentfilestamp))
-    write.table(currentdata[!duplicated(currentdata),c(1,2,3,8)],file=paste0(finaldir,'weekdata_',currentfilestamp,'.csv'),sep=";",col.names = T,row.names = F,quote = F)
-    currentdata=data.frame();currentfilestamp=currenttime
-  }
-  currentdata=rbind(currentdata,currentd)
+  # count ids with adresses
+  allids=unique(c(allids,currentd$id))
+  
+  #currentd = currentd[currentd$id%in%cladresses$id&currentd$payment=='credit'&currentd$price<10,]
+  #currentd$time = currentd$ts - sapply(currentd$delay,delayToSec)
+  #if(currenttime>currentfilestamp+604800|f==datafiles[length(datafiles)]){# store data if one week
+  #  show(paste0('writing ',currentfilestamp))
+  #  write.table(currentdata[!duplicated(currentdata),c(1,2,3,8)],file=paste0(finaldir,'weekdata_',currentfilestamp,'.csv'),sep=";",col.names = T,row.names = F,quote = F)
+  #  currentdata=data.frame();currentfilestamp=currenttime
+  #}
+  #currentdata=rbind(currentdata,currentd)
 }
+
+#ids = cladresses$id
+#length(which(allids%in%ids))/length(allids)
 
 
 
@@ -119,9 +130,13 @@ for(f in datafiles){
 weekfiles = system(paste0("ls ",finaldir, "|grep weekdata"),intern = T)
 currentdata = data.frame()
 for(weekfile in weekfiles){
+  show(weekfile)
   currentdata = rbind(currentdata,as.tbl(read.csv(paste0(finaldir,weekfile),sep=";",header=T,stringsAsFactors = FALSE)))
   gc()
 }
+
+#ids = cladresses$id
+#length(which(currentdata$id%in%ids))/nrow(currentdata)
 
 currentdata$day = format(as.POSIXlt(min(currentdata$time) + (floor((currentdata$time - min(currentdata$time))/86400)*86400),origin = "1970-01-01", tz = "GMT"),format="%Y%m%d")
 currentdata=left_join(currentdata,cladresses[,c(1,5,6,7,8)])

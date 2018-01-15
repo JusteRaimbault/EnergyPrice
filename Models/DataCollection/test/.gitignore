@@ -1,3 +1,7 @@
 .tor_tmp
 data
 
+states
+request.sh
+reqs.txt
+
