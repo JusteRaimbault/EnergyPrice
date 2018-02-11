@@ -46,12 +46,12 @@ print('Effectively collecting '+str(len(uncollected))+' adresses')
 
 errorfile = open(locdir+'/errors.csv','a')
 
-data = []
+#data = []
 
 for station_id in uncollected :
     print('id : '+str(station_id))
     try :
-        result = requests.get('http://www.gasbuddy.com/Station/'+str(station_id),proxies=proxies)
+        result = requests.get(url+str(station_id),proxies=proxies)
         tree = html.fromstring(result.content)
         #
         if len(tree.find_class("station-address")) > 0 :

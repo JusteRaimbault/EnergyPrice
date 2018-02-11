@@ -22,27 +22,6 @@ adresses_file = 'loc/adresses.csv'
 # adress splitting
 
 
-def addr_search_query(line,markers):
-    pos = []
-    for marker in markers :
-        ind = line[1].find(marker)
-        if ind != -1 :
-            pos.append([marker,ind/len(line[1])])
-    sorted_pos = sorted(pos, key=lambda entry: entry[1])
-
-    prefix = ''
-    if len(sorted_pos)<2 :
-        prefix = line[1]
-    else :
-        markerind = 0
-        if sorted_pos[0][1] < 0.3 : markerind = 1
-        print(sorted_pos[markerind][0])
-        prefix = line[1].split(sorted_pos[markerind][0])[0]+sorted_pos[markerind][0]
-
-    #return(prefix)
-    return(prefix+' '+line[2]+' '+line[3])
-
-
 
 # adress markers
 markers =  ['St','Rd','Ave','Dr','Blvd','Hwy','Ln','Pkwy','Way']
