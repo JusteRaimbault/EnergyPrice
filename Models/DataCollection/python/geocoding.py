@@ -26,7 +26,15 @@ if os.path.isfile(locdir+'/coordinates.csv'):
         if len(line)>1 :
             existing.add(line[0])
 
+print('existing coords : '+str(len(existing)))
 
+nocoords = set()
+if os.path.isfile(locdir+'/nocoordinates.csv'):
+    for line in utils.read_csv(locdir+'/nocoordinates.csv',';'):
+        if len(line)>1 :
+            nocoords.add(line[0])
+
+print('no coords : '+str(len(nocoords)))
 
 
 def addr_search_query(line,markers):
@@ -58,8 +66,8 @@ j=0
 with open(adresses_file) as f:
     for linestr in f:
         line = linestr.replace('\n','').split(';')
-        print('Getting station '+line[0]+' - address : '+line[1]+' '+line[2]+' '+line[3])
-        if line[0] not in existing :
+        if line[0] not in existing and line[0] not in nocoords :
+            print('Getting station '+line[0]+' - address : '+line[1]+' '+line[2]+' '+line[3])
             #raw = line[1].split(' ')
             querystring = addr_search_query(line,markers)
             #print(querystring)
@@ -70,6 +78,8 @@ with open(adresses_file) as f:
                     print(querystring+" - coords : "+str(res[0]['lat'])+' ; '+str(res[0]['lon']));print('')
                     utils.append_csv([[line[0],querystring,str(res[0]['lat']),str(res[0]['lon'])]],locdir+'/coordinates.csv',';')
                     count=count+1
+                else :
+                    utils.append_csv([[line[0],querystring]],locdir+'/nocoordinates.csv',';')
             except Exception :
                 print(traceback.format_exc())
 

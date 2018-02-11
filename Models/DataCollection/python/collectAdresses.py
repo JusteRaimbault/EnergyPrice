@@ -24,7 +24,10 @@ for datafile in os.listdir(datadir):
     if re.search('data',datafile) :
         print(datafile)
         for line in utils.read_csv(datadir+'/'+datafile,';'):
-            ids.add(line[0])
+            if len(line)> 1:
+                ids.add(line[0])
+
+print('total ids : '+str(len(ids)))
 
 
 # read already collected adresses
@@ -34,6 +37,8 @@ if os.path.isfile(locdir+'/adresses.csv'):
         if len(line)>1 :
             existing.add(line[0])
 
+print('existing adresses : '+str(len(existing)))
+
 # get uncollected
 uncollected = ids.difference(existing)
 
@@ -41,14 +46,14 @@ print('Effectively collecting '+str(len(uncollected))+' adresses')
 
 errorfile = open(locdir+'/errors.csv','a')
 
-#data = []
+data = []
 
 for station_id in uncollected :
     print('id : '+str(station_id))
     try :
         result = requests.get('http://www.gasbuddy.com/Station/'+str(station_id),proxies=proxies)
         tree = html.fromstring(result.content)
-#        #
+        #
         if len(tree.find_class("station-address")) > 0 :
             address = ''
             try :
@@ -75,9 +80,9 @@ for station_id in uncollected :
                 code = address.xpath("//span[@itemprop='postalCode']/text()")[0]
             except :
                 print('station '+str(station_id)+' has no code')
-#            # append to data
-#            #data.append([station_id,street_address,locality,region,code])
-#            # shitty vps -> memory problem -> append directly to file
+            # append to data
+            #data.append([station_id,street_address,locality,region,code])
+            # shitty vps -> memory problem -> append directly to file
             utils.append_csv([[station_id,street_address,locality,region,code]],locdir+'/adresses.csv',';')
         else :
             errorfile.write(str(station_id)+'\n')
@@ -87,16 +92,16 @@ for station_id in uncollected :
         print(traceback.format_exc())
         print("error getting station "+str(station_id))
         errorfile.write(str(station_id)+'\n')
-#
-## append data to adress file
 
-## create file with header if not exists
-##if not os.path.exists(locdir):
-##    os.makedirs(locdir)
+# append data to adress file
 
-##if not os.path.isfile(locdir+'/adresses.csv'):
-##    utils.append_csv([['id','address','locality','region','code']],locdir+'/adresses.csv',';')
+# create file with header if not exists
+#if not os.path.exists(locdir):
+#    os.makedirs(locdir)
 
-##utils.append_csv(data,locdir+'/adresses.csv',';')
+#if not os.path.isfile(locdir+'/adresses.csv'):
+#    utils.append_csv([['id','address','locality','region','code']],locdir+'/adresses.csv',';')
+
+#utils.append_csv(data,locdir+'/adresses.csv',';')
 
 print('Ellapsed Time : '+str(time.time() - start))
