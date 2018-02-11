@@ -188,28 +188,31 @@
 \def\ps@pprintTitle{%
 \vspace*{1.6mm}
     \def\@evenhead{%% Even head
-      \setbox1=\hbox{\elslogo}%
-      \setbox2=\hbox{\sdlogo}%
-      \setbox3=\hbox{\jnllogo}%
+%      \setbox1=\hbox{\elslogo}%
+%      \setbox2=\hbox{\sdlogo}%
+%     \setbox3=\hbox{\jnllogo}%
 %      \@tempdima=\textwidth\relax%
 %      \advance \@tempdima - \wd1%
 %      \advance \@tempdima - \wd3%
 %      \advance \@tempdima - 72pt%
 %      \showthe\wd1
 %      \showthe\wd2
-      \vspace*{2pc}
-      \parbox[t]{\wd1}{\hspace*{-2.6pt}\raisebox{3pt}{\elslogo}}
-       \hfil\parbox[t]{19pc}{\centering%
-       \raisebox{33.6pt}{\sdlogo}\\[-15pt]
-       \mbox{\footnotesize\@journalname~00~(2017)%
-         ~000--000}}\hfil%
-        \raisebox{24.8pt}{\parbox[c]{\wd3}{\jnllogo\\[2pt]
-        \ifelsarticle@nsmodel%
-         \hspace*{-1.70pc}{\footnotesize {www.elsevier.com/locate/procedia}}%
-        \fi
-    }}}
+%      \vspace*{2pc}
+%     \parbox[t]{\wd1}{\hspace*{-2.6pt}\raisebox{3pt}{\elslogo}}
+%       \hfil\parbox[t]{19pc}{\centering%
+%       \raisebox{33.6pt}{\sdlogo}\\[-15pt]
+%       \mbox{\footnotesize\@journalname~00~(2017)%
+%         ~000--000}}\hfil%
+%        \raisebox{24.8pt}{\parbox[c]{\wd3}{\jnllogo\\[2pt]
+%        \ifelsarticle@nsmodel%
+%         \hspace*{-1.70pc}{\footnotesize {www.elsevier.com/locate/procedia}}%
+%        \fi
+%    }}
+}
       \let\@oddhead\@evenhead%
-      \def\@oddfoot{\smash{\lower-19.3pt\vbox to 0pt{\fontsize{8}{10}\selectfont{\@issn~\@CopyrightLineBottom.\endgraf\hfill}}}}
+      \def\@oddfoot{
+      %\smash{\lower-19.3pt\vbox to 0pt{\fontsize{8}{10}\selectfont{\@issn~\@CopyrightLineBottom.\endgraf\hfill}}}
+      }
       %\def\@evenfoot{}
 }        
 
@@ -249,11 +252,15 @@
 
 \def\ps@headings{%
     \def\@oddhead{{\itshape\footnotesize\fontsize{8}{8}\selectfont%
-         \hfil\@runauth~/~\@journalname~00~(2016)~%
-         000--000\hfil}{\footnotesize\fontsize{8}{8}\selectfont\thepage}}
+         \hfil\@runauth
+         %~/~\@journalname~00~(2016)~%
+         %000--000
+         \hfil}{\footnotesize\fontsize{8}{8}\selectfont\thepage}}
     \def\@evenhead{{\footnotesize\fontsize{8}{8}\selectfont\thepage}{\hfil{\itshape\footnotesize\fontsize{8}{8}\selectfont%
-         \@runauth~/~\@journalname~00~(2016)~%
-         000--000}}\hfil}%
+         \@runauth
+         %~/~\@journalname~00~(2016)~%
+         %000--000
+         }}\hfil}%
     \let\@evenfoot\@empty%
     \let\@evenfoot\@oddfoot}
 
@@ -290,8 +297,7 @@
 %   \CopyrightLine[<text-before-year>]{<year>}{<restt-of-the-copyright-text>}
 %   \CopyrightLine[Crown copyright]{2011}{Published by Elsevier Ltd.}
 %   \CopyrightLine{2011}{Elsevier Ltd. All rights reserved}
-\CopyrightLine{2017}{The Authors. Published by Elsevier B.V.\newline%
- Peer-review under responsibility of the Scientific Committee of EWGT2017}
+\CopyrightLine{}{}
 
 %\CopyrightLine{2014}{The Authors. Published by Elsevier B.V.\newline%
 %Peer-review under responsibility of [NAME OF THE ORGANIZATION]}
@@ -302,7 +308,8 @@
 \vskip-1.5pt\parindent9pt
   \noindent\unskip{\fontsize{9}{11}\selectfont\bfseries Abstract\par}\vspace*{6.8pt}%
   \elsarticle@absfont\par\unskip\noindent\ignorespaces}
- {\vskip-12pt\if@copyrightline\@CopyrightLine\unskip.\fi\egroup}
+ {%\vskip-12pt\if@copyrightline\@CopyrightLine\unskip.\fi
+ \egroup}
 
 \def\keyword{%
 \vskip0.5pt

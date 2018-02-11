@@ -65,6 +65,14 @@ sdata = countydata[countydata$type=="Regular",]%>%group_by(countyid)%>%summarise
 #sdata = countydata[countydata$type=="Regular"&countydata$month>201702,]%>%group_by(countyid)%>%summarise(price=mean(meanprice))
 
 
+filename='average_regular_map_fr'
+title = "Prix moyen par comte"
+legendtitle="Prix\n($/gal)"
+
+mapCounties(data=data.frame(sdata),"price",filename,title,legendtitle)
+
+
+
 filename='average_regular_notaxes_map'
 title = "Average price by county, net of taxes"
 legendtitle="Price\n($/gal)"
@@ -101,7 +109,7 @@ getDailyPrices<-function(day){
 }
 
 daycounts = countydata[countydata$type=="Regular",]%>%group_by(day)%>%summarise(count=n())
-# -> le 6 mars est chie, à virer (corresponds to end of hole ?)
+# -> le 6 mars est chie, ?? virer (corresponds to end of hole ?)
 
 n=length(counties)
 m = matrix(rep(1,n*n),nrow=n,ncol=n);diag(m)<-0

@@ -64,7 +64,8 @@ mapCounties<-function(data,variable,filename,title,legendtitle,layer=counties,ex
   breaks=classIntervals(data[,variable],20)
   
   plot(states, border = NA, col = "white",add=T)
-  cols <- carto.pal(pal1 = "green.pal",n1 = 10, pal2 = "red.pal",n2 = 10)
+  #cols <- carto.pal(pal1 = "green.pal",n1 = 10, pal2 = "red.pal",n2 = 10)
+  cols <- carto.pal( pal1 = "red.pal",n1 = 20)
   choroLayer(spdf = layer,spdfid = "GEOID",
              df = data,dfid = 'countyid',
              var=variable,
