@@ -57,8 +57,8 @@ for station_id in ids :
     print('id : '+str(station_id))
     try :
         # getting html from url
-        #result = requests.get('http://www.gasbuddy.com/Station/'+str(station_id),proxies=proxies)
-        result = requests.get('http://www.gasbuddy.com/Station/'+str(station_id))
+        result = requests.get('http://www.gasbuddy.com/Station/'+str(station_id),proxies=proxies)
+        #result = requests.get('http://www.gasbuddy.com/Station/'+str(station_id))
         try :
             tree = html.fromstring(result.content)
         except Exception :
