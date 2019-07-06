@@ -29,19 +29,27 @@ solvePrices <- function(unit_price,transportation_cost,num_stations,density,minP
   
   optimized <- ga(type = "real-valued", fitness =  function(p) -objective(p),
            lower = rep(minPrice,num_stations), upper = rep(maxPrice,num_stations), 
-           popSize = 50, maxiter = iters,parallel = 4)
+           popSize = 200, maxiter = iters,parallel = 50)
   return(optimized)
 }
 
 
+for(mprice in c(1.0,2.0,10)){
+  for(nstation in c(10,20,100)){
 uniformdensity = rep(1,10000)
-uniformprices <- solvePrices(0.8,1,50,uniformdensity,minPrice=0.01,maxPrice=1.5,iters=2000)
-plot(c(uniformprices@solution),type='l')
+uniformprices <- solvePrices(0.8,1,nstation,uniformdensity,minPrice=0.01,maxPrice=mprice,iters=100000)
+save(uniformprices,file=paste0('res/uniform_maxprice',mprice,'_nstation',nstation,'.RData'))
+#plot(c(uniformprices@solution),type='l')
+}
+}
 
-tentdensity = c(seq(1,50,by=0.1),seq(50,1,by=-0.1))
-tentprices <- solvePrices(0.8,1,20,tentdensity,minPrice=0.01,maxPrice=100,iters=10000)
-plot(c(tentprices@solution),type='l')
-
-
+for(mprice in c(1.0,2.0,10)){
+  for(nstation in c(10,20,100)){
+tentdensity = c(seq(1,10,by=0.01),seq(10,1,by=-0.01))
+tentprices <- solvePrices(0.8,1,nstation,tentdensity,minPrice=0.01,maxPrice=mprice,iters=100000)#,costFunction=function(d){return((d*10)^2)})
+save(tentprices,file=paste0('res/linear_maxprice',mprice,'_nstation',nstation,'.RData'))
+#plot(c(tentprices@solution),type='l')
+}
+}
 
 
