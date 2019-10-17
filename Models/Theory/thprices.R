@@ -1,5 +1,5 @@
 
-setwd(paste0(Sys.getenv('CS_HOME'),'/EnergyPrice/Models/Theoretical'))
+setwd(paste0(Sys.getenv('CS_HOME'),'/EnergyPrice/Models/Theory'))
 
 library(GA)
 
@@ -29,27 +29,28 @@ solvePrices <- function(unit_price,transportation_cost,num_stations,density,minP
   
   optimized <- ga(type = "real-valued", fitness =  function(p) -objective(p),
            lower = rep(minPrice,num_stations), upper = rep(maxPrice,num_stations), 
-           popSize = 200, maxiter = iters,parallel = 50)
+           popSize = 50, maxiter = iters,parallel = 50)
   return(optimized)
 }
 
 
-for(mprice in c(1.0,2.0,10)){
-  for(nstation in c(10,20,100)){
+#for(mprice in c(1.0,2.0,10)){
+#  for(nstation in c(10,20,100)){
+mprice=10;nstation=20
 uniformdensity = rep(1,10000)
 uniformprices <- solvePrices(0.8,1,nstation,uniformdensity,minPrice=0.01,maxPrice=mprice,iters=100000)
 save(uniformprices,file=paste0('res/uniform_maxprice',mprice,'_nstation',nstation,'.RData'))
 #plot(c(uniformprices@solution),type='l')
-}
-}
+#}
+#}
 
-for(mprice in c(1.0,2.0,10)){
-  for(nstation in c(10,20,100)){
+#for(mprice in c(1.0,2.0,10)){
+#  for(nstation in c(10,20,100)){
 tentdensity = c(seq(1,10,by=0.01),seq(10,1,by=-0.01))
 tentprices <- solvePrices(0.8,1,nstation,tentdensity,minPrice=0.01,maxPrice=mprice,iters=100000)#,costFunction=function(d){return((d*10)^2)})
 save(tentprices,file=paste0('res/linear_maxprice',mprice,'_nstation',nstation,'.RData'))
 #plot(c(tentprices@solution),type='l')
-}
-}
+#}
+#}
 
 
