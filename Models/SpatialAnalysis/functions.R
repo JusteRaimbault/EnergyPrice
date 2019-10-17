@@ -47,13 +47,16 @@ getPeriodPrices<-function(){
 }
 
 
-mapCounties<-function(data,variable,filename,title,legendtitle,layer=counties,extent=extent,withLayout=T,legendRnd=2){
+mapCounties<-function(data,variable,filename,title,legendtitle,layer=counties,extent=extent,withLayout=T,legendRnd=2,pdf=T,divergentColors=T){
   extent <- readOGR(paste0(Sys.getenv("CS_HOME"),'/EnergyPrice/Data/processed/processed_20170320/gis'),layer = 'extent',stringsAsFactors = FALSE)
   layer$GEOID=counties$GEOID
   
-  #png(file=paste0(resdir,'average_regular_march_map.png'),width=10,height=6,units='cm',res=600)
-  pdf(file=paste0(resdir,filename,'.pdf'),width=10,height=5.5)#paper='a4r')
-  
+  if(pdf==T){
+    pdf(file=paste0(resdir,filename,'.pdf'),width=10,height=5.5)#paper='a4r')
+  }else{
+    png(file=paste0(resdir,filename,'.png'),width=10,height=6,units='cm',res=300)
+  }
+    
   if(withLayout){par(mar = c(0.4,0.4,2,0.4))}else{par(mar = c(0.4,0.4,0.4,0.4))}
   
 
@@ -64,8 +67,13 @@ mapCounties<-function(data,variable,filename,title,legendtitle,layer=counties,ex
   breaks=classIntervals(data[,variable],20)
   
   plot(states, border = NA, col = "white",add=T)
-  #cols <- carto.pal(pal1 = "green.pal",n1 = 10, pal2 = "red.pal",n2 = 10)
-  cols <- carto.pal( pal1 = "red.pal",n1 = 20)
+  
+  if(divergentColors==T){
+    cols <- carto.pal(pal1 = "green.pal",n1 = 10, pal2 = "red.pal",n2 = 10)
+  }else{
+    cols <- carto.pal( pal1 = "red.pal",n1 = 20)
+  }
+  
   choroLayer(spdf = layer,spdfid = "GEOID",
              df = data,dfid = 'countyid',
              var=variable,

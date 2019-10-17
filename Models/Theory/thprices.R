@@ -5,7 +5,7 @@ library(GA)
 
 #'
 #'
-solvePrices <- function(unit_price,transportation_cost,num_stations,density,minPrice=0.001,maxPrice=10,iters=1000,costFunction=function(d){return(d^2)}){
+solvePrices <- function(unit_price,transportation_cost,num_stations,density,minPrice=0.001,maxPrice=10,iters=1000,parallel=4,costFunction=function(d){return(d^2)}){
   theta <- function(j,prices){
     return(((prices[((j+1)%%length(prices))+1]-prices[(j%%length(prices))+1])/((prices[((j+1)%%length(prices))+1]+prices[(j%%length(prices))+1])*transportation_cost) + 2*pi*j/num_stations + (2*pi*prices[((j+1)%%length(prices))+1])/((prices[((j+1)%%length(prices))+1]+prices[(j%%length(prices))+1])*num_stations))%%(2*pi))
   }
@@ -29,28 +29,67 @@ solvePrices <- function(unit_price,transportation_cost,num_stations,density,minP
   
   optimized <- ga(type = "real-valued", fitness =  function(p) -objective(p),
            lower = rep(minPrice,num_stations), upper = rep(maxPrice,num_stations), 
-           popSize = 50, maxiter = iters,parallel = 50)
+           popSize = 50, maxiter = iters,parallel = parallel)
   return(optimized)
 }
 
+#test
+iters=10
+repets=50
 
-#for(mprice in c(1.0,2.0,10)){
-#  for(nstation in c(10,20,100)){
-mprice=10;nstation=20
-uniformdensity = rep(1,10000)
-uniformprices <- solvePrices(0.8,1,nstation,uniformdensity,minPrice=0.01,maxPrice=mprice,iters=100000)
-save(uniformprices,file=paste0('res/uniform_maxprice',mprice,'_nstation',nstation,'.RData'))
-#plot(c(uniformprices@solution),type='l')
-#}
+#iters=50000
+#repets=100
+
+library(doParallel)
+cl <- makeCluster(50,outfile='loggwr')
+registerDoParallel(cl)
+
+#for(mprice in c(1.0,2.0,10)){ # set a thematic realistic value (difficulties to converge otherwise)
+mprice=2
+  for(nstation in c(10,20,100)){
+    uniformdensity = rep(1,10000)
+    #uniformprices=list()
+    #for(k in 1:repets){
+    #  uniformprices[[k]] <- solvePrices(0.8,1,nstation,uniformdensity,minPrice=0.01,maxPrice=mprice,iters=1000)
+    #}
+    # parallelize GAs
+    uniformprices <- foreach(k=1:repets) %dopar% {
+      return(solvePrices(0.8,1,nstation,uniformdensity,minPrice=0.01,maxPrice=mprice,iters=iters,parallel=1))
+    }
+    save(uniformprices,file=paste0('res/uniform_maxprice',mprice,'_nstation',nstation,'_',format(Sys.time(), "%Y%m%d_%H%M%S"),'.RData'))
+}
 #}
 
-#for(mprice in c(1.0,2.0,10)){
-#  for(nstation in c(10,20,100)){
-tentdensity = c(seq(1,10,by=0.01),seq(10,1,by=-0.01))
-tentprices <- solvePrices(0.8,1,nstation,tentdensity,minPrice=0.01,maxPrice=mprice,iters=100000)#,costFunction=function(d){return((d*10)^2)})
-save(tentprices,file=paste0('res/linear_maxprice',mprice,'_nstation',nstation,'.RData'))
-#plot(c(tentprices@solution),type='l')
-#}
-#}
+
+
+mprice=2;
+  for(nstation in c(10,20,100)){
+    tentdensity = c(seq(1,1000,by=1),seq(1000,1,by=-1))
+    #tentprices=list()
+    #for(k in 1:repets){
+    #  show(k)
+    #  tentprices[[k]] <- solvePrices(0.8,1,nstation,tentdensity,minPrice=0.01,maxPrice=mprice,iters=10000)#,costFunction=function(d){return((d*10)^2)})
+    #}
+    tentprices <- foreach(k=1:repets) %dopar% {
+      return(solvePrices(0.8,1,nstation,tentdensity,minPrice=0.01,maxPrice=mprice,iters=iters,parallel = 1))
+    }
+  save(tentprices,file=paste0('res/linear_maxprice',mprice,'_nstation',nstation,'_',format(Sys.time(), "%Y%m%d_%H%M%S"),'.RData'))
+}
+
+mprice=2;
+for(nstation in c(10,20,100)){
+  expdec = 1000*exp(-(0:1000)/100)
+  expdensity = c(rev(expdec),expdec)
+  #expprices=list()
+  #for(k in 1:20){
+  #  expprices[[k]] <- solvePrices(0.8,1,nstation,expdensity,minPrice=0.01,maxPrice=mprice,iters=10000)#,costFunction=function(d){return((d*10)^2)})
+  #}
+  expprices <- foreach(k=1:repets) %dopar% {
+    return(solvePrices(0.8,1,nstation,expdensity,minPrice=0.01,maxPrice=mprice,iters=iters,parallel=1))
+  }
+  save(expprices,file=paste0('res/exp_maxprice',mprice,'_nstation',nstation,'_',format(Sys.time(), "%Y%m%d_%H%M%S"),'.RData'))
+}
+
+
 
 
