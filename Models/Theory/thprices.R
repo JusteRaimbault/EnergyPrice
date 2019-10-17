@@ -2,6 +2,7 @@
 setwd(paste0(Sys.getenv('CS_HOME'),'/EnergyPrice/Models/Theory'))
 
 library(GA)
+library(doParallel)
 
 #'
 #'
@@ -40,8 +41,7 @@ repets=50
 #iters=50000
 #repets=100
 
-library(doParallel)
-cl <- makeCluster(50,outfile='loggwr')
+cl <- makeCluster(50,outfile='log')
 registerDoParallel(cl)
 
 #for(mprice in c(1.0,2.0,10)){ # set a thematic realistic value (difficulties to converge otherwise)
@@ -54,7 +54,8 @@ mprice=2
     #}
     # parallelize GAs
     uniformprices <- foreach(k=1:repets) %dopar% {
-      return(solvePrices(0.8,1,nstation,uniformdensity,minPrice=0.01,maxPrice=mprice,iters=iters,parallel=1))
+       library(GA)
+       return(solvePrices(0.8,1,nstation,uniformdensity,minPrice=0.01,maxPrice=mprice,iters=iters,parallel=FALSE))
     }
     save(uniformprices,file=paste0('res/uniform_maxprice',mprice,'_nstation',nstation,'_',format(Sys.time(), "%Y%m%d_%H%M%S"),'.RData'))
 }
@@ -71,7 +72,8 @@ mprice=2;
     #  tentprices[[k]] <- solvePrices(0.8,1,nstation,tentdensity,minPrice=0.01,maxPrice=mprice,iters=10000)#,costFunction=function(d){return((d*10)^2)})
     #}
     tentprices <- foreach(k=1:repets) %dopar% {
-      return(solvePrices(0.8,1,nstation,tentdensity,minPrice=0.01,maxPrice=mprice,iters=iters,parallel = 1))
+       library(GA)
+       return(solvePrices(0.8,1,nstation,tentdensity,minPrice=0.01,maxPrice=mprice,iters=iters,parallel = FALSE))
     }
   save(tentprices,file=paste0('res/linear_maxprice',mprice,'_nstation',nstation,'_',format(Sys.time(), "%Y%m%d_%H%M%S"),'.RData'))
 }
@@ -85,7 +87,8 @@ for(nstation in c(10,20,100)){
   #  expprices[[k]] <- solvePrices(0.8,1,nstation,expdensity,minPrice=0.01,maxPrice=mprice,iters=10000)#,costFunction=function(d){return((d*10)^2)})
   #}
   expprices <- foreach(k=1:repets) %dopar% {
-    return(solvePrices(0.8,1,nstation,expdensity,minPrice=0.01,maxPrice=mprice,iters=iters,parallel=1))
+     library(GA)
+     return(solvePrices(0.8,1,nstation,expdensity,minPrice=0.01,maxPrice=mprice,iters=iters,parallel=FALSE))
   }
   save(expprices,file=paste0('res/exp_maxprice',mprice,'_nstation',nstation,'_',format(Sys.time(), "%Y%m%d_%H%M%S"),'.RData'))
 }
