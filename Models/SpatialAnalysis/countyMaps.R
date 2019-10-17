@@ -98,6 +98,17 @@ g+geom_line(show.legend = F)
 
 
 
+###########
+###########
+
+# state time series
+statedata <- read.csv(file='../DataCollection/test/states/USStates.csv',stringsAsFactors = F)
+#statedata$date <- strptime(gsub("/","",as.character(statedata$date),fixed=T),format='%m/%d/%Y',tz = "GMT")
+statedata$date <-as.POSIXct(as.character(statedata$date),format='%m/%d/%Y')
+g=ggplot(statedata,aes(x=date,y=price,group=stateid,color=stateid))
+g+geom_line()
+ggsave(file=paste0(resdir,'states_ts.png'),width=15,height=10,units='cm')
+
 
 ############
 ############
@@ -138,10 +149,12 @@ for(decay in alldecays){
     autocorrs=append(autocorrs,mean(rho));days=append(days,day);decays=append(decays,decay)
   }
 }
-moran_days_data = data.frame(rho=autocorrs,day=strptime(as.character(days),format='%Y%m%d'),decay=as.character(decays))
+#moran_days_data = data.frame(rho=autocorrs,day=strptime(as.character(days),format='%Y%m%d'),decay=decays)
+moran_days_data = data.frame(rho=autocorrs,day=as.numeric(as.character(days)),decay=decays)
 save(moran_days_data,file='data/moran_days_data.RData')
+write.csv(moran_days_data,file='data/moran_days_data.csv',row.names = F)
 
-g=ggplot(moran_days_data,aes(x=day,y=rho,color=decay,group=decay))
+g=ggplot(moran_days_data,aes(x=day,y=rho,color=as.character(decay),group=as.character(decay)))
 g+geom_point(size=0.5)+stat_smooth(se = T,span = 0.2)+ylab("Moran index") + 
   theme(axis.title = element_text(size = 15), axis.text.x = element_text(size = 10), axis.text.y = element_text(size = 10))
 ggsave(file=paste0(resdir,'moran_days.pdf'),width=10,height=5)
@@ -172,8 +185,10 @@ for(decay in alldecays){
     autocorrs=append(autocorrs,mean(rho));days=append(days,day);decays=append(decays,decay)
   }
 }
-moran_decay_weeks_data = data.frame(rho=autocorrs,week=strptime(as.character(alldays[days]),format='%Y%m%d'),decay=decays)
+#moran_decay_weeks_data = data.frame(rho=autocorrs,week=strptime(as.character(alldays[days]),format='%Y%m%d'),decay=decays)
+moran_decay_weeks_data = data.frame(rho=autocorrs,week=as.numeric(as.character(alldays[days])),decay=decays)
 save(moran_decay_weeks_data,file='data/moran_decay_weeks_data.RData')
+write.csv(moran_decay_weeks_data,file='data/moran_decay_weeks_data.csv',row.names = F)
 
 g=ggplot(moran_decay_weeks_data,aes(x=decay,y=rho,color=week,group=week))
 g+geom_point()+geom_line()+scale_x_log10()+xlab('Spatial autocorrelation range')+ylab("Moran index")+scale_colour_datetime(name='Week')+
