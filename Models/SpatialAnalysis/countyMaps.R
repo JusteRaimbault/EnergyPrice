@@ -61,19 +61,25 @@ staxes = states$statetax;names(staxes)=states$STATEFP
 countystates = counties$STATEFP;names(countystates)<-counties$GEOID
 countydata$taxes=staxes[countystates[countydata$countyid]]
 
-sdata = countydata[countydata$type=="Regular",]%>%group_by(countyid)%>%summarise(price=mean(meanprice)/(1+mean(taxes/100)))
 #sdata = countydata[countydata$type=="Regular"&countydata$month>201702,]%>%group_by(countyid)%>%summarise(price=mean(meanprice))
+sdata = countydata[countydata$type=="Regular",]%>%group_by(countyid)%>%summarise(price=mean(meanprice,na.rm = T))
+#sdata = countydata[countydata$type=="Regular",]%>%group_by(countyid)%>%summarise(price=mean(meanprice)) # same
 
-
-filename='average_regular_map_fr'
+filename='maps/average_regular_map_fr'
 title = "Prix moyen par comte"
 legendtitle="Prix\n($/gal)"
+mapCounties(data=data.frame(sdata),"price",filename,title,legendtitle)
+#mapCounties(data=data.frame(sdata),"price",filename,title,legendtitle,pdf=F)
 
+filename='maps/average_regular_map'
+title = "Average price by county"
+legendtitle="Price\n($/gal)"
 mapCounties(data=data.frame(sdata),"price",filename,title,legendtitle)
 
 
+sdata = countydata[countydata$type=="Regular",]%>%group_by(countyid)%>%summarise(price=mean(meanprice,na.rm=T)/(1+mean(taxes/100)))
 
-filename='average_regular_notaxes_map'
+filename='maps/average_regular_notaxes_map'
 title = "Average price by county, net of taxes"
 legendtitle="Price\n($/gal)"
 
@@ -132,8 +138,10 @@ for(decay in alldecays){
     autocorrs=append(autocorrs,mean(rho));days=append(days,day);decays=append(decays,decay)
   }
 }
+moran_days_data = data.frame(rho=autocorrs,day=strptime(as.character(days),format='%Y%m%d'),decay=as.character(decays))
+save(moran_days_data,file='data/moran_days_data.RData')
 
-g=ggplot(data.frame(rho=autocorrs,day=strptime(as.character(days),format='%Y%m%d'),decay=as.character(decays)),aes(x=day,y=rho,color=decay,group=decay))
+g=ggplot(moran_days_data,aes(x=day,y=rho,color=decay,group=decay))
 g+geom_point(size=0.5)+stat_smooth(se = T,span = 0.2)+ylab("Moran index") + 
   theme(axis.title = element_text(size = 15), axis.text.x = element_text(size = 10), axis.text.y = element_text(size = 10))
 ggsave(file=paste0(resdir,'moran_days.pdf'),width=10,height=5)
@@ -164,9 +172,11 @@ for(decay in alldecays){
     autocorrs=append(autocorrs,mean(rho));days=append(days,day);decays=append(decays,decay)
   }
 }
+moran_decay_weeks_data = data.frame(rho=autocorrs,week=strptime(as.character(alldays[days]),format='%Y%m%d'),decay=decays)
+save(moran_decay_weeks_data,file='data/moran_decay_weeks_data.RData')
 
-g=ggplot(data.frame(rho=autocorrs,week=strptime(as.character(alldays[days]),format='%Y%m%d'),decay=decays),aes(x=decay,y=rho,color=week,group=week))
-g+geom_point()+geom_line()+scale_x_log10()+ylab("Moran index") + 
+g=ggplot(moran_decay_weeks_data,aes(x=decay,y=rho,color=week,group=week))
+g+geom_point()+geom_line()+scale_x_log10()+xlab('Spatial autocorrelation range')+ylab("Moran index")+scale_colour_datetime(name='Week')+
   theme(axis.title = element_text(size = 22), axis.text.x = element_text(size = 15), axis.text.y = element_text(size = 15))
 ggsave(file=paste0(resdir,'moran_decay_weeks.pdf'),width=10,height=5)
 
