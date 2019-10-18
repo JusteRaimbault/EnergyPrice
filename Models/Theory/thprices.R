@@ -35,11 +35,11 @@ solvePrices <- function(unit_price,transportation_cost,num_stations,density,minP
 }
 
 #test
-iters=10
-repets=50
+#iters=10
+#repets=50
 
-#iters=50000
-#repets=100
+iters=50000
+repets=100
 
 cl <- makeCluster(50,outfile='log')
 registerDoParallel(cl)
