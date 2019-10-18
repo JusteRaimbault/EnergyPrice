@@ -31,7 +31,7 @@ solvePrices <- function(unit_price,transportation_cost,num_stations,density,minP
   optimized <- ga(type = "real-valued", fitness =  function(p) -objective(p),
            lower = rep(minPrice,num_stations), upper = rep(maxPrice,num_stations), 
            popSize = 50, maxiter = iters,parallel = parallel)
-  return(optimized)
+  return(optimized@solution)
 }
 
 #test
@@ -61,7 +61,7 @@ for(nstation in nstations){
        library(GA)
        return(solvePrices(0.8,1,nstation,uniformdensity,minPrice=0.01,maxPrice=mprice,iters=iters,parallel=FALSE))
     }
-    save(uniformprices,file=paste0('res/uniform_maxprice',mprice,'_nstation',nstation,'_',format(Sys.time(), "%Y%m%d_%H%M%S"),'.RData'))
+    save(uniformprices,file=paste0('res/computed/uniform_maxprice',mprice,'_nstation',nstation,'_',format(Sys.time(), "%Y%m%d_%H%M%S"),'.RData'))
 }
 
 
@@ -77,7 +77,7 @@ for(nstation in nstations){
        library(GA)
        return(solvePrices(0.8,1,nstation,tentdensity,minPrice=0.01,maxPrice=mprice,iters=iters,parallel = FALSE))
     }
-  save(tentprices,file=paste0('res/linear_maxprice',mprice,'_nstation',nstation,'_',format(Sys.time(), "%Y%m%d_%H%M%S"),'.RData'))
+  save(tentprices,file=paste0('res/computed/linear_maxprice',mprice,'_nstation',nstation,'_',format(Sys.time(), "%Y%m%d_%H%M%S"),'.RData'))
 }
 
 
@@ -92,7 +92,7 @@ for(nstation in nstations){
      library(GA)
      return(solvePrices(0.8,1,nstation,expdensity,minPrice=0.01,maxPrice=mprice,iters=iters,parallel=FALSE))
   }
-  save(expprices,file=paste0('res/exp_maxprice',mprice,'_nstation',nstation,'_',format(Sys.time(), "%Y%m%d_%H%M%S"),'.RData'))
+  save(expprices,file=paste0('res/computed/exp_maxprice',mprice,'_nstation',nstation,'_',format(Sys.time(), "%Y%m%d_%H%M%S"),'.RData'))
 }
 
 
