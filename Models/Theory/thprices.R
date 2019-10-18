@@ -13,14 +13,14 @@ solvePrices <- function(unit_price,transportation_cost,num_stations,density,minP
   
   objective <- function(prices){
     thetas=c();
-    for(j in 1:(num_stations+1)){thetas[j]=theta(j-1,prices)}
+    for(j in 1:(num_stations+1)){thetas[j]=theta(j,prices)}
     cumsum = 0
     for(j in 1:num_stations){
-      thetamin = thetas[j];thetamax = thetas[j+1]
+      thetamin = thetas[j];thetamax = thetas[(j+1)]
       densindmin = (floor(length(density)*thetamin/(2*pi))%%length(density))+1
       densindmax = (floor(length(density)*thetamax/(2*pi))%%length(density))+1
       pops = ifelse(densindmin<=densindmax,density[densindmin:densindmax],density[c(1:densindmax,densindmin:length(density))])
-      pop = sum()*(2*pi/length(density))
+      pop = sum(pops)*(2*pi/length(density))
       pj = prices[j];pjp = prices[((j+1)%%length(prices))+1];pjm=prices[((j-1)%%length(prices))+1]
       intprice = (2 / transportation_cost + 2*pi/num_stations)*(pj - unit_price)*((pjp*density[densindmax])/((pj + pjp)^2)+(pjm*density[densindmin])/((pj + pjm)^2))
       cumsum = cumsum + costFunction(pop - intprice)
@@ -35,19 +35,23 @@ solvePrices <- function(unit_price,transportation_cost,num_stations,density,minP
 }
 
 #test
-iters=10
+#iters=10
+#repets=50
+
+iters=10000
 repets=50
 
-#iters=50000
-#repets=100
+mprice=2
+#for(mprice in c(1.0,2.0,10)){} # set a thematic realistic value (difficulties to converge otherwise)
+nstations = c(10,20)#,100)
+
 
 cl <- makeCluster(50,outfile='log')
 registerDoParallel(cl)
 
-#for(mprice in c(1.0,2.0,10)){ # set a thematic realistic value (difficulties to converge otherwise)
-mprice=2
-  for(nstation in c(10,20,100)){
-    uniformdensity = rep(1,10000)
+
+for(nstation in nstations){
+    uniformdensity = rep(1,10000)/10000
     #uniformprices=list()
     #for(k in 1:repets){
     #  uniformprices[[k]] <- solvePrices(0.8,1,nstation,uniformdensity,minPrice=0.01,maxPrice=mprice,iters=1000)
@@ -59,13 +63,11 @@ mprice=2
     }
     save(uniformprices,file=paste0('res/uniform_maxprice',mprice,'_nstation',nstation,'_',format(Sys.time(), "%Y%m%d_%H%M%S"),'.RData'))
 }
-#}
 
 
 
-mprice=2;
-  for(nstation in c(10,20,100)){
-    tentdensity = c(seq(1,1000,by=1),seq(1000,1,by=-1))
+for(nstation in nstations){
+    tentdensity = c(seq(1,5000,by=1),seq(5000,1,by=-1));tentdensity=tentdensity/sum(tentdensity)
     #tentprices=list()
     #for(k in 1:repets){
     #  show(k)
@@ -78,10 +80,10 @@ mprice=2;
   save(tentprices,file=paste0('res/linear_maxprice',mprice,'_nstation',nstation,'_',format(Sys.time(), "%Y%m%d_%H%M%S"),'.RData'))
 }
 
-mprice=2;
-for(nstation in c(10,20,100)){
-  expdec = 1000*exp(-(0:1000)/100)
-  expdensity = c(rev(expdec),expdec)
+
+for(nstation in nstations){
+  expdec = exp(-(1:5000)/500)
+  expdensity = c(rev(expdec),expdec);expdensity=expdensity/sum(expdensity)
   #expprices=list()
   #for(k in 1:20){
   #  expprices[[k]] <- solvePrices(0.8,1,nstation,expdensity,minPrice=0.01,maxPrice=mprice,iters=10000)#,costFunction=function(d){return((d*10)^2)})
