@@ -13,7 +13,7 @@ solvePrices <- function(unit_price,transportation_cost,num_stations,density,minP
   
   objective <- function(prices){
     thetas=c();
-    for(j in 1:(num_stations+1)){thetas[j]=theta(j,prices)}
+    for(j in 1:(num_stations+1)){thetas[j]=theta(j-1,prices)}
     cumsum = 0
     for(j in 1:num_stations){
       thetamin = thetas[j];thetamax = thetas[(j+1)]
@@ -34,6 +34,14 @@ solvePrices <- function(unit_price,transportation_cost,num_stations,density,minP
   return(optimized@solution)
 }
 
+
+getDensity<-function(type,size=10000){
+  if(type=='uniform'){return(rep(1,size)/size)}
+  if(type=='linear'){tentdensity = c(seq(1,size/2,by=1),seq(size/2,1,by=-1));tentdensity=tentdensity/sum(tentdensity);return(tentdensity)}
+  if(type=='exp'){expdec = exp(-(1:(size/2))/(size/20));expdensity = c(rev(expdec),expdec);expdensity=expdensity/sum(expdensity);return(expdensity)}
+}
+
+
 #test
 #iters=10
 #repets=50
@@ -43,7 +51,7 @@ repets=50
 
 mprice=2
 #for(mprice in c(1.0,2.0,10)){} # set a thematic realistic value (difficulties to converge otherwise)
-nstations = c(10,20)#,100)
+nstations = c(100,200) #c(10,20)#,100)
 
 
 cl <- makeCluster(50,outfile='log')
@@ -51,7 +59,7 @@ registerDoParallel(cl)
 
 
 for(nstation in nstations){
-    uniformdensity = rep(1,10000)/10000
+    uniformdensity = getDensity('uniformm')
     #uniformprices=list()
     #for(k in 1:repets){
     #  uniformprices[[k]] <- solvePrices(0.8,1,nstation,uniformdensity,minPrice=0.01,maxPrice=mprice,iters=1000)
@@ -67,7 +75,7 @@ for(nstation in nstations){
 
 
 for(nstation in nstations){
-    tentdensity = c(seq(1,5000,by=1),seq(5000,1,by=-1));tentdensity=tentdensity/sum(tentdensity)
+    tentdensity = getDensity('linear')
     #tentprices=list()
     #for(k in 1:repets){
     #  show(k)
@@ -82,8 +90,7 @@ for(nstation in nstations){
 
 
 for(nstation in nstations){
-  expdec = exp(-(1:5000)/500)
-  expdensity = c(rev(expdec),expdec);expdensity=expdensity/sum(expdensity)
+  expdensity <- getDensity('exp')
   #expprices=list()
   #for(k in 1:20){
   #  expprices[[k]] <- solvePrices(0.8,1,nstation,expdensity,minPrice=0.01,maxPrice=mprice,iters=10000)#,costFunction=function(d){return((d*10)^2)})
