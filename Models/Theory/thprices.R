@@ -59,7 +59,7 @@ registerDoParallel(cl)
 
 
 for(nstation in nstations){
-    uniformdensity = getDensity('uniformm')
+    uniformdensity = getDensity('uniform')
     #uniformprices=list()
     #for(k in 1:repets){
     #  uniformprices[[k]] <- solvePrices(0.8,1,nstation,uniformdensity,minPrice=0.01,maxPrice=mprice,iters=1000)
