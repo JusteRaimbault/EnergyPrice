@@ -4,7 +4,9 @@ setwd(paste0(Sys.getenv('CS_HOME'),'/EnergyPrice/Models/SpatialAnalysis'))
 library(dplyr)
 library(rgdal)
 library(rgeos)
+library(raster)
 library(ggplot2)
+
 
 source('functions.R')
 
@@ -108,6 +110,33 @@ statedata$date <-as.POSIXct(as.character(statedata$date),format='%m/%d/%Y')
 g=ggplot(statedata,aes(x=date,y=price,group=stateid,color=stateid))
 g+geom_line()
 ggsave(file=paste0(resdir,'states_ts.png'),width=15,height=10,units='cm')
+
+
+
+############
+############
+
+# correlation number of stations <-> population
+
+cities <- readOGR(paste0(Sys.getenv("CS_HOME"),'/EnergyPrice/Data/cities/'),layer = 'zip_us_metro',stringsAsFactors = FALSE)
+popraster <- raster(paste0(Sys.getenv('CS_HOME'),'/Data/JRC_EC/GHS/GHS_POP_GPW42015_GLOBE_R2015A_54009_1k_v1_0/GHS_POP_GPW42015_GLOBE_R2015A_54009_1k_v1_0.tif'))
+citiestr<-spTransform(cities,proj4string(popraster)) #longlat, no need to transform
+vals <- getValuesBlock(popraster,row=rowFromY(popraster,bbox(citiestr)[2,2]),
+               nrows=rowFromY(popraster,bbox(citiestr)[2,1])-rowFromY(popraster,bbox(citiestr)[2,2])+1,
+               col=colFromX(popraster,bbox(citiestr)[1,1]),
+               ncols=colFromX(popraster,bbox(citiestr)[1,2])-colFromX(popraster,bbox(citiestr)[1,1])+1
+               )
+rowrange=rowFromY(popraster,bbox(citiestr)[2,2]):rowFromY(popraster,bbox(citiestr)[2,1])
+colrange=colFromX(popraster,bbox(citiestr)[1,1]):colFromX(popraster,bbox(citiestr)[1,2])
+cells = cellFromRowCol(popraster,c(matrix(rep(rowrange,length(colrange)),nrow=length(colrange),byrow=T)),rep(colrange,length(rowrange)))
+xcoords = xFromCell(popraster,cells);ycoords = yFromCell(popraster,cells)
+poppoints = SpatialPointsDataFrame(matrix(c(xcoords,ycoords),nrow=length(xcoords),byrow = F),data = data.frame(pop=vals,x=xcoords,y=ycoords),proj4string = CRS(proj4string(citiestr)))
+# reproject
+poppoints = spTransform(poppoints,proj4string(cities))
+writeOGR(poppoints[poppoints$pop>0,],paste0(Sys.getenv("CS_HOME"),'/EnergyPrice/Data/cities/'),'poppoints',driver='ESRI Shapefile')
+
+# overlay in qgis? - not efficient here
+#citiesinds = over(cities,poppoints)
 
 
 ############

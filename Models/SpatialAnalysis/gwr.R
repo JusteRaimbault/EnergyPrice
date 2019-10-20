@@ -34,6 +34,8 @@ joineddata[is.na(joineddata)]=0
 counties@data=joineddata[,c(5,6,10:14)];names(counties@data)<-c("GEOID","name","income","jobs","wage","population","percapjobs")
 counties$price = getPeriodPrices()
 
+write.csv(counties@data,file=paste0(Sys.getenv('CS_HOME'),'/EnergyPrice/Data/census/counties_socioeco.csv'),row.names = F)
+
 ######
 # test on full period
 
