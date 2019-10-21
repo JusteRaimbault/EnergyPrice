@@ -137,6 +137,31 @@ writeOGR(poppoints[poppoints$pop>0,],paste0(Sys.getenv("CS_HOME"),'/EnergyPrice/
 
 # overlay in qgis? - not efficient here
 #citiesinds = over(cities,poppoints)
+# 
+
+zipspop = readOGR(paste0(Sys.getenv("CS_HOME"),'/EnergyPrice/Data/cities/'),'zip_pop')
+zips = addresses %>% group_by(zip) %>% summarize(nstations = n())
+zips$zip = as.numeric(trim(as.character(zips$zip)))
+zipspop = zipspop@data
+zipspop$zip = as.numeric(trim(as.character(zipspop$ZCTA5CE10))) 
+zips = left_join(zips,zipspop,by=c('zip'='zip'))
+zips=zips[!is.na(zips$zip)&!is.na(zips$nstations)&!is.na(zips$totalpop),]
+
+#popthqs = c(0.0,0.5,0.75)
+popthqs = seq(from=0.05,to = 0.95,by=0.05)
+rho=c();rhomin=c();rhomax=c();popprop=c()
+for(popthq in popthqs){
+  q = quantile(zips$totalpop,c(popthq))
+  currentzips = zips[zips$totalpop>q,]
+  popprop=append(popprop,sum(currentzips$totalpop)/sum(zips$totalpop))
+  rhotest = cor.test(currentzips$nstations,currentzips$totalpop)
+  rho = append(rho,rhotest$estimate);rhomin = append(rhomin,rhotest$conf.int[1]);rhomax=append(rhomax,rhotest$conf.int[2])
+}
+g=ggplot(data.frame(quantile=popthqs,rho=rho,rhomin=rhomin,rhomax=rhomax,population=popprop),aes(x=quantile,y=rho))
+g+geom_point()+geom_line()+geom_errorbar(ymin=rhomin,ymax=rhomax)+ylim(c(0.0,1.0))+
+  geom_line(aes(x=quantile,y=population),color=2)
+ggsave(file=paste0(resdir,'corr_zip_pop-stations.png'),width=18,height=15,units='cm')
+
 
 
 ############

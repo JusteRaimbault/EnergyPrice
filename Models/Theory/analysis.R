@@ -21,7 +21,7 @@ loadLatest <- function(type,mprice,nstation){
 # data in long format
 allprices = data.frame()
 mprice=2;reps=50
-nstations=c(10,20)#,100)
+nstations=c(100,200)
 
 for(nstation in nstations){
   uniformprices=loadLatest('uniform',mprice,nstation)
@@ -56,20 +56,25 @@ allprices$stations = as.character(allprices$stations)
 # densities
 uniformdensity = getDensity('uniform')
 tentdensity = getDensity('linear')
-expdec = getDensity('exp')
+expdensity = getDensity('exp')
 
 
 #g=ggplot(allprices,aes(x=angle,y=price,color=stations,group=stations))
 #g+stat_smooth(method='loess',span = 0.5)+facet_wrap(~type)
 # beurk
 
-sres = allprices %>% group_by(angle,stations,type) %>% summarize(priceSd = sd(price),price=mean(price),count=n())
-sres$stations = as.character(sres$stations)
-g=ggplot(sres,aes(x=angle,y=price,color=stations,group=stations))
-g+geom_point()+geom_line()+geom_errorbar(aes(ymin=price-1.96*priceSd/sqrt(count),ymax=price+1.96*priceSd/sqrt(count)))+facet_wrap(~type)+
-  geom_line(data=data.frame(angle=(1:length(expdensity))*360/length(expdensity),price=(expdensity-min(expdensity))/(max(expdensity)-min(expdensity))*0.2+1,type=rep('exponential',length(expdensity))),mapping=aes(x=angle,y=price),color='black',linetype=3,inherit.aes =F)+
-  geom_line(data=data.frame(angle=(1:length(uniformdensity))*360/length(uniformdensity),price=uniformdensity*length(uniformdensity),type=rep('uniform',length(uniformdensity))),mapping=aes(x=angle,y=price),color='black',linetype=3,inherit.aes =F)+
-  geom_line(data=data.frame(angle=(1:length(tentdensity))*360/length(tentdensity),price=(tentdensity-min(tentdensity))/(max(tentdensity)-min(tentdensity))*0.2+1,type=rep('linear',length(tentdensity))),mapping=aes(x=angle,y=price),color='black',linetype=3,inherit.aes =F)+
+prices = allprices %>% group_by(angle,stations,type) %>% summarize(priceSd = sd(price),price=mean(price),count=n())
+prices$stations = as.character(prices$stations)
+densities = data.frame(angle=(1:length(expdensity))*360/length(expdensity),price=(expdensity-min(expdensity))/(max(expdensity)-min(expdensity))*0.2+1,type=rep('exponential',length(expdensity)))
+densities = rbind(densities,data.frame(angle=(1:length(uniformdensity))*360/length(uniformdensity),price=uniformdensity*length(uniformdensity),type=rep('uniform',length(uniformdensity))))
+densities = rbind(densities,data.frame(angle=(1:length(tentdensity))*360/length(tentdensity),price=(tentdensity-min(tentdensity))/(max(tentdensity)-min(tentdensity))*0.2+1,type=rep('linear',length(tentdensity))))
+
+write.csv(prices,file='res/ga_sim_prices.csv',row.names = F)
+write.csv(densities,file='res/ga_sim_densities.csv',row.names = F)
+
+g=ggplot(prices,aes(x=angle,y=price,color=stations,group=stations))
+g+geom_point()+geom_line()+geom_errorbar(aes(ymin=price-1.96*priceSd/sqrt(count),ymax=price+1.96*priceSd/sqrt(count)))+
+  geom_line(data=densities,mapping=aes(x=angle,y=price),color='black',linetype=1,inherit.aes =F)+facet_wrap(~type)+
   stdtheme
 ggsave(file='res/thmodel_ga_aggreg_all.png',width=40,height=20,units='cm')
 
