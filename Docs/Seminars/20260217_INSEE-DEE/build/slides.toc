@@ -1,0 +1,6 @@
+\babel@toc {nil}{}\relax 
+\beamer@sectionintoc {1}{Introduction}{2}{0}{1}
+\beamer@sectionintoc {2}{Dataset construction and visualisation}{6}{0}{2}
+\beamer@sectionintoc {3}{Econometric analysis}{10}{0}{3}
+\beamer@sectionintoc {4}{Theoretical model}{17}{0}{4}
+\beamer@sectionintoc {5}{Discussion}{22}{0}{5}

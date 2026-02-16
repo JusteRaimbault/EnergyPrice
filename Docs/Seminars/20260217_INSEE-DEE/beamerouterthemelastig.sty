@@ -1,0 +1,126 @@
+% Created by Clement Mallet in 09/2025 based on ETH official design
+
+% This file should only customize the style of the layout of the slides
+
+\mode<presentation>
+
+% Redefine \insertshortinstitute to allow multiple lines
+\makeatletter
+\renewcommand{\insertshortinstitute}{\beamer@shortinstitute}
+\makeatother
+
+% Title frame
+\def\titlefigure{}
+\newlength\titleboxwidth
+\setlength{\titleboxwidth}{0.43\textwidth}
+\newcommand{\titleframe}{%
+	{
+		\setbeamertemplate{background}{
+			\begin{tikzpicture}
+			\useasboundingbox (0,0) rectangle(\the\paperwidth,\the\paperheight);
+			\ifx\titlefigure\empty
+				\fill[titlebgcolor] (9.6mm,7.4mm) rectangle (\the\paperwidth-9.5mm,\the\paperheight-13mm);
+			\else
+				\node at (current page.center) [anchor=center,yshift=-3.5mm] {\includegraphics[width=\the\paperwidth-19mm]{\titlefigure}};
+			\fi
+			\node at (current page.north east) [anchor=base east, xshift=-9.5mm, yshift=-9.8mm, align=left, inner sep=0mm, font=\fontsize{5.5}{6.6}\selectfont] {
+				%% Withut any logo
+                %\insertshortinstitute
+                % With logos
+                \includegraphics[height=6mm]{../../../../../Organisation/Docs/Templates/LASTIG_logos/logo_uge}
+                \includegraphics[height=9mm]{../../../../../Organisation/Docs/Templates/LASTIG_logos/logo_geodata-paris}
+                \includegraphics[height=9mm]{../../../../../Organisation/Docs/Templates/LASTIG_logos/logo_eivp}
+			}; 
+			\node at (current page.north west) [anchor=south west, inner sep=0mm, xshift=5.1mm, yshift=-10.3mm] {
+				\includegraphics[height=8mm]{../../../../../Organisation/Docs/Templates/LASTIG_logos/logo_lastig_ss_titre}
+			}; 
+			\end{tikzpicture}
+		}
+		\setbeamertemplate{footline}{}
+		\begin{frame}[noframenumbering]
+			\begin{tikzpicture}
+				\useasboundingbox (0,0) rectangle(\the\paperwidth,\the\paperheight);
+				\node [
+					shift={(-12mm,-2mm)},
+					fill=titlefgcolor,
+					minimum width=0.49\paperwidth,
+					minimum height=20mm,
+					anchor=west,
+					inner sep=5mm
+					] at (current page.west) {
+						\hspace*{10mm}
+			 		    \begin{minipage}{\titleboxwidth}
+				 		    \raggedright
+					        \usebeamerfont{title}\usebeamercolor[fg]{title}\inserttitle\\[3mm]
+							\usebeamerfont{author}\usebeamercolor[fg]{author}\insertauthor\\
+							\usebeamerfont{date}\usebeamercolor[fg]{date}\insertdate
+					    \end{minipage}			
+					};
+			\end{tikzpicture}
+		\end{frame}
+	}
+}
+
+% TOC frame
+\newcommand{\tocframe}{%
+    \begin{frame}
+      \frametitle{Outline}
+      \tableofcontents
+    \end{frame}
+}
+
+% Section title frame
+\AtBeginSection[]
+{
+    \begin{frame}
+      \frametitle{Outline}
+      \large
+      \tableofcontents[currentsection] 
+    \end{frame}
+}
+
+\newenvironment{closingframe}{
+	\setbeamertemplate{background}{
+		\begin{tikzpicture}
+		\useasboundingbox (0,0) rectangle(\the\paperwidth,\the\paperheight);
+		\node at (current page.north west) [anchor=base west, xshift=8mm, yshift=-10mm, align=left] {
+			\includegraphics[width=23mm]{../../../../../Organisation/Docs/Templates/LASTIG_logos/logo_lastig_ss_titre}
+		}; 
+		\end{tikzpicture}
+	}
+	\setbeamertemplate{footline}{}
+	\addtolength{\headsep}{10mm}
+	\begin{frame}[noframenumbering]
+}%
+{
+	\end{frame}
+}%
+
+% Frame title
+\setbeamertemplate{frametitle}{
+	\vspace{2mm}
+	\insertframetitle \\
+	\usebeamerfont{framesubtitle}\insertframesubtitle
+	\vspace{2.5mm}
+}
+
+% Footline
+\setbeamertemplate{footline}{
+	\leavevmode%
+	\hspace{9mm}
+	\includegraphics[width=15mm,trim=0mm 0.3mm 0mm 0mm]{../../../../../Organisation/Docs/Templates/LASTIG_logos/logo_lastig_ss_titre}
+	\hspace{4.5mm}
+	\parbox[b]{85mm}{
+		%\fontsize{6.5}{6.5}
+        %\selectfont 
+		\textcolor{LASTIGBlue}{\insertshortauthor} \hspace{9mm} -- \hspace{9mm} \textcolor{LASTIGBlue}{\insertshorttitle}
+   	}
+	\hfill
+	\textcolor{LASTIGBlue}{\insertshortdate}
+	\hspace{9mm}
+	\textcolor{LASTIGBlue}{\insertframenumber/\inserttotalframenumber}
+	\hspace{9mm}
+	\vspace{3mm}
+}
+
+\mode<all>
