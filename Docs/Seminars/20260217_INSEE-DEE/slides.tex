@@ -39,11 +39,15 @@
 
 \title[An empirical analysis of fuel prices in the US]{An empirical analysis of the spatial variability of fuel prices in the United States}
 \date[17/02/2026]{\medskip S{\'e}minaire INSEE - DEE, 17/02/2026}
-\author[Raimbault and Bergeaud]{Juste Raimbault$^{1}$ and Antonin Bergeaud$^{2}$\\
+\author[Raimbault and Bergeaud]{Juste Raimbault$^{1,2,3,4}$ and Antonin Bergeaud$^{5,6,7}$\smallskip\\
 $^{1}$LaSTIG, Univ. Gustave Eiffel, IGN-ENSG\\
-$^{2}$HEC Paris\smallskip\\
+$^{2}$CASA, UCL\\
+$^{3}$UAR 3611 CNRS ISC-PIF\\
+$^{4}$UMR CNRS 8504 G{\'e}ographie-cit{\'e}s\\
+$^{5}$HEC Paris\\
+$^{6}$CEPR, LSE\\
+$^{7}$Innovation Lab, Coll{\`e}ge de France\smallskip\\
 \texttt{juste.raimbault@ign.fr}}
-
 
 
 \titleframe
@@ -107,30 +111,35 @@ $^{2}$HEC Paris\smallskip\\
 
 \sframe{The geography of fuel prices}{
 
-\textit{Spatio-temporal variability of Fuel Price can be linked to various aspects: geographical properties of a particular energy market, characteristics of the transportation system, interactions between transportation and territories.}
-
 \justify
+
+
+\textit{Spatio-temporal variability of retail fuel prices can be linked to various aspects and issues: geographical properties of a particular energy market, characteristics of the transportation system, spatial inequalities, interactions between transportation and territories, \ldots}
+
+\bigskip
 
 \textbf{Research Objective: } \textit{Empirical analysis of a large and detailed dataset of US fuel retail price, focusing on spatio-temporal variability}
 
 \bigskip
 
-$\rightarrow$ Focus on geographical patterns and structures
+$\rightarrow$ Focus on \textbf{geographical patterns and structures}
 
 \medskip
 
-$\rightarrow$ Complementarity of spatial analysis methods
+$\rightarrow$ \textbf{Complementarity} of spatial analysis methods
 
 \medskip
 
-$\rightarrow$ Interdisciplinary point of view on a fundamentally heterogenous system
+$\rightarrow$ \textbf{Interdisciplinary} viewpoint on a multi-dimensionnal system
 
 \bigskip
 
-\textbf{Our contribution:}
+\textbf{Our contributions:}
 
 \begin{itemize}
-	\item 
+	\item we collect novel micro-data of retail fuel prices with full geographical coverage in the US
+	\item we show the existence of different spatial regimes, superposed to a strong determination by state-level taxes and local socio-economic characteristics
+	\item we introduce a minimal theoretical model explaining the effect of population density on prices
 \end{itemize}
 
 }
@@ -146,12 +155,12 @@ $\rightarrow$ Interdisciplinary point of view on a fundamentally heterogenous sy
 
 \justify
 
-\textit{Crowdsourced Big Data as a new way to unveil structure of complex socio-technical systems}
+\textit{Crowdsourced Big Data as a ``new'' way to understand better complex socio-technical systems}
 
 \bigskip
 
 
-$\rightarrow$ Construction of a large scale dataset covering most of US fuel stations on two months, by collecting crowdsourced data from the website \texttt{gasbuddy.com}
+$\rightarrow$ Construction of a large scale dataset covering most of US fuel stations on two months, by collecting crowdsourced data available on online sources
 
 \bigskip
 
@@ -176,7 +185,7 @@ $\rightarrow$ Construction of a large scale dataset covering most of US fuel sta
 \sframe{Dataset Summary}{
 
 \begin{itemize}
-\item $41\cdot 10^6$ unique observations, between January and March 2017\\$\rightarrow$ 5,204,398 gas station - day observations for main purchase mode and regular fuel, used in the analysis, aggregated at the county level
+\item $41\cdot 10^6$ unique observations, between January and March 2017\\$\rightarrow$ 5,204,398 gas station - day observations for main purchase mode and regular fuel, used in the analysis
 \item Socio-economic data from US Census Bureau and other official sources
 \item Aggregation at the County level for the rest of the analysis
 \end{itemize}
@@ -302,8 +311,8 @@ log(x_{i}) = \beta_0 + X_{i}\beta_1 + \beta_{s(i)} + \varepsilon_{i},
 
 \begin{itemize}
 \item Clustering of standard error at the state level motivated by the strong spatial autocorrelation: capture county-level variation controlling for State fixed effect
-\item Regressing the log of price on a state fixed-effect explains 74\% of the variance
-\item Influence of taxes: regressing the log of oil price on the level of state tax gives a R-squared of 0.33\%
+\item Regressing the log of price on a state fixed-effect explains 76\% of the variance
+\item Influence of taxes: regressing the log of oil price on the level of state tax gives a R-squared of 0.33
 \end{itemize}
 
 }
@@ -328,9 +337,9 @@ log(x_{i}) = \beta_0 + X_{i}\beta_1 + \beta_{s(i)} + \varepsilon_{i},
 \medskip
 \item Fuel price also decreases with poverty
 \medskip
-\item It decreases with the extent to which a county has voted for a Republican candidate: suggests a circular link
+\item It decreases with the vote for a Republican candidate: suggests a circular link
 \medskip
-\item Overall, local socio-economic features have explanatory power even when removing State fixed effect
+\item Local socio-economic features have explanatory power even when removing State fixed effect
 \end{itemize}
 
 
@@ -400,18 +409,25 @@ Maximisation of $\pi$ for each station gives the First Order Condition giving th
 
 \begin{itemize}
 	\item No tractable solution for any distribution $\mathcal{H}$
-	\item Minimise computationally $C\left[h,J,\eta,P\right] = \sum_j f_j(\vec{p},h,J,\eta,P)^2$ with a genetic algorithm 
+	\item Minimise computationally $C\left[h,J,\eta,P\right] = \sum_j f_j(\vec{p},h,J,\eta,P)^2$ with a genetic algorithm in R \cite{Scrucca2013ga}
 \end{itemize}
 
 }
 
 
-\sframe{Computational resolution of the minimal model}{
+\sframe{Computational solutions to the minimal model}{
 
+With parameters $\eta = 1$, $P=0.8$, $J=200$ gas stations, prices for 3 population densities: (i) uniform; (ii) linear; (iii) shifted exponential.
+
+\medskip
 
 \includegraphics[width=0.3\linewidth]{../../Paper/figures/fig7a.png}
 \includegraphics[width=0.3\linewidth]{../../Paper/figures/fig7b.png}
 \includegraphics[width=0.3\linewidth]{../../Paper/figures/fig7c.png}
+
+\medskip
+
+$\rightarrow$ consistent with the empirical fact of \textbf{decreasing prices with population density}
 
 
 }
@@ -427,25 +443,31 @@ Maximisation of $\pi$ for each station gives the First Order Condition giving th
 
 \sframe{Discussion}{
 
-$\rightarrow$ Complementarity of Spatial analysis and econometrics methods
-
-
-$\rightarrow$ Possible design of territory-targeted car-regulation policies, allowing both sustainability and territorial equity
+$\rightarrow$ Complementarity of spatial analysis (Moran and GWR) and econometrics methods (Multi-level regression), and a minimal theoretical model.
 
 \medskip
 
+$\rightarrow$ Possible design of territory-targeted car-regulation policies, allowing both sustainability and territorial equity.
+
+\bigskip
+
 \textbf{Future work:}
 
-$\rightarrow$ Microscopic data analysis (requires precise geocoding), calibration of consumer/producer behavior models
+\medskip
 
+$\rightarrow$ Microscopic data analysis, calibration of consumer/producer behavior models.
 
-$\rightarrow$ Longer time series and time-series modeling
+\medskip
 
+$\rightarrow$ Longer time series and time-series modeling.
 
-$\rightarrow$ Parametrization of a large-scale ABM of the spatialized fuel market: investigation of  adaptive policies effects at the local and global level
+\medskip
 
+$\rightarrow$ Parametrisation of a large-scale ABM of the spatialized fuel market: investigation of  adaptive policies effects at the local and global level.
 
-$\rightarrow$ Similar analysis on French open data
+\medskip
+
+$\rightarrow$ Similar analysis on French open data.
 
 
 }
@@ -455,20 +477,23 @@ $\rightarrow$ Similar analysis on French open data
 
 \sframe{Conclusion}{
 
-$\rightarrow$ A novel insight into spatio-temporal dynamics of fuel price and their determinants thanks to big data harvesting
+$\rightarrow$ Insight into \textbf{spatio-temporal dynamics} of fuel price and their determinants with \textbf{novel ``big'' micro data}
 
 \medskip
 
-$\rightarrow$ Complementary approaches and conclusions through GWR and multi-level modeling
+$\rightarrow$ \textbf{Complementary approaches} and conclusions through GWR and multi-level modeling
 
 \medskip
 
-$\rightarrow$ Fundamental role of spatio-temporal non-stationarity and existence of typical stationarity scales
+$\rightarrow$ Fundamental role of \textbf{spatio-temporal non-stationarity} and existence of typical stationarity scales: back on the importance of \textbf{fieldwork}
 
 
 \bigskip
 \bigskip
 \bigskip
+
+
+\textbf{Reproducibility: }
 
 All code and aggregated data available at \texttt{https://github.com/JusteRaimbault/EnergyPrice}
 
@@ -594,6 +619,26 @@ $\rightarrow$ It confirms that most of the variance can be explained by a state 
 
 
 }
+
+
+\sframe{Model resolution}{
+
+First order condition for the profit maximisation problem:
+
+$$
+\int_{\theta(j-1, j)}^{\theta(j, j+1)}{ d\mathcal{H}(\theta)}+(p(j)-P)\left[\frac{d\theta(j,j+1)}{dp(j)}h(\theta(j,j+1)) - \frac{d\theta(j-1,j)}{dp(j)}h(\theta(j-1,j))\right] = 0,
+$$
+
+with 
+
+$$\frac{d\theta(j,j+1)}{d(p(j))}=\frac{-p(j+1)}{\left(p(j)+p(j+1)\right)^2} \left(\frac{2}{\eta}+\frac{2\pi}{J} \right)<0$$
+
+and
+
+$$\frac{d\theta(j-1,j)}{d(p(j))}=\frac{p(j-1)}{\left(p(j-1)+p(j)\right)^2}\left(\frac{2}{\eta} +\frac{2\pi}{J}\right) > 0$$
+
+}
+
 
 
 \end{document}
